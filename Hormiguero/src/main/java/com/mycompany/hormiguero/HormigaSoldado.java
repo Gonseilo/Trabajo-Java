@@ -8,6 +8,6 @@ package com.mycompany.hormiguero;
  *
  * @author Ivanl
  */
-public class HormigaSoldado {
+public class HormigaSoldado extends Hormiga {
     
 }
