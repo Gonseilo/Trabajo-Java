@@ -21,8 +21,8 @@ public class HormigaObrera extends Hormiga implements Runnable {
         ID[1] = 'O';
         ID[2] = Character.forDigit(NumID/1000, 10);
         ID[3] = Character.forDigit(NumID/100 - (NumID/1000)*10, 10);
-        ID[4] = Character.forDigit(NumID/10 - (NumID/100)*10 - (NumID/1000)*100, 10);
-        ID[5] = Character.forDigit(NumID - (NumID/10)*10 - (NumID/100)*100 - (NumID/1000)*1000, 10);
+        ID[4] = Character.forDigit(NumID/10 - (NumID/100)*10, 10);
+        ID[5] = Character.forDigit(NumID - (NumID/10)*10, 10);
         
         return ID;
     }

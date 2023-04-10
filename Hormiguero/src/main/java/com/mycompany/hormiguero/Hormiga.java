@@ -17,6 +17,13 @@ public class Hormiga {
     private char[] ID;
     private String TipoHormiga;
     
+    public AlmacenComida almacenComida = new AlmacenComida();
+    public Refugio refugio = new Refugio();
+    public Tunel tunel = new Tunel();
+    public ZonaComer zonaComer = new ZonaComer();
+    public ZonaDescanso zonaDescanso = new ZonaDescanso();
+    public ZonaInstruccion zonaInstruccion = new ZonaInstruccion();
+    
     public Hormiga(int numHormiga, char[] ID, String TipoHormiga){
         this.numHormiga = numHormiga;
         this.ID = ID;
