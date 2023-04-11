@@ -10,8 +10,8 @@ package com.mycompany.hormiguero;
  */
 public class HormigaCria extends Hormiga implements Runnable {
 
-    public HormigaCria(int numHormiga, char[] ID, String TipoHormiga) {
-        super(numHormiga, ID, TipoHormiga);
+    public HormigaCria(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion) {
+        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
     }
     
     public char[] GenerarIDCria(){

@@ -17,7 +17,7 @@ public class ZonaInstruccion {
         Random rand = new Random();
         
         try {
-            System.out.println("Hormiga " + hormigaSoldado.getID() + " instruyendo");
+            System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " instruyendo");
             Thread.sleep(rand.nextInt(2000, 8000));
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex);

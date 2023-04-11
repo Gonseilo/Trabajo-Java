@@ -15,10 +15,17 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        char[] ID = new char[6];
-        Hormiga hormiga = new Hormiga(0, ID, "");
+        AlmacenComida almacenComida = new AlmacenComida();
+        Refugio refugio = new Refugio();
+        Tunel tunel = new Tunel();
+        ZonaComer zonaComer = new ZonaComer();
+        ZonaDescanso zonaDescanso = new ZonaDescanso();
+        ZonaInstruccion zonaInstruccion = new ZonaInstruccion();
         
-        hormiga.GenerarHormigas();
+        char[] ID = new char[6];
+        Hormiga hormiga = new Hormiga(0, ID, "", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
+        
+        hormiga.GenerarHormigas(almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
     }
     
 }

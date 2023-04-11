@@ -9,8 +9,8 @@ package com.mycompany.hormiguero;
  * @author Ivanl
  */
 public class HormigaSoldado extends Hormiga implements Runnable {
-    public HormigaSoldado(int numHormiga, char[] ID, String TipoHormiga) {
-        super(numHormiga, ID, TipoHormiga);
+    public HormigaSoldado(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion) {
+        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
     }
     
     public char[] GenerarIDSoldado(){
@@ -34,9 +34,13 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     public void run() {
         SetID(GenerarIDSoldado());
         System.out.println(getID());
-        while (1 == 1){
-            zonaInstruccion.Instruir(this);
-            zonaDescanso.DescansarSoldado(this);
+        while (true){
+            for (int i = 0; i < 6; i++){
+                zonaInstruccion.Instruir(this);
+                zonaDescanso.DescansarSoldado(this);
+            }
+            
+            zonaComer.ComerSoldado(this);
         }
     }
 }

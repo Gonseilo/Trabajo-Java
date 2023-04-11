@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 public class ZonaDescanso {
     public void DescansarObrera(HormigaObrera hormigaObrera){
         try {
+            System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " descansando");
             Thread.sleep(1000);
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
@@ -22,7 +23,7 @@ public class ZonaDescanso {
     
     public void DescansarSoldado(HormigaSoldado hormigaSoldado){
         try {
-            System.out.println("Hormiga " + hormigaSoldado.getID() + " descansando");
+            System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " descansando");
             Thread.sleep(2000);
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
@@ -31,6 +32,7 @@ public class ZonaDescanso {
     
     public void DescansarCria(HormigaCria hormigaCria){
         try {
+            System.out.println("Hormiga " + new String(hormigaCria.getID()) + " descansando");
             Thread.sleep(4000);
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
