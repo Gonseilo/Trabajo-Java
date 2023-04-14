@@ -5,6 +5,8 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.concurrent.Semaphore;
+
 /**
  *
  * @author bonba
@@ -15,9 +17,13 @@ public class NewMain {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        AlmacenComida almacenComida = new AlmacenComida();
+        Semaphore semaforo = new Semaphore(10);
+        Semaphore semaforoTunelEntrada = new Semaphore(1);
+        Semaphore semaforoTunelSalida = new Semaphore(2);
+        
+        AlmacenComida almacenComida = new AlmacenComida(semaforo);
         Refugio refugio = new Refugio();
-        Tunel tunel = new Tunel();
+        Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida);
         ZonaComer zonaComer = new ZonaComer();
         ZonaDescanso zonaDescanso = new ZonaDescanso();
         ZonaInstruccion zonaInstruccion = new ZonaInstruccion();

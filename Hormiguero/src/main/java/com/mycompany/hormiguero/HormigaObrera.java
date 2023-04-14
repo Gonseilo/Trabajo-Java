@@ -4,6 +4,10 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Ivanl
@@ -32,7 +36,38 @@ public class HormigaObrera extends Hormiga implements Runnable {
     }
     
     public void run() {
+        Random rand = new Random();
+        
         SetID(GenerarIDObrera());
         System.out.println(getID());
+        tunel.Entrar(this, null, null);
+        while (true){
+            if (super.getNumHormiga()%2 == 0){
+                for (int i = 0; i < 10; i++){
+                    //almacenComida.SacarComida(this);
+                    try {
+                        Thread.sleep(rand.nextInt(1000, 3000));
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    
+                }
+            }
+            else{
+                for (int i = 0; i < 10; i++){
+                    tunel.Salir(this, null);
+                    System.out.println("Hormiga " + new String(getID()) + " cogiendo comida");
+                    try {
+                        Thread.sleep(4000);
+                    } catch (InterruptedException ex) {
+                        Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    tunel.Entrar(this, null, null);
+                    almacenComida.DejarComida(this);
+                }
+            }
+            zonaComer.Comer(this, null, null);
+            zonaDescanso.Descansar(this, null, null);
+        }
     }
 }

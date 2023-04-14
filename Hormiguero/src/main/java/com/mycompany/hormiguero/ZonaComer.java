@@ -15,49 +15,22 @@ import java.util.logging.Logger;
 public class ZonaComer {
     public int comida = 3;
     
-    public synchronized void ComerObrera (HormigaObrera hormigaObrera){
-        while (comida == 0){
-            System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " esperando comida");
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        comida--;
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " comiendo");
-        System.out.println("Comida restante = " + comida);
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public synchronized void ComerSoldado (HormigaSoldado hormigaSoldado){
-        while (comida == 0){
-            System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " esperando comida");
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-        comida--;
-        System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comiendo");
-        System.out.println("Comida restante = " + comida);
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    
-    public synchronized void ComerCria (HormigaCria hormigaCria){
+public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria){
         Random rand = new Random();
+        String id = null;
+        
+        if (hormigaObrera != null){
+            id = new String(hormigaObrera.getID());
+        }
+        if (hormigaSoldado != null){
+            id = new String(hormigaSoldado.getID());
+        }
+        if (hormigaCria != null){
+            id = new String(hormigaCria.getID());
+        }
         
         while (comida == 0){
-            System.out.println("Hormiga " + new String(hormigaCria.getID()) + " esperando comida");
+            System.out.println("Hormiga " + id + " esperando comida");
             try {
                 wait();
             } catch (InterruptedException ex) {
@@ -65,12 +38,34 @@ public class ZonaComer {
             }
         }
         comida--;
-        System.out.println("Hormiga " + new String(hormigaCria.getID()) + " comiendo");
-        System.out.println("Comida restante = " + comida);
+        System.out.println("Hormiga " + id + " comiendo");
+        System.out.println("Comida restante en la zona de comer: " + comida);
+        if (hormigaCria != null){
+            try {
+                Thread.sleep(rand.nextInt(3000, 5000));
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        else{
+            try {
+                Thread.sleep(3000);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
+    public synchronized void DejarComida (HormigaObrera hormigaObrera){
+        Random rand = new Random();
+        
         try {
-            Thread.sleep(rand.nextInt(3000, 5000));
+            Thread.sleep(rand.nextInt(1000, 2000));
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
         }
+        System.out.println("Hormiga" + new String(hormigaObrera.getID()) + " dejando comida en la zona de comer");
+        comida = comida + 5;
+        System.out.println("Comida restante en la zona de comer: " + comida);
     }
 }

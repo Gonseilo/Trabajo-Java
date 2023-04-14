@@ -34,13 +34,14 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     public void run() {
         SetID(GenerarIDSoldado());
         System.out.println(getID());
+        tunel.Entrar(null, this, null);
         while (true){
             for (int i = 0; i < 6; i++){
                 zonaInstruccion.Instruir(this);
-                zonaDescanso.DescansarSoldado(this);
+                zonaDescanso.Descansar(null, this, null);
             }
             
-            zonaComer.ComerSoldado(this);
+            zonaComer.Comer(null, this, null);
         }
     }
 }

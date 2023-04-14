@@ -12,28 +12,26 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class ZonaDescanso {
-    public void DescansarObrera(HormigaObrera hormigaObrera){
-        try {
-            System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " descansando");
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+    public void Descansar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria){
+        String id = null;
+        int tiempo = 0;
+        
+        if (hormigaObrera != null){
+            id = new String(hormigaObrera.getID());
+            tiempo = 1000;
         }
-    }
-    
-    public void DescansarSoldado(HormigaSoldado hormigaSoldado){
-        try {
-            System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " descansando");
-            Thread.sleep(2000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+        if (hormigaSoldado != null){
+            id = new String(hormigaSoldado.getID());
+            tiempo = 2000;
         }
-    }
-    
-    public void DescansarCria(HormigaCria hormigaCria){
+        if (hormigaCria != null){
+            id = new String(hormigaCria.getID());
+            tiempo = 4000;
+        }
+        
         try {
-            System.out.println("Hormiga " + new String(hormigaCria.getID()) + " descansando");
-            Thread.sleep(4000);
+            System.out.println("Hormiga " + id + " descansando");
+            Thread.sleep(tiempo);
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
         }
