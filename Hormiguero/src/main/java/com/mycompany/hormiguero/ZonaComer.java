@@ -13,7 +13,7 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class ZonaComer {
-    public int comida = 3;
+    public int comida = 0;
     
 public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria){
         Random rand = new Random();
@@ -66,6 +66,7 @@ public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado horm
         }
         System.out.println("Hormiga" + new String(hormigaObrera.getID()) + " dejando comida en la zona de comer");
         comida = comida + 5;
+        notify();
         System.out.println("Comida restante en la zona de comer: " + comida);
     }
 }

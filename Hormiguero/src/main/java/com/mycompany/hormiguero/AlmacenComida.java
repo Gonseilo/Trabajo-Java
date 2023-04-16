@@ -6,6 +6,7 @@ package com.mycompany.hormiguero;
 
 import java.util.Random;
 import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,11 +16,12 @@ import java.util.logging.Logger;
  */
 public class AlmacenComida {
     private Semaphore semaforo;
-    int comida;
+    AtomicInteger comida = new AtomicInteger(0);
+    private final Object bloqueo = new Object();
 
     public AlmacenComida(Semaphore semaforo) {
         this.semaforo = semaforo;
-        this.comida = 0;
+        this.comida = comida;
     }
     
     public void DejarComida(HormigaObrera hormigaObrera){
@@ -37,9 +39,9 @@ public class AlmacenComida {
         } catch (InterruptedException ex) {
             Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
         }
-        comida = comida + 5;
-        synchronized(semaforo){
-            notify();
+        comida.addAndGet(5);
+        synchronized(bloqueo){
+            bloqueo.notify();
         }
         System.out.println("Comida en el almacén: " + comida);
         semaforo.release();
@@ -55,12 +57,12 @@ public class AlmacenComida {
             Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        while (comida < 5){
+        while (comida.get() < 5){
             System.out.println("No hay comida, hormiga " + new String(hormigaObrera.getID()) + " sale del almacén a esperar");
             semaforo.release();
-            synchronized(semaforo){
+            synchronized(bloqueo){
                 try {
-                    wait();
+                    bloqueo.wait();
                 } catch (InterruptedException ex) {
                     Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
                 }
@@ -78,11 +80,8 @@ public class AlmacenComida {
         } catch (InterruptedException ex) {
             Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
         }
-        comida = comida - 5;
+        comida.addAndGet(-5);
         System.out.println("Comida en el almacén: " + comida);
-        synchronized(semaforo){
-            notify();
-        }
         semaforo.release();
     }
 }

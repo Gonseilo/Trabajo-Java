@@ -44,13 +44,13 @@ public class HormigaObrera extends Hormiga implements Runnable {
         while (true){
             if (super.getNumHormiga()%2 == 0){
                 for (int i = 0; i < 10; i++){
-                    //almacenComida.SacarComida(this);
+                    almacenComida.SacarComida(this);
                     try {
                         Thread.sleep(rand.nextInt(1000, 3000));
                     } catch (InterruptedException ex) {
                         Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    
+                    zonaComer.DejarComida(this);
                 }
             }
             else{
