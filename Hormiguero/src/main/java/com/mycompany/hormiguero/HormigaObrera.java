@@ -13,6 +13,7 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class HormigaObrera extends Hormiga implements Runnable {
+    
     public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion) {
         super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
     }

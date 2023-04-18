@@ -16,6 +16,7 @@ public class Hormiga {
     private int numHormiga;
     private char[] ID;
     private String TipoHormiga;
+    
     protected AlmacenComida almacenComida;
     protected Refugio refugio;
     protected Tunel tunel;
