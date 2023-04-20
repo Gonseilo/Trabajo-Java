@@ -16,9 +16,13 @@ public class ZonaInstruccion {
     public void Instruir (HormigaSoldado hormigaSoldado){
         Random rand = new Random();
         
+        int tiempoMinimo = 2000;
+        int tiempoMaximo = 8000;
+        int tiempoIntruccion = rand.nextInt((tiempoMinimo - tiempoMaximo)+1)+ tiempoMinimo;
+        
         try {
             System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " instruyendo");
-            Thread.sleep(rand.nextInt(2000, 8000));
+            Thread.sleep(tiempoIntruccion);
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex);
         }

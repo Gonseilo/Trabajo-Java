@@ -38,6 +38,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
     
     public void run() {
         Random rand = new Random();
+        
         int tiempoMinimo = 1000;
         int tiempoMaximo = 3000;
         int tiempoCaminoZonaComer = rand.nextInt((tiempoMaximo - tiempoMinimo)+1)+ tiempoMinimo;

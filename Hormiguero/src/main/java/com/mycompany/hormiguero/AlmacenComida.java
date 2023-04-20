@@ -27,6 +27,10 @@ public class AlmacenComida {
     public void DejarComida(HormigaObrera hormigaObrera){
         Random rand = new Random();
         
+        int tiempoMinimo = 1000;
+        int tiempoMaximo = 2000;
+        int tiempoDejarComida = rand.nextInt((tiempoMaximo - tiempoMinimo )+1)+ tiempoMinimo;
+        
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén");
         try {
             semaforo.acquire();
@@ -35,7 +39,7 @@ public class AlmacenComida {
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén");
         try {
-            Thread.sleep(rand.nextInt(1000, 2000));
+            Thread.sleep(tiempoDejarComida);
         } catch (InterruptedException ex) {
             Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
         }
