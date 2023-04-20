@@ -40,6 +40,10 @@ public class Hormiga {
         Thread[] hilos = new Thread[10000];
         Random rand = new Random();
         
+        int tiempoMinimo = 800;
+        int tiempoMaximo = 3500;
+        int tiempoGeneracionHormigas = rand.nextInt((tiempoMaximo - tiempoMinimo +1)+ tiempoMinimo);
+        
         for (int i=0; i < 10000; i++){
             if (i % 5 <= 2){
                 Runnable runnable = new HormigaObrera(i, ID, "Obrera", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
@@ -62,7 +66,7 @@ public class Hormiga {
                 }
             }
             try {
-                Thread.sleep(rand.nextInt(800, 3500));
+                Thread.sleep(tiempoGeneracionHormigas);
             } catch (InterruptedException ex) {
                 Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
             }

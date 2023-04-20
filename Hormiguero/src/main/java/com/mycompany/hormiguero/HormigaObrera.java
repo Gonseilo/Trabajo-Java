@@ -38,6 +38,9 @@ public class HormigaObrera extends Hormiga implements Runnable {
     
     public void run() {
         Random rand = new Random();
+        int tiempoMinimo = 1000;
+        int tiempoMaximo = 3000;
+        int tiempoCaminoZonaComer = rand.nextInt((tiempoMaximo - tiempoMinimo)+1)+ tiempoMinimo;
         
         SetID(GenerarIDObrera());
         System.out.println(getID());
@@ -47,7 +50,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
                 for (int i = 0; i < 10; i++){
                     almacenComida.SacarComida(this);
                     try {
-                        Thread.sleep(rand.nextInt(1000, 3000));
+                        Thread.sleep(tiempoCaminoZonaComer);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
                     }
