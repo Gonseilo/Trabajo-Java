@@ -16,6 +16,7 @@ public class Hormiga {
     private int numHormiga;
     private char[] ID;
     private String TipoHormiga;
+    private Thread[] soldado = new Thread[2000];
     
     protected AlmacenComida almacenComida;
     protected Refugio refugio;
@@ -56,6 +57,7 @@ public class Hormiga {
                     Runnable runnable = new HormigaSoldado(i, ID, "Soldado", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
                     hilos[i] = new Thread(runnable);
                     hilos[i].start();
+                    soldado[(i+2)/5] = hilos[i];
                     System.out.println("Soldado " + i);
                 }
                 else{
@@ -77,6 +79,12 @@ public class Hormiga {
             } catch (InterruptedException ex) {
                 Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
             }
+        }
+    }
+    
+    public void interrumpirSoldados (){
+        for (Thread thread : soldado){
+            thread.interrupt();
         }
     }
 
@@ -102,5 +110,13 @@ public class Hormiga {
 
     public String getTipoHormiga() {
         return TipoHormiga;
+    }
+
+    public Thread[] getSoldado() {
+        return soldado;
+    }
+
+    public void setSoldado(Thread[] soldado) {
+        this.soldado = soldado;
     }
 }

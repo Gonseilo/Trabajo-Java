@@ -14,4 +14,8 @@ public class Insecto {
     public void GenerarInsecto(int numHormigas){
         CyclicBarrier barrera = new CyclicBarrier((numHormigas+2)/5);
     }
+    
+    public void DefenderInsecto(HormigaSoldado hormigaSoldado){
+        
+    }
 }
