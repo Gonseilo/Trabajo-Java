@@ -4,7 +4,6 @@
  */
 package com.mycompany.hormiguero;
 
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -14,15 +13,9 @@ import java.util.logging.Logger;
  */
 public class ZonaInstruccion {
     public void Instruir (HormigaSoldado hormigaSoldado){
-        Random rand = new Random();
-        
-        int tiempoMinimo = 2000;
-        int tiempoMaximo = 8000;
-        int tiempoIntruccion = rand.nextInt((tiempoMinimo - tiempoMaximo)+1)+ tiempoMinimo;
-        
         try {
             System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " instruyendo");
-            Thread.sleep(tiempoIntruccion);
+            Thread.sleep(hormigaSoldado.getTiempoInstruir());
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex);
         }

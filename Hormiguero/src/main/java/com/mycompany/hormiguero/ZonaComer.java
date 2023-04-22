@@ -16,24 +16,20 @@ public class ZonaComer {
     public int comida = 0;
     
 public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria){
-        Random rand = new Random();
-        
-        int tiempoComerHormiga = 3000;
-        
-        int tiempoMaximo = 5000;
-        int tiempoMinimo = 3000;
-        int tiempoComerCria = rand.nextInt((tiempoMaximo - tiempoMinimo)+1)+ tiempoMinimo;
-        
+        int tiempoComer = 0;
         String id = null;
         
         if (hormigaObrera != null){
             id = new String(hormigaObrera.getID());
+            tiempoComer = hormigaObrera.getTiempoComer();
         }
         if (hormigaSoldado != null){
             id = new String(hormigaSoldado.getID());
+            tiempoComer = hormigaSoldado.getTiempoComer();
         }
         if (hormigaCria != null){
             id = new String(hormigaCria.getID());
+            tiempoComer = hormigaCria.getTiempoComer();
         }
         
         while (comida == 0){
@@ -49,14 +45,14 @@ public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado horm
         System.out.println("Comida restante en la zona de comer: " + comida);
         if (hormigaCria != null){
             try {
-                Thread.sleep(tiempoComerCria);
+                Thread.sleep(tiempoComer);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
         else{
             try {
-                Thread.sleep(tiempoComerHormiga);
+                Thread.sleep(tiempoComer);
             } catch (InterruptedException ex) {
                 Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -64,12 +60,8 @@ public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado horm
     }
     
     public synchronized void DejarComida (HormigaObrera hormigaObrera){
-        Random rand = new Random();
-        int tiempoMinimo = 1000;
-        int tiempoMaximo = 2000;
-        int tiempoDejarComida = rand.nextInt((tiempoMaximo - tiempoMinimo)+1) + tiempoMinimo;
         try {
-            Thread.sleep(rand.nextInt(tiempoDejarComida));
+            Thread.sleep(hormigaObrera.getTiempoDejarComidaZonaComer());
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
         }

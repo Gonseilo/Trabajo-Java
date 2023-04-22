@@ -4,14 +4,21 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.Random;
+
 /**
  *
  * @author Ivanl
  */
 public class HormigaCria extends Hormiga implements Runnable {
+    Random rand = new Random();
+    private int TiempoComer;
+    private int TiempoDescansar;
 
     public HormigaCria(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion) {
         super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
+        this.TiempoComer = rand.nextInt(2001)+3000;
+        this.TiempoDescansar = 4000;
     }
     
     public char[] GenerarIDCria(){
@@ -30,6 +37,22 @@ public class HormigaCria extends Hormiga implements Runnable {
     
     public void SetID(char[] ID){
         super.setID(ID);
+    }
+
+    public int getTiempoComer() {
+        return TiempoComer;
+    }
+
+    public int getTiempoDescansar() {
+        return TiempoDescansar;
+    }
+
+    public void setTiempoComer(int TiempoComer) {
+        this.TiempoComer = TiempoComer;
+    }
+
+    public void setTiempoDescansar(int TiempoDescansar) {
+        this.TiempoDescansar = TiempoDescansar;
     }
 
     public void run() {

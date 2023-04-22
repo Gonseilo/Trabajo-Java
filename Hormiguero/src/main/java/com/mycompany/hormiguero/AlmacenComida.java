@@ -25,12 +25,6 @@ public class AlmacenComida {
     }
     
     public void DejarComida(HormigaObrera hormigaObrera){
-        Random rand = new Random();
-        
-        int tiempoMinimo = 1000;
-        int tiempoMaximo = 2000;
-        int tiempoDejarComida = rand.nextInt((tiempoMaximo - tiempoMinimo )+1)+ tiempoMinimo;
-        
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén");
         try {
             semaforo.acquire();
@@ -39,7 +33,7 @@ public class AlmacenComida {
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén");
         try {
-            Thread.sleep(tiempoDejarComida);
+            Thread.sleep(hormigaObrera.getTiempoDejarComidaAlmacén());
         } catch (InterruptedException ex) {
             Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -52,12 +46,6 @@ public class AlmacenComida {
     }
     
     public void SacarComida(HormigaObrera hormigaObrera){
-        Random rand = new Random();
-        
-        int tiempoMinimo = 1000;
-        int tiempoMaximo = 2000;
-        int tiempoDejarComida = rand.nextInt((tiempoMaximo - tiempoMinimo)+1)+ tiempoMinimo;
-        
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida al almacén");
         try {
             semaforo.acquire();
@@ -84,7 +72,7 @@ public class AlmacenComida {
         
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén");
         try {
-            Thread.sleep(rand.nextInt(tiempoDejarComida));
+            Thread.sleep(hormigaObrera.getTiempoCogerComidaAlmacén());
         } catch (InterruptedException ex) {
             Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
         }

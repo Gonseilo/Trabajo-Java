@@ -4,13 +4,25 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.Random;
+
 /**
  *
  * @author Ivanl
  */
 public class HormigaSoldado extends Hormiga implements Runnable {
+    Random rand = new Random();
+    private int tiempoInstruir = 0;
+    private int tiempoDescansar = 0;
+    private int tiempoComer = 0;
+    private int tiempoDefender = 0;
+
     public HormigaSoldado(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion) {
         super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
+        this.tiempoInstruir = rand.nextInt(6001)+2000;
+        this.tiempoDescansar = 2000;
+        this.tiempoComer = 3000;
+        this.tiempoDefender = 20000;
     }
     
     public char[] GenerarIDSoldado(){
@@ -29,6 +41,38 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     
     public void SetID(char[] ID){
         super.setID(ID);
+    }
+
+    public int getTiempoInstruir() {
+        return tiempoInstruir;
+    }
+
+    public int getTiempoDescansar() {
+        return tiempoDescansar;
+    }
+
+    public int getTiempoComer() {
+        return tiempoComer;
+    }
+
+    public int getTiempoDefender() {
+        return tiempoDefender;
+    }
+
+    public void setTiempoInstruir(int tiempoInstruir) {
+        this.tiempoInstruir = tiempoInstruir;
+    }
+
+    public void setTiempoDescansar(int tiempoDescansar) {
+        this.tiempoDescansar = tiempoDescansar;
+    }
+
+    public void setTiempoComer(int tiempoComer) {
+        this.tiempoComer = tiempoComer;
+    }
+
+    public void setTiempoDefender(int tiempoDefender) {
+        this.tiempoDefender = tiempoDefender;
     }
     
     public void run() {

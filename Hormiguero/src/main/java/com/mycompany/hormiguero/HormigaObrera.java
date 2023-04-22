@@ -13,9 +13,24 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class HormigaObrera extends Hormiga implements Runnable {
+    Random rand = new Random();
+    private int tiempoRecolectarComida = 0;
+    private int tiempoDejarComidaAlmacén = 0;
+    private int tiempoCogerComidaAlmacén = 0;
+    private int tiempoIrZonaComer = 0;
+    private int tiempoDejarComidaZonaComer = 0;
+    private int tiempoComer = 0;
+    private int tiempoDescansar = 0;
     
     public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion) {
         super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
+        this.tiempoRecolectarComida = 4000;
+        this.tiempoDejarComidaAlmacén = rand.nextInt(2001)+2000;
+        this.tiempoCogerComidaAlmacén = rand.nextInt(1001)+1000;
+        this.tiempoIrZonaComer = rand.nextInt(2001)+1000;
+        this.tiempoDejarComidaZonaComer = rand.nextInt(1001)+1000;
+        this.tiempoComer = 3000;
+        this.tiempoDescansar = 1000;
     }
     
     public char[] GenerarIDObrera(){
@@ -35,14 +50,64 @@ public class HormigaObrera extends Hormiga implements Runnable {
     public void SetID(char[] ID){
         super.setID(ID);
     }
+
+    public int getTiempoRecolectarComida() {
+        return tiempoRecolectarComida;
+    }
+
+    public int getTiempoDejarComidaAlmacén() {
+        return tiempoDejarComidaAlmacén;
+    }
+
+    public int getTiempoCogerComidaAlmacén() {
+        return tiempoCogerComidaAlmacén;
+    }
+
+    public int getTiempoIrZonaComer() {
+        return tiempoIrZonaComer;
+    }
+
+    public int getTiempoDejarComidaZonaComer() {
+        return tiempoDejarComidaZonaComer;
+    }
+
+    public int getTiempoComer() {
+        return tiempoComer;
+    }
+
+    public int getTiempoDescansar() {
+        return tiempoDescansar;
+    }
+
+    public void setTiempoRecolectarComida(int tiempoRecolectarComida) {
+        this.tiempoRecolectarComida = tiempoRecolectarComida;
+    }
+
+    public void setTiempoDejarComidaAlmacén(int tiempoDejarComidaAlmacén) {
+        this.tiempoDejarComidaAlmacén = tiempoDejarComidaAlmacén;
+    }
+
+    public void setTiempoCogerComidaAlmacén(int tiempoCogerComidaAlmacén) {
+        this.tiempoCogerComidaAlmacén = tiempoCogerComidaAlmacén;
+    }
+
+    public void setTiempoIrZonaComer(int tiempoIrZonaComer) {
+        this.tiempoIrZonaComer = tiempoIrZonaComer;
+    }
+
+    public void setTiempoDejarComidaZonaComer(int tiempoDejarComidaZonaComer) {
+        this.tiempoDejarComidaZonaComer = tiempoDejarComidaZonaComer;
+    }
+
+    public void setTiempoComer(int tiempoComer) {
+        this.tiempoComer = tiempoComer;
+    }
+
+    public void setTiempoDescansar(int tiempoDescansar) {
+        this.tiempoDescansar = tiempoDescansar;
+    }
     
     public void run() {
-        Random rand = new Random();
-        
-        int tiempoMinimo = 1000;
-        int tiempoMaximo = 3000;
-        int tiempoCaminoZonaComer = rand.nextInt((tiempoMaximo - tiempoMinimo)+1)+ tiempoMinimo;
-        
         SetID(GenerarIDObrera());
         System.out.println(getID());
         tunel.Entrar(this, null, null);
@@ -51,7 +116,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
                 for (int i = 0; i < 10; i++){
                     almacenComida.SacarComida(this);
                     try {
-                        Thread.sleep(tiempoCaminoZonaComer);
+                        Thread.sleep(tiempoIrZonaComer);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
                     }
@@ -63,7 +128,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
                     tunel.Salir(this, null);
                     System.out.println("Hormiga " + new String(getID()) + " cogiendo comida");
                     try {
-                        Thread.sleep(4000);
+                        Thread.sleep(tiempoRecolectarComida);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
                     }

@@ -14,24 +14,24 @@ import java.util.logging.Logger;
 public class ZonaDescanso {
     public void Descansar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria){
         String id = null;
-        int tiempo = 0;
+        int tiempoDescansar = 0;
         
         if (hormigaObrera != null){
             id = new String(hormigaObrera.getID());
-            tiempo = 1000;
+            tiempoDescansar = hormigaObrera.getTiempoDescansar();
         }
         if (hormigaSoldado != null){
             id = new String(hormigaSoldado.getID());
-            tiempo = 2000;
+            tiempoDescansar = hormigaSoldado.getTiempoDescansar();
         }
         if (hormigaCria != null){
             id = new String(hormigaCria.getID());
-            tiempo = 4000;
+            tiempoDescansar = hormigaCria.getTiempoDescansar();
         }
         
         try {
             System.out.println("Hormiga " + id + " descansando");
-            Thread.sleep(tiempo);
+            Thread.sleep(tiempoDescansar);
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
         }
