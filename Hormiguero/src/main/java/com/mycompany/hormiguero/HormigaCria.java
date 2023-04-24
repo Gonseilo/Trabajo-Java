@@ -15,8 +15,8 @@ public class HormigaCria extends Hormiga implements Runnable {
     private int TiempoComer;
     private int TiempoDescansar;
 
-    public HormigaCria(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion) {
-        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
+    public HormigaCria(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador) {
+        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador);
         this.TiempoComer = rand.nextInt(2001)+3000;
         this.TiempoDescansar = 4000;
     }

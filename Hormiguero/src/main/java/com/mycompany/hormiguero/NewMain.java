@@ -28,9 +28,13 @@ public class NewMain {
         ZonaComer zonaComer = new ZonaComer();
         ZonaDescanso zonaDescanso = new ZonaDescanso();
         ZonaInstruccion zonaInstruccion = new ZonaInstruccion();
+        Contador contador = new Contador();
+        
+        Interfaz interfaz = new Interfaz(contador);
+        interfaz.setVisible(true);
         
         char[] ID = new char[6];
-        Hormiga hormiga = new Hormiga(0, ID, "", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
+        Hormiga hormiga = new Hormiga(0, ID, "", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador);
         
         hormiga.GenerarHormigas(almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
     }

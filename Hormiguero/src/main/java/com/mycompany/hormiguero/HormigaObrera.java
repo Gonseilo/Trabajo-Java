@@ -22,8 +22,8 @@ public class HormigaObrera extends Hormiga implements Runnable {
     private int tiempoComer = 0;
     private int tiempoDescansar = 0;
     
-    public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion) {
-        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
+    public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador) {
+        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador);
         this.tiempoRecolectarComida = 4000;
         this.tiempoDejarComidaAlmacén = rand.nextInt(2001)+2000;
         this.tiempoCogerComidaAlmacén = rand.nextInt(1001)+1000;

@@ -11,8 +11,12 @@ import java.util.concurrent.CyclicBarrier;
  * @author Ivanl
  */
 public class Insecto {
-    public void GenerarInsecto(int numHormigas){
-        CyclicBarrier barrera = new CyclicBarrier((numHormigas+2)/5);
+    public void GenerarInsecto(int numSoldados, Thread[] soldado){
+        CyclicBarrier barrera = new CyclicBarrier(numSoldados);
+        
+        for (Thread thread : soldado){
+            thread.interrupt();
+        }
     }
     
     public void DefenderInsecto(HormigaSoldado hormigaSoldado){
