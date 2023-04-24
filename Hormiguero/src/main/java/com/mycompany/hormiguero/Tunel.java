@@ -21,7 +21,7 @@ public class Tunel {
         this.semaforoTunelSalida = semaforoTunelSalida;
     }
     
-    public void Entrar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria){
+    public void Entrar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
         if (hormigaObrera != null){
             try {
                 semaforoTunelEntrada.acquire();
@@ -38,7 +38,7 @@ public class Tunel {
                 System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " entrando al hormiguero");
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                insecto.DefenderInsecto(hormigaSoldado, tunel);
             }
             semaforoTunelEntrada.release();
         }
@@ -54,7 +54,7 @@ public class Tunel {
         }
     }
     
-    public void Salir(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado){
+    public void Salir(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, Insecto insecto, Tunel tunel){
         if (hormigaObrera != null){
             try {
                 semaforoTunelSalida.acquire();
@@ -71,7 +71,7 @@ public class Tunel {
                 System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " saliendo del hormiguero");
                 Thread.sleep(100);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                insecto.DefenderInsecto(hormigaSoldado, tunel);
             }
             semaforoTunelSalida.release();
         }

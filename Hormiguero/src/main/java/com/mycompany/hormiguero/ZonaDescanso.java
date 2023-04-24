@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class ZonaDescanso {
-    public void Descansar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria){
+    public void Descansar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
         String id = null;
         int tiempoDescansar = 0;
         
@@ -33,7 +33,12 @@ public class ZonaDescanso {
             System.out.println("Hormiga " + id + " descansando");
             Thread.sleep(tiempoDescansar);
         } catch (InterruptedException ex) {
-            Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+            if (hormigaSoldado != null){
+                insecto.DefenderInsecto(hormigaSoldado, tunel);
+            }
+            else{
+                Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 }

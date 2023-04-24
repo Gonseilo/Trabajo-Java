@@ -17,8 +17,8 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     private int tiempoComer = 0;
     private int tiempoDefender = 0;
 
-    public HormigaSoldado(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador) {
-        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador);
+    public HormigaSoldado(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador, Insecto insecto) {
+        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
         this.tiempoInstruir = rand.nextInt(6001)+2000;
         this.tiempoDescansar = 2000;
         this.tiempoComer = 3000;
@@ -78,14 +78,14 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     public void run() {
         SetID(GenerarIDSoldado());
         System.out.println(getID());
-        tunel.Entrar(null, this, null);
+        tunel.Entrar(null, this, null, insecto, tunel);
         while (true){
             for (int i = 0; i < 6; i++){
-                zonaInstruccion.Instruir(this);
-                zonaDescanso.Descansar(null, this, null);
+                zonaInstruccion.Instruir(this, insecto, tunel);
+                zonaDescanso.Descansar(null, this, null, insecto, tunel);
             }
             
-            zonaComer.Comer(null, this, null);
+            zonaComer.Comer(null, this, null, insecto, tunel);
         }
     }
 }

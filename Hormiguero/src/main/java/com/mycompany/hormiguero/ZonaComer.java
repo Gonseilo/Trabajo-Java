@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 public class ZonaComer {
     public int comida = 0;
     
-public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria){
+public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
         int tiempoComer = 0;
         String id = null;
         
@@ -37,24 +37,25 @@ public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado horm
             try {
                 wait();
             } catch (InterruptedException ex) {
-                Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
+                if (hormigaSoldado != null){
+                    insecto.DefenderInsecto(hormigaSoldado, tunel);
+                }
+                else{
+                    Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         comida--;
         System.out.println("Hormiga " + id + " comiendo");
         System.out.println("Comida restante en la zona de comer: " + comida);
-        if (hormigaCria != null){
-            try {
-                Thread.sleep(tiempoComer);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            Thread.sleep(tiempoComer);
+        } catch (InterruptedException ex) {
+            if (hormigaSoldado != null){
+                insecto.DefenderInsecto(hormigaSoldado, tunel);
             }
-        }
-        else{
-            try {
-                Thread.sleep(tiempoComer);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
+            else{
+                Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

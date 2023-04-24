@@ -24,8 +24,9 @@ public class Hormiga {
     protected ZonaDescanso zonaDescanso;
     protected ZonaInstruccion zonaInstruccion;
     protected Contador contador;
+    protected Insecto insecto;
     
-    public Hormiga(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador){
+    public Hormiga(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador, Insecto insecto){
         this.numHormiga = numHormiga;
         this.ID = ID;
         this.TipoHormiga = TipoHormiga;
@@ -36,6 +37,7 @@ public class Hormiga {
         this.zonaDescanso = zonaDescanso;
         this.zonaInstruccion = zonaInstruccion;
         this.contador = contador;
+        this.insecto = insecto;
     }
     
     public void GenerarHormigas(AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion){
@@ -48,7 +50,7 @@ public class Hormiga {
         
         for (int i=0; i < 10000; i++){
             if (i % 5 <= 2){
-                Runnable runnable = new HormigaObrera(i, ID, "Obrera", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador);
+                Runnable runnable = new HormigaObrera(i, ID, "Obrera", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
                 hilos[i] = new Thread(runnable);
                 hilos[i].start();
                 contador.setNumObreras(contador.getNumObreras()+1);
@@ -56,7 +58,7 @@ public class Hormiga {
             }
             else{
                 if (i % 5 == 3){
-                    Runnable runnable = new HormigaSoldado(i, ID, "Soldado", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador);
+                    Runnable runnable = new HormigaSoldado(i, ID, "Soldado", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
                     hilos[i] = new Thread(runnable);
                     hilos[i].start();
                     contador.getListaSoldados()[contador.getNumSoldados()] = hilos[i];
@@ -64,7 +66,7 @@ public class Hormiga {
                     System.out.println("Soldado " + i);
                 }
                 else{
-                    Runnable runnable = new HormigaCria(i, ID, "Cría", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador);
+                    Runnable runnable = new HormigaCria(i, ID, "Cría", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
                     hilos[i] = new Thread(runnable);
                     hilos[i].start();
                     contador.setNumCrias(contador.getNumCrias()+1);

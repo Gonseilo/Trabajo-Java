@@ -4,22 +4,41 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Ivanl
  */
 public class Insecto {
+    private CyclicBarrier barrera;
+    
     public void GenerarInsecto(int numSoldados, Thread[] soldado){
-        CyclicBarrier barrera = new CyclicBarrier(numSoldados);
+        barrera = new CyclicBarrier(numSoldados);
         
         for (Thread thread : soldado){
-            thread.interrupt();
+            if (thread != null){
+                thread.interrupt();
+            }
         }
     }
     
-    public void DefenderInsecto(HormigaSoldado hormigaSoldado){
-        
+    public void DefenderInsecto(HormigaSoldado hormigaSoldado, Tunel tunel){
+        System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " saliendo a defender la colonia");
+        tunel.Salir(null, hormigaSoldado, this, tunel);
+        try {
+            barrera.await();
+            barrera.reset();
+            Thread.sleep(20000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BrokenBarrierException ex) {
+            Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " volviendo de defender la colonia");
+        tunel.Entrar(null, hormigaSoldado, null, this, tunel);
     }
 }

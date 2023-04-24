@@ -22,8 +22,8 @@ public class HormigaObrera extends Hormiga implements Runnable {
     private int tiempoComer = 0;
     private int tiempoDescansar = 0;
     
-    public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador) {
-        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador);
+    public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador, Insecto insecto) {
+        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
         this.tiempoRecolectarComida = 4000;
         this.tiempoDejarComidaAlmacén = rand.nextInt(2001)+2000;
         this.tiempoCogerComidaAlmacén = rand.nextInt(1001)+1000;
@@ -110,7 +110,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
     public void run() {
         SetID(GenerarIDObrera());
         System.out.println(getID());
-        tunel.Entrar(this, null, null);
+        tunel.Entrar(this, null, null, insecto, tunel);
         while (true){
             if (super.getNumHormiga()%2 == 0){
                 for (int i = 0; i < 10; i++){
@@ -125,19 +125,19 @@ public class HormigaObrera extends Hormiga implements Runnable {
             }
             else{
                 for (int i = 0; i < 10; i++){
-                    tunel.Salir(this, null);
+                    tunel.Salir(this, null, insecto, tunel);
                     System.out.println("Hormiga " + new String(getID()) + " cogiendo comida");
                     try {
                         Thread.sleep(tiempoRecolectarComida);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    tunel.Entrar(this, null, null);
+                    tunel.Entrar(this, null, null, insecto, tunel);
                     almacenComida.DejarComida(this);
                 }
             }
-            zonaComer.Comer(this, null, null);
-            zonaDescanso.Descansar(this, null, null);
+            zonaComer.Comer(this, null, null, insecto, tunel);
+            zonaDescanso.Descansar(this, null, null, insecto, tunel);
         }
     }
 }
