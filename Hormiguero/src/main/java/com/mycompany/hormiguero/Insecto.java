@@ -14,10 +14,10 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class Insecto {
-    private CyclicBarrier barrera;
+    private CyclicBarrier barrera = new CyclicBarrier(1);
     
     public void GenerarInsecto(int numSoldados, Thread[] soldado){
-        barrera = new CyclicBarrier(numSoldados);
+        this.barrera = new CyclicBarrier(numSoldados);
         
         for (Thread thread : soldado){
             if (thread != null){
@@ -30,8 +30,8 @@ public class Insecto {
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " saliendo a defender la colonia");
         tunel.Salir(null, hormigaSoldado, this, tunel);
         try {
-            barrera.await();
-            barrera.reset();
+            this.barrera.await();
+            System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
             Thread.sleep(20000);
         } catch (InterruptedException ex) {
             Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);

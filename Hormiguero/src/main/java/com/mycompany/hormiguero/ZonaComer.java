@@ -5,6 +5,7 @@
 package com.mycompany.hormiguero;
 
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,9 +14,10 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class ZonaComer {
-    public int comida = 0;
+    AtomicInteger comida = new AtomicInteger(0);
+    private final Object bloqueo = new Object();
     
-public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
+public void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
         int tiempoComer = 0;
         String id = null;
         
@@ -32,20 +34,22 @@ public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado horm
             tiempoComer = hormigaCria.getTiempoComer();
         }
         
-        while (comida == 0){
+        while (comida.get() == 0){
             System.out.println("Hormiga " + id + " esperando comida");
-            try {
-                wait();
-            } catch (InterruptedException ex) {
-                if (hormigaSoldado != null){
-                    insecto.DefenderInsecto(hormigaSoldado, tunel);
-                }
-                else{
-                    Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+            synchronized(bloqueo){
+                try {
+                    bloqueo.wait();
+                } catch (InterruptedException ex) {
+                    if (hormigaSoldado != null){
+                        insecto.DefenderInsecto(hormigaSoldado, tunel);
+                    }
+                    else{
+                        Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
         }
-        comida--;
+        comida.addAndGet(-1);
         System.out.println("Hormiga " + id + " comiendo");
         System.out.println("Comida restante en la zona de comer: " + comida);
         try {
@@ -60,15 +64,17 @@ public synchronized void Comer (HormigaObrera hormigaObrera, HormigaSoldado horm
         }
     }
     
-    public synchronized void DejarComida (HormigaObrera hormigaObrera){
+    public void DejarComida (HormigaObrera hormigaObrera){
         try {
             Thread.sleep(hormigaObrera.getTiempoDejarComidaZonaComer());
         } catch (InterruptedException ex) {
             Logger.getLogger(ZonaComer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("Hormiga" + new String(hormigaObrera.getID()) + " dejando comida en la zona de comer");
-        comida = comida + 5;
-        notify();
+        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " dejando comida en la zona de comer");
+        comida.addAndGet(5);
+        synchronized(bloqueo){
+            bloqueo.notify();
+        }
         System.out.println("Comida restante en la zona de comer: " + comida);
     }
 }
