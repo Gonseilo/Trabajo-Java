@@ -69,6 +69,7 @@ public class Hormiga {
                     Runnable runnable = new HormigaCria(i, ID, "Cría", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
                     hilos[i] = new Thread(runnable);
                     hilos[i].start();
+                    contador.getListaCrias()[contador.getNumCrias()] = hilos[i];
                     contador.setNumCrias(contador.getNumCrias()+1);
                     System.out.println("Cría " + i);
                 }

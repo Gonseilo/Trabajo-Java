@@ -9,12 +9,16 @@ package com.mycompany.hormiguero;
  * @author Ivanl
  */
 public class Interfaz extends javax.swing.JFrame {
+    private Refugio refugio;
+    private Insecto insecto;
     private Contador contador;
     /**
      * Creates new form Interfaz
      */
-    public Interfaz(Contador contador) {
+    public Interfaz(Refugio refugio, Insecto insecto, Contador contador) {
         this.contador = contador;
+        this.refugio = refugio;
+        this.insecto = insecto;
         initComponents();
     }
 
@@ -71,12 +75,18 @@ public class Interfaz extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        Insecto insecto = new Insecto();
-        
-        int numSoldados = contador.getNumSoldados();
-        
-        System.out.println(numSoldados);
-        insecto.GenerarInsecto(numSoldados, contador.getListaSoldados());
+        if (refugio.isAtaque()){
+            System.out.println("Ya hay un insecto atacando el hormiguero");
+        }
+        else{
+            if (contador.getNumSoldados() == 0){
+                System.out.println("Se necesita al menos una hormiga soldado para poder defender el hormiguero");
+            }
+            else{
+                refugio.setAtaque(true);
+                insecto.GenerarInsecto();
+            }
+        }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     /**

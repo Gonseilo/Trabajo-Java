@@ -16,8 +16,13 @@ import java.util.logging.Logger;
 public class ZonaComer {
     AtomicInteger comida = new AtomicInteger(0);
     private final Object bloqueo = new Object();
+    private Refugio refugio;
+
+    public ZonaComer(Refugio refugio) {
+        this.refugio = refugio;
+    }
     
-public void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
+    public void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
         int tiempoComer = 0;
         String id = null;
         
@@ -41,10 +46,16 @@ public void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, H
                     bloqueo.wait();
                 } catch (InterruptedException ex) {
                     if (hormigaSoldado != null){
-                        insecto.DefenderInsecto(hormigaSoldado, tunel);
+                        insecto.DefenderInsecto(hormigaSoldado);
                     }
                     else{
-                        Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                        if (hormigaCria != null){
+                            refugio.Refugiarse(hormigaCria);
+                            Comer(null, null, hormigaCria, insecto, tunel);
+                        }
+                        else{
+                            Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                 }
             }
@@ -56,10 +67,16 @@ public void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, H
             Thread.sleep(tiempoComer);
         } catch (InterruptedException ex) {
             if (hormigaSoldado != null){
-                insecto.DefenderInsecto(hormigaSoldado, tunel);
+                insecto.DefenderInsecto(hormigaSoldado);
             }
             else{
-                Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                if (hormigaCria != null){
+                    refugio.Refugiarse(hormigaCria);
+                    Comer(null, null, hormigaCria, insecto, tunel);
+                }
+                else{
+                    Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
     }

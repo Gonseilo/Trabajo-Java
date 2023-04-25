@@ -110,7 +110,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
     public void run() {
         SetID(GenerarIDObrera());
         System.out.println(getID());
-        tunel.Entrar(this, null, null, insecto, tunel);
+        tunel.Entrar(this, null, null, insecto);
         while (true){
             if (super.getNumHormiga()%2 == 0){
                 for (int i = 0; i < 10; i++){
@@ -125,14 +125,14 @@ public class HormigaObrera extends Hormiga implements Runnable {
             }
             else{
                 for (int i = 0; i < 10; i++){
-                    tunel.Salir(this, null, insecto, tunel);
+                    tunel.Salir(this, null, insecto);
                     System.out.println("Hormiga " + new String(getID()) + " cogiendo comida");
                     try {
                         Thread.sleep(tiempoRecolectarComida);
                     } catch (InterruptedException ex) {
                         Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
                     }
-                    tunel.Entrar(this, null, null, insecto, tunel);
+                    tunel.Entrar(this, null, null, insecto);
                     almacenComida.DejarComida(this);
                 }
             }

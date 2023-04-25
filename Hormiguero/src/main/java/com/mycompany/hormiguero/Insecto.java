@@ -15,20 +15,35 @@ import java.util.logging.Logger;
  */
 public class Insecto {
     private CyclicBarrier barrera = new CyclicBarrier(1);
+    private Refugio refugio;
+    private Tunel tunel;
+    private Contador contador;
+
+    public Insecto(Refugio refugio, Tunel tunel, Contador contador) {
+        this.contador = contador;
+        this.refugio = refugio;
+        this.tunel = tunel;
+    }
     
-    public void GenerarInsecto(int numSoldados, Thread[] soldado){
-        this.barrera = new CyclicBarrier(numSoldados);
+    public void GenerarInsecto(){
+        this.barrera = new CyclicBarrier(contador.getNumSoldados());
         
-        for (Thread thread : soldado){
+        for (Thread thread : contador.getListaSoldados()){
+            if (thread != null){
+                thread.interrupt();
+            }
+        }
+        
+        for (Thread thread : contador.getListaCrias()){
             if (thread != null){
                 thread.interrupt();
             }
         }
     }
     
-    public void DefenderInsecto(HormigaSoldado hormigaSoldado, Tunel tunel){
+    public void DefenderInsecto(HormigaSoldado hormigaSoldado){
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " saliendo a defender la colonia");
-        tunel.Salir(null, hormigaSoldado, this, tunel);
+        tunel.Salir(null, hormigaSoldado, this);
         try {
             this.barrera.await();
             System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
@@ -38,7 +53,11 @@ public class Insecto {
         } catch (BrokenBarrierException ex) {
             Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
         }
+        refugio.setAtaque(false);
+        synchronized(refugio.getBloqueo()){
+            refugio.getBloqueo().notifyAll();
+        }
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " volviendo de defender la colonia");
-        tunel.Entrar(null, hormigaSoldado, null, this, tunel);
+        tunel.Entrar(null, hormigaSoldado, null, this);
     }
 }

@@ -78,7 +78,7 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     public void run() {
         SetID(GenerarIDSoldado());
         System.out.println(getID());
-        tunel.Entrar(null, this, null, insecto, tunel);
+        tunel.Entrar(null, this, null, insecto);
         while (true){
             for (int i = 0; i < 6; i++){
                 zonaInstruccion.Instruir(this, insecto, tunel);

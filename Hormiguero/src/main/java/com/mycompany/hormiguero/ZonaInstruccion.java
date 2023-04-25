@@ -14,7 +14,7 @@ public class ZonaInstruccion {
             System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " instruyendo");
             Thread.sleep(hormigaSoldado.getTiempoInstruir());
         } catch (InterruptedException ex) {
-            insecto.DefenderInsecto(hormigaSoldado, tunel);
+            insecto.DefenderInsecto(hormigaSoldado);
         }
     }
 }

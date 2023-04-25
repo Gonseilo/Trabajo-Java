@@ -24,14 +24,14 @@ public class NewMain {
         
         AlmacenComida almacenComida = new AlmacenComida(semaforo);
         Refugio refugio = new Refugio();
-        Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida);
-        ZonaComer zonaComer = new ZonaComer();
-        ZonaDescanso zonaDescanso = new ZonaDescanso();
+        ZonaComer zonaComer = new ZonaComer(refugio);
+        ZonaDescanso zonaDescanso = new ZonaDescanso(refugio);
         ZonaInstruccion zonaInstruccion = new ZonaInstruccion();
         Contador contador = new Contador();
-        Insecto insecto = new Insecto();
+        Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida);
+        Insecto insecto = new Insecto(refugio, tunel, contador);
         
-        Interfaz interfaz = new Interfaz(contador);
+        Interfaz interfaz = new Interfaz(refugio, insecto, contador);
         interfaz.setVisible(true);
         
         char[] ID = new char[6];

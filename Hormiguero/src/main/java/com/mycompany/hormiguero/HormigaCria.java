@@ -58,7 +58,10 @@ public class HormigaCria extends Hormiga implements Runnable {
     public void run() {
         SetID(GenerarIDCria());
         System.out.println(getID());
-        tunel.Entrar(null, null, this, insecto, tunel);
+        tunel.Entrar(null, null, this, insecto);
+        if (refugio.isAtaque()){
+            refugio.Refugiarse(this);
+        }
         while (true){
             zonaComer.Comer(null, null, this, insecto, tunel);
             zonaDescanso.Descansar(null, null, this, insecto, tunel);

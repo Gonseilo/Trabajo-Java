@@ -14,6 +14,7 @@ public class Contador {
     private int numSoldados;
     private int numObreras;
     private Thread[] listaSoldados = new Thread[2000];
+    private Thread[] listaCrias = new Thread[2000];
 
     public int getNumHormigas() {
         return numHormigas;
@@ -53,5 +54,13 @@ public class Contador {
 
     public void setListaSoldados(Thread[] soldado) {
         this.listaSoldados = listaSoldados;
+    }
+
+    public Thread[] getListaCrias() {
+        return listaCrias;
+    }
+
+    public void setListaCrias(Thread[] listaCrias) {
+        this.listaCrias = listaCrias;
     }
 }
