@@ -5,7 +5,6 @@
  */
 package com.mycompany.hormiguero;
 
-import java.util.Random;
 import java.util.concurrent.Semaphore;
 
 /**
@@ -22,13 +21,13 @@ public class NewMain {
         Semaphore semaforoTunelEntrada = new Semaphore(1);
         Semaphore semaforoTunelSalida = new Semaphore(2);
         
-        AlmacenComida almacenComida = new AlmacenComida(semaforo);
-        Refugio refugio = new Refugio();
-        ZonaComer zonaComer = new ZonaComer(refugio);
-        ZonaDescanso zonaDescanso = new ZonaDescanso(refugio);
-        ZonaInstruccion zonaInstruccion = new ZonaInstruccion();
         Contador contador = new Contador();
-        Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida);
+        AlmacenComida almacenComida = new AlmacenComida(semaforo, contador);
+        Refugio refugio = new Refugio(contador);
+        ZonaComer zonaComer = new ZonaComer(refugio, contador);
+        ZonaDescanso zonaDescanso = new ZonaDescanso(refugio, contador);
+        ZonaInstruccion zonaInstruccion = new ZonaInstruccion(contador);
+        Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida, contador);
         Insecto insecto = new Insecto(refugio, tunel, contador);
         
         Interfaz interfaz = new Interfaz(refugio, insecto, contador);

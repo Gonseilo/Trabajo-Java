@@ -9,12 +9,15 @@ package com.mycompany.hormiguero;
  * @author Ivanl
  */
 public class Contador {
+    private Boolean play = true;
+    private final Object bloqueoPausa = new Object();
     private int numHormigas;
     private int numCrias;
     private int numSoldados;
     private int numObreras;
-    private Thread[] listaSoldados = new Thread[2000];
+    private Thread[] listaHormigas = new Thread[10000];
     private Thread[] listaCrias = new Thread[2000];
+    private Thread[] listaSoldados = new Thread[2000];
 
     public int getNumHormigas() {
         return numHormigas;
@@ -62,5 +65,25 @@ public class Contador {
 
     public void setListaCrias(Thread[] listaCrias) {
         this.listaCrias = listaCrias;
+    }
+
+    public Thread[] getListaHormigas() {
+        return listaHormigas;
+    }
+
+    public void setListaHormigas(Thread[] listaHormigas) {
+        this.listaHormigas = listaHormigas;
+    }
+
+    public Boolean getPlay() {
+        return play;
+    }
+
+    public void setPlay(Boolean play) {
+        this.play = play;
+    }
+
+    public Object getBloqueoPausa() {
+        return bloqueoPausa;
     }
 }

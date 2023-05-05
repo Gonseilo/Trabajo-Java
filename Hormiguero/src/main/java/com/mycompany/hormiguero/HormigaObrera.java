@@ -118,7 +118,18 @@ public class HormigaObrera extends Hormiga implements Runnable {
                     try {
                         Thread.sleep(tiempoIrZonaComer);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
+                        if (!contador.getPlay()){
+                            synchronized(contador.getBloqueoPausa()){
+                                try {
+                                    contador.getBloqueoPausa().wait();
+                                } catch (InterruptedException ex1) {
+                                    Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                                }
+                            }
+                        }
+                        else{
+                            Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     zonaComer.DejarComida(this);
                 }
@@ -130,7 +141,18 @@ public class HormigaObrera extends Hormiga implements Runnable {
                     try {
                         Thread.sleep(tiempoRecolectarComida);
                     } catch (InterruptedException ex) {
-                        Logger.getLogger(HormigaObrera.class.getName()).log(Level.SEVERE, null, ex);
+                        if (!contador.getPlay()){
+                            synchronized(contador.getBloqueoPausa()){
+                                try {
+                                    contador.getBloqueoPausa().wait();
+                                } catch (InterruptedException ex1) {
+                                    Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                                }
+                            }
+                        }
+                        else{
+                            Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                        }
                     }
                     tunel.Entrar(this, null, null, insecto);
                     almacenComida.DejarComida(this);

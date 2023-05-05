@@ -15,65 +15,77 @@ import java.util.logging.Logger;
 public class Tunel {
     private Semaphore semaforoTunelEntrada;
     private Semaphore semaforoTunelSalida;
+    private Contador contador;
 
-    public Tunel(Semaphore semaforoTunelEntrada, Semaphore semaforoTunelSalida) {
+    public Tunel(Semaphore semaforoTunelEntrada, Semaphore semaforoTunelSalida, Contador contador) {
         this.semaforoTunelEntrada = semaforoTunelEntrada;
         this.semaforoTunelSalida = semaforoTunelSalida;
+        this.contador = contador;
     }
     
     public void Entrar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto){
+        String id = null;
+        
         if (hormigaObrera != null){
-            try {
-                semaforoTunelEntrada.acquire();
-                System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " entrando al hormiguero");
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            semaforoTunelEntrada.release();
+            id = new String(hormigaObrera.getID());
         }
         if (hormigaSoldado != null){
-            try {
-                semaforoTunelEntrada.acquire();
-                System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " entrando al hormiguero");
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                insecto.DefenderInsecto(hormigaSoldado);
-            }
-            semaforoTunelEntrada.release();
+            id = new String(hormigaSoldado.getID());
         }
         if (hormigaCria != null){
-            try {
-                semaforoTunelEntrada.acquire();
-                System.out.println("Hormiga " + new String(hormigaCria.getID()) + " entrando al hormiguero");
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            semaforoTunelEntrada.release();
+            id = new String(hormigaCria.getID());
         }
+        
+        try {
+            semaforoTunelEntrada.acquire();
+            System.out.println("Hormiga " + id + " entrando al hormiguero");
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            if (!contador.getPlay()){
+                synchronized(contador.getBloqueoPausa()){
+                    try {
+                        contador.getBloqueoPausa().wait();
+                    } catch (InterruptedException ex1) {
+                        Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                }
+            }
+            else{
+                if (insecto.getInterrumpirInsecto()){
+                    insecto.DefenderInsecto(hormigaSoldado);
+                }
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        semaforoTunelEntrada.release();
     }
     
     public void Salir(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, Insecto insecto){
-        if (hormigaObrera != null){
-            try {
-                semaforoTunelSalida.acquire();
-                System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " saliendo del hormiguero");
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+        try {
+            semaforoTunelSalida.acquire();
+            System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " saliendo del hormiguero");
+            Thread.sleep(100);
+        } catch (InterruptedException ex) {
+            if (!contador.getPlay()){
+                synchronized(contador.getBloqueoPausa()){
+                    try {
+                        contador.getBloqueoPausa().wait();
+                    } catch (InterruptedException ex1) {
+                        Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                }
             }
-            semaforoTunelSalida.release();
-        }
-        else{
-            try {
-                semaforoTunelSalida.acquire();
-                System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " saliendo del hormiguero");
-                Thread.sleep(100);
-            } catch (InterruptedException ex) {
-                insecto.DefenderInsecto(hormigaSoldado);
+            else{
+                if (insecto.getInterrumpirInsecto()){
+                    insecto.DefenderInsecto(hormigaSoldado);
+                }
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
-            semaforoTunelSalida.release();
         }
+        semaforoTunelSalida.release();
     }
 }

@@ -14,9 +14,11 @@ import java.util.logging.Logger;
 public class Refugio {
     private boolean ataque;
     private final Object bloqueo = new Object();
+    private Contador contador;
 
-    public Refugio() {
+    public Refugio(Contador contador) {
         this.ataque = false;
+        this.contador = contador;
     }
     
     public void Refugiarse (HormigaCria hormigaCria){
@@ -25,7 +27,18 @@ public class Refugio {
             try {
                 bloqueo.wait();
             } catch (InterruptedException ex) {
-                Logger.getLogger(Refugio.class.getName()).log(Level.SEVERE, null, ex);
+                if (!contador.getPlay()){
+                    synchronized(contador.getBloqueoPausa()){
+                        try {
+                            contador.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                    }
+                }
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             System.out.println("Hormiga " + new String(hormigaCria.getID()) + " sale del refugio");
         }

@@ -26,6 +26,8 @@ public class Hormiga {
     protected Contador contador;
     protected Insecto insecto;
     
+    Thread[] hilos = new Thread[10000];
+    
     public Hormiga(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador, Insecto insecto){
         this.numHormiga = numHormiga;
         this.ID = ID;
@@ -40,8 +42,7 @@ public class Hormiga {
         this.insecto = insecto;
     }
     
-    public void GenerarHormigas(AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion){
-        Thread[] hilos = new Thread[10000];
+    public void GenerarHormigas(AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion){  Thread[] hilos = new Thread[10000];
         Random rand = new Random();
         
         int tiempoMinimo = 800;
@@ -49,6 +50,8 @@ public class Hormiga {
         int tiempoGeneracionHormigas = rand.nextInt((tiempoMaximo - tiempoMinimo +1)+ tiempoMinimo);
         
         for (int i=0; i < 10000; i++){
+            contador.setNumHormigas(i+1);
+            
             if (i % 5 <= 2){
                 Runnable runnable = new HormigaObrera(i, ID, "Obrera", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
                 hilos[i] = new Thread(runnable);
@@ -74,6 +77,8 @@ public class Hormiga {
                     System.out.println("Cría " + i);
                 }
             }
+            contador.setListaHormigas(hilos);
+            
             try {
                 Thread.sleep(tiempoGeneracionHormigas);
             } catch (InterruptedException ex) {
@@ -87,6 +92,10 @@ public class Hormiga {
                 Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public void detenerHilo (int numHormiga){
+        hilos[numHormiga].interrupt();
     }
 
     public int getNumHormiga() {

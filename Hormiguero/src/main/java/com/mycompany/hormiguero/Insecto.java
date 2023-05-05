@@ -18,6 +18,7 @@ public class Insecto {
     private Refugio refugio;
     private Tunel tunel;
     private Contador contador;
+    private Boolean interrumpirInsecto = false;
 
     public Insecto(Refugio refugio, Tunel tunel, Contador contador) {
         this.contador = contador;
@@ -27,6 +28,7 @@ public class Insecto {
     
     public void GenerarInsecto(){
         this.barrera = new CyclicBarrier(contador.getNumSoldados());
+        interrumpirInsecto = true;
         
         for (Thread thread : contador.getListaSoldados()){
             if (thread != null){
@@ -46,6 +48,7 @@ public class Insecto {
         tunel.Salir(null, hormigaSoldado, this);
         try {
             this.barrera.await();
+            interrumpirInsecto = false;
             System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
             Thread.sleep(20000);
         } catch (InterruptedException ex) {
@@ -59,5 +62,9 @@ public class Insecto {
         }
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " volviendo de defender la colonia");
         tunel.Entrar(null, hormigaSoldado, null, this);
+    }
+
+    public Boolean getInterrumpirInsecto() {
+        return interrumpirInsecto;
     }
 }

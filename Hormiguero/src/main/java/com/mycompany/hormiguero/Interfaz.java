@@ -4,6 +4,10 @@
  */
 package com.mycompany.hormiguero;
 
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import javax.swing.JFrame;
+
 /**
  *
  * @author Ivanl
@@ -20,6 +24,18 @@ public class Interfaz extends javax.swing.JFrame {
         this.refugio = refugio;
         this.insecto = insecto;
         initComponents();
+        // Configuración del JFrame
+        setTitle("Mi JFrame en pantalla completa");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        
+        // Obtener la resolución de pantalla
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        
+        // Establecer el tamaño del JFrame al tamaño de pantalla
+        //setSize(screenSize.width, screenSize.height);
+        
+        // Centrar el JFrame
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -32,14 +48,22 @@ public class Interfaz extends javax.swing.JFrame {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jButton1 = new javax.swing.JButton();
+        generarInsecto = new javax.swing.JButton();
+        pausaPlay = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setText("Insecto");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        generarInsecto.setText("Generar insecto");
+        generarInsecto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                generarInsectoActionPerformed(evt);
+            }
+        });
+
+        pausaPlay.setText("Pausa");
+        pausaPlay.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                pausaPlayActionPerformed(evt);
             }
         });
 
@@ -47,17 +71,21 @@ public class Interfaz extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(163, 163, 163)
-                .addComponent(jButton1)
-                .addContainerGap(172, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(249, Short.MAX_VALUE)
+                .addComponent(pausaPlay)
+                .addGap(125, 125, 125)
+                .addComponent(generarInsecto)
+                .addGap(62, 62, 62))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addComponent(jButton1)
-                .addContainerGap(140, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(513, Short.MAX_VALUE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(generarInsecto)
+                    .addComponent(pausaPlay))
+                .addGap(66, 66, 66))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -74,7 +102,7 @@ public class Interfaz extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void generarInsectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarInsectoActionPerformed
         if (refugio.isAtaque()){
             System.out.println("Ya hay un insecto atacando el hormiguero");
         }
@@ -83,18 +111,43 @@ public class Interfaz extends javax.swing.JFrame {
                 System.out.println("Se necesita al menos una hormiga soldado para poder defender el hormiguero");
             }
             else{
-                refugio.setAtaque(true);
-                insecto.GenerarInsecto();
+                if (!contador.getPlay()){
+                    System.out.println("No se puede generar un insecto mientras el programa está pausado");
+                }
+                else{
+                    refugio.setAtaque(true);
+                    insecto.GenerarInsecto();
+                }
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_generarInsectoActionPerformed
+
+    private void pausaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaPlayActionPerformed
+        if (contador.getPlay()){
+            pausaPlay.setText("Play");
+            contador.setPlay(false);
+            for (Thread thread : contador.getListaHormigas()){
+                if (thread != null){
+                    thread.interrupt();
+                }
+            }
+        }
+        else{
+            pausaPlay.setText("Pausa");
+            contador.setPlay(true);
+            synchronized(contador.getBloqueoPausa()){
+                contador.getBloqueoPausa().notifyAll();
+            }
+        }
+    }//GEN-LAST:event_pausaPlayActionPerformed
 
     /**
      * @param args the command line arguments
      */
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton generarInsecto;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JButton pausaPlay;
     // End of variables declaration//GEN-END:variables
 }
