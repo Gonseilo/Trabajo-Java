@@ -27,7 +27,7 @@ public class AlmacenComida {
     }
     
     public void DejarComida(HormigaObrera hormigaObrera){
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén");
+        System.out.println("--------------------DEJAR---------------Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén");
         try {
             semaforo.acquire();
         } catch (InterruptedException ex) {
@@ -44,7 +44,7 @@ public class AlmacenComida {
                 Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén");
+        System.out.println("--------------------DEJAR---------------Hormiga " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén");
         try {
             Thread.sleep(hormigaObrera.getTiempoDejarComidaAlmacén());
         } catch (InterruptedException ex) {
@@ -63,15 +63,15 @@ public class AlmacenComida {
         }
         synchronized(bloqueo){
             comida= comida + 5;
-            System.out.println("Comida en el almacén: " + comida);
-            bloqueo.notifyAll();
+            System.out.println("--------------------DEJAR---------------Comida en el almacén: " + comida);
+            bloqueo.notify();
         }
         
         semaforo.release();
     }
     
     public void SacarComida(HormigaObrera hormigaObrera){
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida al almacén");
+        System.out.println("--------------------SACAR---------------Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida al almacén");
         try {
             semaforo.acquire();
         } catch (InterruptedException ex) {
@@ -80,11 +80,13 @@ public class AlmacenComida {
         
         
         
-        synchronized (bloqueo) {
+        //synchronized (bloqueo) {
             while (comida < 5) {
                 try {
                     semaforo.release();
+                    synchronized(bloqueo){
                     bloqueo.wait();
+                    }
                     
                 } catch (InterruptedException ex) {
                     Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
@@ -95,11 +97,11 @@ public class AlmacenComida {
                     Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén");
+            System.out.println("--------------------SACAR---------------Hormiga " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén");
             comida = comida - 5;
-            System.out.println("Comida en el almacén: " + comida);
+            System.out.println("--------------------SACAR---------------Comida en el almacén: " + comida);
             
-        }
+        //}
         try {
             Thread.sleep(hormigaObrera.getTiempoCogerComidaAlmacén());
         } catch (InterruptedException ex) {
