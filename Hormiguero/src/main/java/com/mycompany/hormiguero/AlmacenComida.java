@@ -85,7 +85,7 @@ public class AlmacenComida {
                 try {
                     semaforo.release();
                     synchronized(bloqueo){
-                    bloqueo.wait();
+                        bloqueo.wait();
                     }
                     
                 } catch (InterruptedException ex) {
@@ -98,7 +98,9 @@ public class AlmacenComida {
                 }
             }
             System.out.println("--------------------SACAR---------------Hormiga " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén");
-            comida = comida - 5;
+            synchronized(bloqueo){
+                comida = comida - 5;
+            }
             System.out.println("--------------------SACAR---------------Comida en el almacén: " + comida);
             
         //}
