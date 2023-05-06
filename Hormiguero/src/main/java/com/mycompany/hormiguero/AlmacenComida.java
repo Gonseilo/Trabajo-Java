@@ -26,37 +26,43 @@ public class AlmacenComida {
     
     public void DejarComida(HormigaObrera hormigaObrera){
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén");
-        try {
-            semaforo.acquire();
-        } catch (InterruptedException ex) {
-            if (!contador.getPlay()){
-                synchronized(contador.getBloqueoPausa()){
-                    try {
-                        contador.getBloqueoPausa().wait();
-                    } catch (InterruptedException ex1) {
-                        Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+        while(true){
+            try {
+                semaforo.acquire();
+                break;
+            } catch (InterruptedException ex) {
+                if (!contador.getPlay()){
+                    synchronized(contador.getBloqueoPausa()){
+                        try {
+                            contador.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
                     }
                 }
-            }
-            else{
-                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén");
-        try {
-            Thread.sleep(hormigaObrera.getTiempoDejarComidaAlmacén());
-        } catch (InterruptedException ex) {
-            if (!contador.getPlay()){
-                synchronized(contador.getBloqueoPausa()){
-                    try {
-                        contador.getBloqueoPausa().wait();
-                    } catch (InterruptedException ex1) {
-                        Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+        while(true){
+            try {
+                Thread.sleep(hormigaObrera.getTiempoDejarComidaAlmacén());
+                break;
+            } catch (InterruptedException ex) {
+                if (!contador.getPlay()){
+                    synchronized(contador.getBloqueoPausa()){
+                        try {
+                            contador.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
                     }
                 }
-            }
-            else{
-                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         synchronized(bloqueo){
@@ -69,24 +75,48 @@ public class AlmacenComida {
     
     public void SacarComida(HormigaObrera hormigaObrera){
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida al almacén");
-        try {
-            semaforo.acquire();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        while (comida < 5) {
-            try {
-                semaforo.release();
-                synchronized(bloqueo){
-                    bloqueo.wait();
-                }
-            } catch (InterruptedException ex) {
-                Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
-            }
+        while(true){
             try {
                 semaforo.acquire();
+                break;
             } catch (InterruptedException ex) {
-                Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
+                if (!contador.getPlay()){
+                    synchronized(contador.getBloqueoPausa()){
+                        try {
+                            contador.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                    }
+                }
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        while (comida < 5) {
+            semaforo.release();
+            while(true){
+                try {
+                    synchronized(bloqueo){
+                        bloqueo.wait();
+                    }
+                    semaforo.acquire();
+                    break;
+                } catch (InterruptedException ex) {
+                    if (!contador.getPlay()){
+                        synchronized(contador.getBloqueoPausa()){
+                            try {
+                                contador.getBloqueoPausa().wait();
+                            } catch (InterruptedException ex1) {
+                                Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
+                        }
+                    }
+                    else{
+                        Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
             }
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén");
@@ -94,10 +124,24 @@ public class AlmacenComida {
             comida = comida - 5;
             System.out.println("Comida en el almacén: " + comida);
         }
-        try {
-            Thread.sleep(hormigaObrera.getTiempoCogerComidaAlmacén());
-        } catch (InterruptedException ex) {
-            Logger.getLogger(AlmacenComida.class.getName()).log(Level.SEVERE, null, ex);
+        while(true){
+            try {
+                Thread.sleep(hormigaObrera.getTiempoCogerComidaAlmacén());
+                break;
+            } catch (InterruptedException ex) {
+                if (!contador.getPlay()){
+                    synchronized(contador.getBloqueoPausa()){
+                        try {
+                            contador.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                    }
+                }
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
         semaforo.release();
     }

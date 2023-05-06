@@ -78,11 +78,17 @@ public class Hormiga {
                 }
             }
             contador.setListaHormigas(hilos);
-            
             try {
                 Thread.sleep(tiempoGeneracionHormigas);
             } catch (InterruptedException ex) {
                 Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            while(!contador.getPlay()){
+                try {
+                    Thread.sleep(tiempoGeneracionHormigas);
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         for (int i=0; i < 10000; i++){
