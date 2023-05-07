@@ -22,22 +22,32 @@ public class ZonaDescanso {
     
     public void Descansar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
         String id = null;
+        char[] idChar = null;
         long tiempoInicio = System.currentTimeMillis();
         long tiempoDormido = 0;
         int tiempoFinal = 0;
         
         if (hormigaObrera != null){
             id = new String(hormigaObrera.getID());
+            idChar = hormigaObrera.getID();
             tiempoFinal = hormigaObrera.getTiempoDescansar();
         }
         if (hormigaSoldado != null){
             id = new String(hormigaSoldado.getID());
+            idChar = hormigaSoldado.getID();
             tiempoFinal = hormigaSoldado.getTiempoDescansar();
         }
         if (hormigaCria != null){
             id = new String(hormigaCria.getID());
+            idChar = hormigaCria.getID();
             tiempoFinal = hormigaCria.getTiempoDescansar();
         }
+        
+        synchronized(contador.getBloqueoDescansando()){
+            contador.getListaDescansando().add(idChar);
+            contador.actualizarDescansando();
+        }
+        
         while(tiempoDormido < tiempoFinal){
             try {
                 if (insecto.getInterrumpirInsecto() && hormigaCria != null){
@@ -51,13 +61,35 @@ public class ZonaDescanso {
                     if (hormigaSoldado != null){
                         tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                         System.out.println("Hormiga " + id + " se ha interrumpido después de descansar " + tiempoDormido + "ms");
+        
+                        synchronized(contador.getBloqueoDescansando()){
+                            contador.getListaDescansando().remove(idChar);
+                            contador.actualizarDescansando();
+                        }
+        
                         insecto.DefenderInsecto(hormigaSoldado);
+        
+                        synchronized(contador.getBloqueoDescansando()){
+                            contador.getListaDescansando().add(idChar);
+                            contador.actualizarDescansando();
+                        }
                     }
                     else{
                         if (hormigaCria != null){
                             tiempoDormido = tiempoFinal;
                             System.out.println("Hormiga " + id + " se ha interrumpido después de descansar " + tiempoDormido + "ms");
+        
+                            synchronized(contador.getBloqueoDescansando()){
+                                contador.getListaDescansando().remove(idChar);
+                                contador.actualizarDescansando();
+                            }
+                            
                             refugio.Refugiarse(hormigaCria);
+        
+                            synchronized(contador.getBloqueoDescansando()){
+                                contador.getListaDescansando().add(idChar);
+                                contador.actualizarDescansando();
+                            }
                         }
                         else{
                             Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
@@ -74,6 +106,11 @@ public class ZonaDescanso {
                     }
                 }
             }
+        }
+        
+        synchronized(contador.getBloqueoDescansando()){
+            contador.getListaDescansando().remove(idChar);
+            contador.actualizarDescansando();
         }
     }
 }

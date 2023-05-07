@@ -115,8 +115,10 @@ public class HormigaObrera extends Hormiga implements Runnable {
             if (super.getNumHormiga()%2 == 0){
                 for (int i = 0; i < 10; i++){
                     almacenComida.SacarComida(this);
-                    contador.getListaLlevandoComida().add(getID());
-                    contador.actualizarLlevandoComida();
+                    synchronized(contador.getBloqueoLlevandoComida()){
+                        contador.getListaLlevandoComida().add(getID());
+                        contador.actualizarLlevandoComida();
+                    }
                     while(true){
                         try {
                             Thread.sleep(tiempoIrZonaComer);
@@ -136,8 +138,10 @@ public class HormigaObrera extends Hormiga implements Runnable {
                             }
                         }
                     }
-                    contador.getListaLlevandoComida().remove(getID());
-                    contador.actualizarLlevandoComida();
+                    synchronized(contador.getBloqueoLlevandoComida()){
+                        contador.getListaLlevandoComida().remove(getID());
+                        contador.actualizarLlevandoComida();
+                    }
                     zonaComer.DejarComida(this);
                 }
             }
@@ -145,8 +149,10 @@ public class HormigaObrera extends Hormiga implements Runnable {
                 for (int i = 0; i < 10; i++){
                     tunel.Salir(this, null, insecto);
                     System.out.println("Hormiga " + new String(getID()) + " cogiendo comida");
-                    contador.getListaBuscandoComida().add(getID());
-                    contador.actualizarBuscandoComida();
+                    synchronized(contador.getBloqueoBuscandoComida()){
+                        contador.getListaBuscandoComida().add(getID());
+                        contador.actualizarBuscandoComida();
+                    }
                     while(true){
                         try {
                             Thread.sleep(tiempoRecolectarComida);
@@ -166,8 +172,10 @@ public class HormigaObrera extends Hormiga implements Runnable {
                             }
                         }
                     }
-                    contador.getListaBuscandoComida().remove(getID());
-                    contador.actualizarBuscandoComida();
+                    synchronized(contador.getBloqueoBuscandoComida()){
+                        contador.getListaBuscandoComida().remove(getID());
+                        contador.actualizarBuscandoComida();
+                    }
                     tunel.Entrar(this, null, null, insecto);
                     almacenComida.DejarComida(this);
                 }

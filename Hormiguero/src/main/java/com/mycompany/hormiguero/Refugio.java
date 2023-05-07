@@ -23,6 +23,12 @@ public class Refugio {
     
     public void Refugiarse (HormigaCria hormigaCria){
         System.out.println("Hormiga " + new String(hormigaCria.getID()) + " entra al refugio");
+        
+        synchronized(contador.getBloqueoRefugio()){
+            contador.getListaRefugio().add(hormigaCria.getID());
+            contador.actualizarRefugio();
+        }
+        
         while(true){
             try {
                 synchronized(bloqueo){
@@ -45,6 +51,11 @@ public class Refugio {
             }
         }
         System.out.println("Hormiga " + new String(hormigaCria.getID()) + " sale del refugio");
+        
+        synchronized(contador.getBloqueoRefugio()){
+            contador.getListaRefugio().remove(hormigaCria.getID());
+            contador.actualizarRefugio();
+        }
     }
 
     public void setAtaque(boolean ataque) {

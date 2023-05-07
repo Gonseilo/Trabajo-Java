@@ -29,6 +29,16 @@ public class Contador {
     private ArrayList<char[]> listaDescansando = new ArrayList<>();
     private ArrayList<char[]> listaZonaComer = new ArrayList<>();
     private ArrayList<char[]> listaRefugio = new ArrayList<>();
+    private final Object bloqueoBuscandoComida = new Object();
+    private final Object bloqueoDefendiendo = new Object();
+    private final Object bloqueoAlmacen = new Object();
+    private final Object bloqueoLlevandoComida = new Object();
+    private final Object bloqueoInstruyendo = new Object();
+    private final Object bloqueoDescansando = new Object();
+    private final Object bloqueoZonaComer = new Object();
+    private final Object bloqueoRefugio = new Object();
+    private final Object bloqueoComidaAlmacen = new Object();
+    private final Object bloqueoComidaZonaComer = new Object();
     private int comidaAlmacen;
     private int comidaZonaComer;
     
@@ -106,11 +116,11 @@ public class Contador {
         }
         interfaz.setTextoInstruyendo(texto);
     }
-    /*
-    public synchronized void actualizarBuscandoComida(){
+    
+    public synchronized void actualizarDescansando(){
         String texto = "";
-        if (!listaBuscandoComida.isEmpty()){
-            for(char[] arreglo : listaBuscandoComida){
+        if (!listaDescansando.isEmpty()){
+            for(char[] arreglo : listaDescansando){
                 if (texto == ""){
                     texto = new String(arreglo);
                 }
@@ -119,13 +129,13 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoBuscandoComida(texto);
+        interfaz.setTextoDescansando(texto);
     }
     
-    public synchronized void actualizarBuscandoComida(){
+    public synchronized void actualizarZonaComer(){
         String texto = "";
-        if (!listaBuscandoComida.isEmpty()){
-            for(char[] arreglo : listaBuscandoComida){
+        if (!listaZonaComer.isEmpty()){
+            for(char[] arreglo : listaZonaComer){
                 if (texto == ""){
                     texto = new String(arreglo);
                 }
@@ -134,13 +144,13 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoBuscandoComida(texto);
+        interfaz.setTextoZonaComer(texto);
     }
     
-    public synchronized void actualizarBuscandoComida(){
+    public synchronized void actualizarRefugio(){
         String texto = "";
-        if (!listaBuscandoComida.isEmpty()){
-            for(char[] arreglo : listaBuscandoComida){
+        if (!listaRefugio.isEmpty()){
+            for(char[] arreglo : listaRefugio){
                 if (texto == ""){
                     texto = new String(arreglo);
                 }
@@ -149,39 +159,17 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoBuscandoComida(texto);
+        interfaz.setTextoRefugiadas(texto);
     }
     
-    public synchronized void actualizarBuscandoComida(){
-        String texto = "";
-        if (!listaBuscandoComida.isEmpty()){
-            for(char[] arreglo : listaBuscandoComida){
-                if (texto == ""){
-                    texto = new String(arreglo);
-                }
-                else{
-                    texto = texto + ", " + new String(arreglo);
-                }
-            }
-        }
-        interfaz.setTextoBuscandoComida(texto);
+    public synchronized void actualizarComidaAlmacen(){
+        interfaz.setTextoComidaAlmacen(String.valueOf(comidaAlmacen));
     }
     
-    public synchronized void actualizarBuscandoComida(){
-        String texto = "";
-        if (!listaBuscandoComida.isEmpty()){
-            for(char[] arreglo : listaBuscandoComida){
-                if (texto == ""){
-                    texto = new String(arreglo);
-                }
-                else{
-                    texto = texto + ", " + new String(arreglo);
-                }
-            }
-        }
-        interfaz.setTextoBuscandoComida(texto);
+    public synchronized void actualizarComidaZonaComer(){
+        interfaz.setTextoComidaZonaComer(String.valueOf(comidaZonaComer));
     }
-*/
+    
     public int getNumHormigas() {
         return numHormigas;
     }
@@ -336,5 +324,45 @@ public class Contador {
 
     public Interfaz getInterfaz() {
         return interfaz;
+    }
+
+    public Object getBloqueoBuscandoComida() {
+        return bloqueoBuscandoComida;
+    }
+
+    public Object getBloqueoDefendiendo() {
+        return bloqueoDefendiendo;
+    }
+
+    public Object getBloqueoAlmacen() {
+        return bloqueoAlmacen;
+    }
+
+    public Object getBloqueoLlevandoComida() {
+        return bloqueoLlevandoComida;
+    }
+
+    public Object getBloqueoInstruyendo() {
+        return bloqueoInstruyendo;
+    }
+
+    public Object getBloqueoDescansando() {
+        return bloqueoDescansando;
+    }
+
+    public Object getBloqueoZonaComer() {
+        return bloqueoZonaComer;
+    }
+
+    public Object getBloqueoRefugio() {
+        return bloqueoRefugio;
+    }
+
+    public Object getBloqueoComidaAlmacen() {
+        return bloqueoComidaAlmacen;
+    }
+
+    public Object getBloqueoComidaZonaComer() {
+        return bloqueoComidaZonaComer;
     }
 }

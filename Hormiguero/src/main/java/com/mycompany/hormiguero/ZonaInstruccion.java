@@ -23,8 +23,10 @@ public class ZonaInstruccion {
         long tiempoDormido = 0;
         int tiempoFinal = hormigaSoldado.getTiempoInstruir();
         
-        contador.getListaInstruyendo().add(hormigaSoldado.getID());
-        contador.actualizarInstruyendo();
+        synchronized(contador.getBloqueoInstruyendo()){
+            contador.getListaInstruyendo().add(hormigaSoldado.getID());
+            contador.actualizarInstruyendo();
+        }
         while(tiempoDormido < tiempoFinal){
             try {
                 System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " va a instruir durante " + (tiempoFinal - tiempoDormido) + "ms");
@@ -52,7 +54,9 @@ public class ZonaInstruccion {
                 }
             }
         }
-        contador.getListaInstruyendo().remove(hormigaSoldado.getID());
-        contador.actualizarInstruyendo();
+        synchronized(contador.getBloqueoInstruyendo()){
+            contador.getListaInstruyendo().remove(hormigaSoldado.getID());
+            contador.actualizarInstruyendo();
+        }
     }
 }

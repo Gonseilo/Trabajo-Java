@@ -73,8 +73,10 @@ public class Insecto {
         }
         interrumpirInsecto = false;
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
-        contador.getListaDefendiendo().add(hormigaSoldado.getID());
-        contador.actualizarDefendiendo();
+        synchronized(contador.getBloqueoDefendiendo()){
+            contador.getListaDefendiendo().add(hormigaSoldado.getID());
+            contador.actualizarDefendiendo();
+        }
         while(tiempoDormido < tiempoFinal){    
             try{
                 Thread.sleep(20000);
@@ -94,8 +96,10 @@ public class Insecto {
                 }
             }
         }
-        contador.getListaDefendiendo().remove(hormigaSoldado.getID());
-        contador.actualizarDefendiendo();
+        synchronized(contador.getBloqueoDefendiendo()){
+            contador.getListaDefendiendo().remove(hormigaSoldado.getID());
+            contador.actualizarDefendiendo();
+        }
         refugio.setAtaque(false);
         synchronized(refugio.getBloqueo()){
             refugio.getBloqueo().notifyAll();
