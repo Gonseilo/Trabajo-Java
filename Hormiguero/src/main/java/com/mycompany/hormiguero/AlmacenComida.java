@@ -15,8 +15,21 @@ import java.util.logging.Logger;
 public class AlmacenComida {
     private Semaphore semaforo;
     int comida = 0;
-    private final Object bloqueo = new Object();
+    private final Object avisoComida = new Object();
+    private final Object bloqueo1 = new Object();
+    private final Object bloqueo2 = new Object();
+    private final Object bloqueo3 = new Object();
+    private final Object bloqueo4 = new Object();
+    private final Object bloqueo5 = new Object();
+    private final Object bloqueo6 = new Object();
+    private final Object bloqueo7 = new Object();
+    private final Object bloqueo8 = new Object();
+    private final Object bloqueo9 = new Object();
+    private final Object bloqueo10 = new Object();
+    private final Object bloqueo11 = new Object();
+    private final Object bloqueo12 = new Object();
     private Contador contador;
+    
 
     public AlmacenComida(Semaphore semaforo, Contador contador) {
         this.semaforo = semaforo;
@@ -28,7 +41,7 @@ public class AlmacenComida {
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén");
         while(true){
             try {
-                synchronized(bloqueo){
+                synchronized(bloqueo1){
                     semaforo.acquire();
                 }
                 break;
@@ -48,7 +61,7 @@ public class AlmacenComida {
             }
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén");
-        synchronized(bloqueo){
+        synchronized(bloqueo2){
             contador.getListaAlmacen().add(hormigaObrera.getID());
             contador.actualizarAlmacen();
         }
@@ -71,15 +84,20 @@ public class AlmacenComida {
                 }
             }
         }
-        synchronized(bloqueo){
+        synchronized(bloqueo12){
             comida= comida + 5;
             System.out.println("Comida en el almacén: " + comida);
-            bloqueo.notify();
+            
+            
         }
-        synchronized(bloqueo){
+        synchronized(avisoComida){
+            avisoComida.notify();
+        }
+       
+        synchronized(bloqueo3){
             semaforo.release();
         }
-        synchronized(bloqueo){
+        synchronized(bloqueo4){
             contador.getListaAlmacen().remove(hormigaObrera.getID());
             contador.actualizarAlmacen();
         }
@@ -89,7 +107,7 @@ public class AlmacenComida {
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida al almacén");
         while(true){
             try {
-                synchronized(bloqueo){
+                synchronized(bloqueo5){
                     semaforo.acquire();
                 }
                 break;
@@ -108,24 +126,23 @@ public class AlmacenComida {
                 }
             }
         }
-        synchronized(bloqueo){
+        synchronized(bloqueo6){
             contador.getListaAlmacen().add(hormigaObrera.getID());
             contador.actualizarAlmacen();
         }
         while (comida < 5) {
-            synchronized(bloqueo){
+            synchronized(bloqueo7){
                 semaforo.release();
-            }
-            synchronized(bloqueo){
                 contador.getListaAlmacen().remove(hormigaObrera.getID());
                 contador.actualizarAlmacen();
             }
+            
             while(true){
                 try {
-                    synchronized(bloqueo){
-                        bloqueo.wait();
+                    synchronized(avisoComida){
+                        avisoComida.wait();
                     }
-                    synchronized(bloqueo){
+                    synchronized(bloqueo8){
                         semaforo.acquire();
                     }
                     break;
@@ -144,13 +161,13 @@ public class AlmacenComida {
                     }
                 }
             }
-            synchronized(bloqueo){
+            synchronized(bloqueo9){
                 contador.getListaAlmacen().add(hormigaObrera.getID());
                 contador.actualizarAlmacen();
             }
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén");
-        synchronized(bloqueo){
+        synchronized(bloqueo10){
             comida = comida - 5;
             System.out.println("Comida en el almacén: " + comida);
         }
@@ -173,12 +190,11 @@ public class AlmacenComida {
                 }
             }
         }
-        synchronized(bloqueo){
+        synchronized(bloqueo11){
             semaforo.release();
-        }
-        synchronized(bloqueo){
             contador.getListaAlmacen().remove(hormigaObrera.getID());
             contador.actualizarAlmacen();
         }
+        
     }
 }
