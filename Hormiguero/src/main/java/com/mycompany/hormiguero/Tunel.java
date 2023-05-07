@@ -63,9 +63,18 @@ public class Tunel {
     }
     
     public void Salir(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, Insecto insecto){
+        String id = null;
+        
+        if (hormigaObrera != null){
+            id = new String(hormigaObrera.getID());
+        }
+        if (hormigaSoldado != null){
+            id = new String(hormigaSoldado.getID());
+        }
+        
         try {
             semaforoTunelSalida.acquire();
-            System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " saliendo del hormiguero");
+            System.out.println("Hormiga " + id + " saliendo del hormiguero");
             Thread.sleep(100);
         } catch (InterruptedException ex) {
             if (!contador.getPlay()){

@@ -115,22 +115,29 @@ public class HormigaObrera extends Hormiga implements Runnable {
             if (super.getNumHormiga()%2 == 0){
                 for (int i = 0; i < 10; i++){
                     almacenComida.SacarComida(this);
-                    try {
-                        Thread.sleep(tiempoIrZonaComer);
-                    } catch (InterruptedException ex) {
-                        if (!contador.getPlay()){
-                            synchronized(contador.getBloqueoPausa()){
-                                try {
-                                    contador.getBloqueoPausa().wait();
-                                } catch (InterruptedException ex1) {
-                                    Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                    contador.getListaLlevandoComida().add(getID());
+                    contador.actualizarLlevandoComida();
+                    while(true){
+                        try {
+                            Thread.sleep(tiempoIrZonaComer);
+                            break;
+                        } catch (InterruptedException ex) {
+                            if (!contador.getPlay()){
+                                synchronized(contador.getBloqueoPausa()){
+                                    try {
+                                        contador.getBloqueoPausa().wait();
+                                    } catch (InterruptedException ex1) {
+                                        Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                                    }
                                 }
                             }
-                        }
-                        else{
-                            Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                            else{
+                                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
+                    contador.getListaLlevandoComida().remove(getID());
+                    contador.actualizarLlevandoComida();
                     zonaComer.DejarComida(this);
                 }
             }
@@ -138,22 +145,29 @@ public class HormigaObrera extends Hormiga implements Runnable {
                 for (int i = 0; i < 10; i++){
                     tunel.Salir(this, null, insecto);
                     System.out.println("Hormiga " + new String(getID()) + " cogiendo comida");
-                    try {
-                        Thread.sleep(tiempoRecolectarComida);
-                    } catch (InterruptedException ex) {
-                        if (!contador.getPlay()){
-                            synchronized(contador.getBloqueoPausa()){
-                                try {
-                                    contador.getBloqueoPausa().wait();
-                                } catch (InterruptedException ex1) {
-                                    Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                    contador.getListaBuscandoComida().add(getID());
+                    contador.actualizarBuscandoComida();
+                    while(true){
+                        try {
+                            Thread.sleep(tiempoRecolectarComida);
+                            break;
+                        } catch (InterruptedException ex) {
+                            if (!contador.getPlay()){
+                                synchronized(contador.getBloqueoPausa()){
+                                    try {
+                                        contador.getBloqueoPausa().wait();
+                                    } catch (InterruptedException ex1) {
+                                        Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                                    }
                                 }
                             }
-                        }
-                        else{
-                            Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                            else{
+                                Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
+                    contador.getListaBuscandoComida().remove(getID());
+                    contador.actualizarBuscandoComida();
                     tunel.Entrar(this, null, null, insecto);
                     almacenComida.DejarComida(this);
                 }

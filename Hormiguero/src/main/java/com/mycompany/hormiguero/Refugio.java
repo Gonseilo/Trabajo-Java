@@ -22,10 +22,13 @@ public class Refugio {
     }
     
     public void Refugiarse (HormigaCria hormigaCria){
-        synchronized(bloqueo){
-            System.out.println("Hormiga " + new String(hormigaCria.getID()) + " entra al refugio");
+        System.out.println("Hormiga " + new String(hormigaCria.getID()) + " entra al refugio");
+        while(true){
             try {
-                bloqueo.wait();
+                synchronized(bloqueo){
+                    bloqueo.wait();
+                }
+                break;
             } catch (InterruptedException ex) {
                 if (!contador.getPlay()){
                     synchronized(contador.getBloqueoPausa()){
@@ -40,8 +43,8 @@ public class Refugio {
                     Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
-            System.out.println("Hormiga " + new String(hormigaCria.getID()) + " sale del refugio");
         }
+        System.out.println("Hormiga " + new String(hormigaCria.getID()) + " sale del refugio");
     }
 
     public void setAtaque(boolean ataque) {

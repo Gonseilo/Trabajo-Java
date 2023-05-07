@@ -44,18 +44,58 @@ public class Insecto {
     }
     
     public void DefenderInsecto(HormigaSoldado hormigaSoldado){
+        long tiempoInicio = System.currentTimeMillis();
+        long tiempoDormido = 0;
+        int tiempoFinal = hormigaSoldado.getTiempoInstruir();
+        
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " saliendo a defender la colonia");
         tunel.Salir(null, hormigaSoldado, this);
-        try {
-            this.barrera.await();
-            interrumpirInsecto = false;
-            System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
-            Thread.sleep(20000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (BrokenBarrierException ex) {
-            Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
+        while(true){
+            try {
+                this.barrera.await();
+                break;
+            } catch (InterruptedException ex) {
+                if (!contador.getPlay()){
+                    synchronized(contador.getBloqueoPausa()){
+                        try {
+                            contador.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                    }
+                }
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            } catch (BrokenBarrierException ex) {
+                Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        interrumpirInsecto = false;
+        System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
+        contador.getListaDefendiendo().add(hormigaSoldado.getID());
+        contador.actualizarDefendiendo();
+        while(tiempoDormido < tiempoFinal){    
+            try{
+                Thread.sleep(20000);
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
+            } catch (InterruptedException ex) {
+                if (!contador.getPlay()){
+                    synchronized(contador.getBloqueoPausa()){
+                        try {
+                            contador.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
+                    }
+                }
+                else{
+                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        contador.getListaDefendiendo().remove(hormigaSoldado.getID());
+        contador.actualizarDefendiendo();
         refugio.setAtaque(false);
         synchronized(refugio.getBloqueo()){
             refugio.getBloqueo().notifyAll();

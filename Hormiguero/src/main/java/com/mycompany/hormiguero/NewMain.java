@@ -31,6 +31,7 @@ public class NewMain {
         Insecto insecto = new Insecto(refugio, tunel, contador);
         
         Interfaz interfaz = new Interfaz(refugio, insecto, contador);
+        contador.setInterfaz(interfaz);
         interfaz.setVisible(true);
         
         char[] ID = new char[6];
