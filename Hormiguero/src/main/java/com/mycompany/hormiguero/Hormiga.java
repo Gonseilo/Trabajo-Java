@@ -45,8 +45,8 @@ public class Hormiga {
     public void GenerarHormigas(AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion){  Thread[] hilos = new Thread[10000];
         Random rand = new Random();
         
-        int tiempoMinimo = 800;
-        int tiempoMaximo = 3500;
+        int tiempoMinimo = 80;
+        int tiempoMaximo = 350;
         int tiempoGeneracionHormigas = rand.nextInt((tiempoMaximo - tiempoMinimo +1)+ tiempoMinimo);
         
         for (int i=0; i < 10000; i++){
