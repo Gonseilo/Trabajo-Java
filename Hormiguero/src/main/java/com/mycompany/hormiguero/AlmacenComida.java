@@ -17,12 +17,12 @@ public class AlmacenComida {
     private final Object bloqueoAvisoComida = new Object();
     private final Object bloqueoSemaforoAcquire = new Object();
     private final Object bloqueoSemaforoRelease = new Object();
-    private Contador contador;
+    private Estadisticas estadisticas;
     
 
-    public AlmacenComida(Semaphore semaforo, Contador contador) {
+    public AlmacenComida(Semaphore semaforo, Estadisticas estadisticas) {
         this.semaforo = semaforo;
-        this.contador = contador;
+        this.estadisticas = estadisticas;
     }
     
     public void DejarComida(HormigaObrera hormigaObrera){
@@ -34,10 +34,10 @@ public class AlmacenComida {
                 }
                 break;
             } catch (InterruptedException ex) {
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -49,19 +49,19 @@ public class AlmacenComida {
             }
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén");
-        synchronized(contador.getBloqueoAlmacen()){
-            contador.getListaAlmacen().add(hormigaObrera.getID());
-            contador.actualizarAlmacen();
+        synchronized(estadisticas.getBloqueoAlmacen()){
+            estadisticas.getListaAlmacen().add(hormigaObrera.getID());
+            estadisticas.actualizarAlmacen();
         }
         while(true){
             try {
                 Thread.sleep(hormigaObrera.getTiempoDejarComidaAlmacén());
                 break;
             } catch (InterruptedException ex) {
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -73,10 +73,10 @@ public class AlmacenComida {
             }
         }
         
-        synchronized(contador.getBloqueoComidaAlmacen()){
-            contador.setComidaAlmacen(contador.getComidaAlmacen() + 5);
-            contador.actualizarComidaAlmacen();
-            System.out.println("Comida en el almacén: " + contador.getComidaAlmacen());
+        synchronized(estadisticas.getBloqueoComidaAlmacen()){
+            estadisticas.setComidaAlmacen(estadisticas.getComidaAlmacen() + 5);
+            estadisticas.actualizarComidaAlmacen();
+            System.out.println("Comida en el almacén: " + estadisticas.getComidaAlmacen());
         }
         
         synchronized(bloqueoAvisoComida){
@@ -87,9 +87,9 @@ public class AlmacenComida {
             semaforo.release();
         }
         
-        synchronized(contador.getBloqueoAlmacen()){
-            contador.getListaAlmacen().remove(hormigaObrera.getID());
-            contador.actualizarAlmacen();
+        synchronized(estadisticas.getBloqueoAlmacen()){
+            estadisticas.getListaAlmacen().remove(hormigaObrera.getID());
+            estadisticas.actualizarAlmacen();
         }
     }
     
@@ -102,10 +102,10 @@ public class AlmacenComida {
                 }
                 break;
             } catch (InterruptedException ex) {
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -116,17 +116,17 @@ public class AlmacenComida {
                 }
             }
         }
-        synchronized(contador.getBloqueoAlmacen()){
-            contador.getListaAlmacen().add(hormigaObrera.getID());
-            contador.actualizarAlmacen();
+        synchronized(estadisticas.getBloqueoAlmacen()){
+            estadisticas.getListaAlmacen().add(hormigaObrera.getID());
+            estadisticas.actualizarAlmacen();
         }
-        while (contador.getComidaAlmacen() < 5) {
+        while (estadisticas.getComidaAlmacen() < 5) {
             synchronized(bloqueoSemaforoRelease){
                 semaforo.release();
             }
-            synchronized(contador.getBloqueoAlmacen()){
-                contador.getListaAlmacen().remove(hormigaObrera.getID());
-                contador.actualizarAlmacen();
+            synchronized(estadisticas.getBloqueoAlmacen()){
+                estadisticas.getListaAlmacen().remove(hormigaObrera.getID());
+                estadisticas.actualizarAlmacen();
             }
             
             while(true){
@@ -139,10 +139,10 @@ public class AlmacenComida {
                     }
                     break;
                 } catch (InterruptedException ex) {
-                    if (!contador.getPlay()){
-                        synchronized(contador.getBloqueoPausa()){
+                    if (!estadisticas.getPlay()){
+                        synchronized(estadisticas.getBloqueoPausa()){
                             try {
-                                contador.getBloqueoPausa().wait();
+                                estadisticas.getBloqueoPausa().wait();
                             } catch (InterruptedException ex1) {
                                 Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                             }
@@ -153,26 +153,26 @@ public class AlmacenComida {
                     }
                 }
             }
-            synchronized(contador.getBloqueoAlmacen()){
-                contador.getListaAlmacen().add(hormigaObrera.getID());
-                contador.actualizarAlmacen();
+            synchronized(estadisticas.getBloqueoAlmacen()){
+                estadisticas.getListaAlmacen().add(hormigaObrera.getID());
+                estadisticas.actualizarAlmacen();
             }
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén");
-        synchronized(contador.getBloqueoComidaAlmacen()){
-            contador.setComidaAlmacen(contador.getComidaAlmacen() - 5);
-            contador.actualizarComidaAlmacen();
-            System.out.println("Comida en el almacén: " + contador.getComidaAlmacen());
+        synchronized(estadisticas.getBloqueoComidaAlmacen()){
+            estadisticas.setComidaAlmacen(estadisticas.getComidaAlmacen() - 5);
+            estadisticas.actualizarComidaAlmacen();
+            System.out.println("Comida en el almacén: " + estadisticas.getComidaAlmacen());
         }
         while(true){
             try {
                 Thread.sleep(hormigaObrera.getTiempoCogerComidaAlmacén());
                 break;
             } catch (InterruptedException ex) {
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -186,9 +186,9 @@ public class AlmacenComida {
         synchronized(bloqueoSemaforoRelease){
             semaforo.release();
         }
-        synchronized(contador.getBloqueoAlmacen()){
-            contador.getListaAlmacen().remove(hormigaObrera.getID());
-            contador.actualizarAlmacen();
+        synchronized(estadisticas.getBloqueoAlmacen()){
+            estadisticas.getListaAlmacen().remove(hormigaObrera.getID());
+            estadisticas.actualizarAlmacen();
         }
         
     }

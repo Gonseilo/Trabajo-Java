@@ -17,28 +17,28 @@ public class Insecto {
     private CyclicBarrier barrera = new CyclicBarrier(1);
     private Refugio refugio;
     private Tunel tunel;
-    private Contador contador;
+    private Estadisticas estadisticas;
     private Boolean interrumpirInsecto = false;
     private int soldadosBarrera;
 
-    public Insecto(Refugio refugio, Tunel tunel, Contador contador) {
-        this.contador = contador;
+    public Insecto(Refugio refugio, Tunel tunel, Estadisticas estadisticas) {
+        this.estadisticas = estadisticas;
         this.refugio = refugio;
         this.tunel = tunel;
     }
     
     public void GenerarInsecto(){
-        soldadosBarrera = contador.getNumSoldados();
+        soldadosBarrera = estadisticas.getNumSoldados();
         this.barrera = new CyclicBarrier(soldadosBarrera);
         interrumpirInsecto = true;
         
-        for (Thread thread : contador.getListaSoldados()){
+        for (Thread thread : estadisticas.getListaSoldados()){
             if (thread != null){
                 thread.interrupt();
             }
         }
         
-        for (Thread thread : contador.getListaCrias()){
+        for (Thread thread : estadisticas.getListaCrias()){
             if (thread != null){
                 thread.interrupt();
             }
@@ -57,10 +57,10 @@ public class Insecto {
                 this.barrera.await();
                 break;
             } catch (InterruptedException ex) {
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -70,16 +70,16 @@ public class Insecto {
                     Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (BrokenBarrierException ex) {
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                     this.barrera = new CyclicBarrier(soldadosBarrera);
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
-                            if (!contador.getPlay()){
-                                synchronized(contador.getBloqueoPausa()){
+                            if (!estadisticas.getPlay()){
+                                synchronized(estadisticas.getBloqueoPausa()){
                                     try {
-                                        contador.getBloqueoPausa().wait();
+                                        estadisticas.getBloqueoPausa().wait();
                                     } catch (InterruptedException ex2) {
                                         Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex2);
                                     }
@@ -98,19 +98,19 @@ public class Insecto {
         }
         interrumpirInsecto = false;
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
-        synchronized(contador.getBloqueoDefendiendo()){
-            contador.getListaDefendiendo().add(hormigaSoldado.getID());
-            contador.actualizarDefendiendo();
+        synchronized(estadisticas.getBloqueoDefendiendo()){
+            estadisticas.getListaDefendiendo().add(hormigaSoldado.getID());
+            estadisticas.actualizarDefendiendo();
         }
         while(tiempoDormido < tiempoFinal){    
             try{
                 Thread.sleep(20000);
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -121,9 +121,9 @@ public class Insecto {
                 }
             }
         }
-        synchronized(contador.getBloqueoDefendiendo()){
-            contador.getListaDefendiendo().remove(hormigaSoldado.getID());
-            contador.actualizarDefendiendo();
+        synchronized(estadisticas.getBloqueoDefendiendo()){
+            estadisticas.getListaDefendiendo().remove(hormigaSoldado.getID());
+            estadisticas.actualizarDefendiendo();
         }
         refugio.setAtaque(false);
         synchronized(refugio.getBloqueo()){

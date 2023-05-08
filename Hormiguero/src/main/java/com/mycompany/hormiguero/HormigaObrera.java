@@ -22,8 +22,8 @@ public class HormigaObrera extends Hormiga implements Runnable {
     private int tiempoComer = 0;
     private int tiempoDescansar = 0;
     
-    public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador, Insecto insecto) {
-        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
+    public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto) {
+        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
         this.tiempoRecolectarComida = 4000;
         this.tiempoDejarComidaAlmacén = rand.nextInt(2001)+2000;
         this.tiempoCogerComidaAlmacén = rand.nextInt(1001)+1000;
@@ -115,19 +115,19 @@ public class HormigaObrera extends Hormiga implements Runnable {
             if (super.getNumHormiga()%2 == 0){
                 for (int i = 0; i < 10; i++){
                     almacenComida.SacarComida(this);
-                    synchronized(contador.getBloqueoLlevandoComida()){
-                        contador.getListaLlevandoComida().add(getID());
-                        contador.actualizarLlevandoComida();
+                    synchronized(estadisticas.getBloqueoLlevandoComida()){
+                        estadisticas.getListaLlevandoComida().add(getID());
+                        estadisticas.actualizarLlevandoComida();
                     }
                     while(true){
                         try {
                             Thread.sleep(tiempoIrZonaComer);
                             break;
                         } catch (InterruptedException ex) {
-                            if (!contador.getPlay()){
-                                synchronized(contador.getBloqueoPausa()){
+                            if (!estadisticas.getPlay()){
+                                synchronized(estadisticas.getBloqueoPausa()){
                                     try {
-                                        contador.getBloqueoPausa().wait();
+                                        estadisticas.getBloqueoPausa().wait();
                                     } catch (InterruptedException ex1) {
                                         Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                                     }
@@ -138,9 +138,9 @@ public class HormigaObrera extends Hormiga implements Runnable {
                             }
                         }
                     }
-                    synchronized(contador.getBloqueoLlevandoComida()){
-                        contador.getListaLlevandoComida().remove(getID());
-                        contador.actualizarLlevandoComida();
+                    synchronized(estadisticas.getBloqueoLlevandoComida()){
+                        estadisticas.getListaLlevandoComida().remove(getID());
+                        estadisticas.actualizarLlevandoComida();
                     }
                     zonaComer.DejarComida(this);
                 }
@@ -149,19 +149,23 @@ public class HormigaObrera extends Hormiga implements Runnable {
                 for (int i = 0; i < 10; i++){
                     tunel.Salir(this, null, insecto);
                     System.out.println("Hormiga " + new String(getID()) + " cogiendo comida");
-                    synchronized(contador.getBloqueoBuscandoComida()){
-                        contador.getListaBuscandoComida().add(getID());
-                        contador.actualizarBuscandoComida();
+                    synchronized(estadisticas.getBloqueoBuscandoComida()){
+                        estadisticas.getListaBuscandoComida().add(getID());
+                        estadisticas.actualizarBuscandoComida();
+                    }
+                    synchronized(estadisticas.getBloqueoObrerasExterior()){
+                        estadisticas.setObrerasExterior(estadisticas.getObrerasExterior() + 1);
+                        System.out.println("Obreras en el exterior: " + estadisticas.getObrerasExterior());
                     }
                     while(true){
                         try {
                             Thread.sleep(tiempoRecolectarComida);
                             break;
                         } catch (InterruptedException ex) {
-                            if (!contador.getPlay()){
-                                synchronized(contador.getBloqueoPausa()){
+                            if (!estadisticas.getPlay()){
+                                synchronized(estadisticas.getBloqueoPausa()){
                                     try {
-                                        contador.getBloqueoPausa().wait();
+                                        estadisticas.getBloqueoPausa().wait();
                                     } catch (InterruptedException ex1) {
                                         Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                                     }
@@ -172,9 +176,9 @@ public class HormigaObrera extends Hormiga implements Runnable {
                             }
                         }
                     }
-                    synchronized(contador.getBloqueoBuscandoComida()){
-                        contador.getListaBuscandoComida().remove(getID());
-                        contador.actualizarBuscandoComida();
+                    synchronized(estadisticas.getBloqueoBuscandoComida()){
+                        estadisticas.getListaBuscandoComida().remove(getID());
+                        estadisticas.actualizarBuscandoComida();
                     }
                     tunel.Entrar(this, null, null, insecto);
                     almacenComida.DejarComida(this);

@@ -23,12 +23,12 @@ public class Hormiga {
     protected ZonaComer zonaComer;
     protected ZonaDescanso zonaDescanso;
     protected ZonaInstruccion zonaInstruccion;
-    protected Contador contador;
+    protected Estadisticas estadisticas;
     protected Insecto insecto;
     
     Thread[] hilos = new Thread[10000];
     
-    public Hormiga(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Contador contador, Insecto insecto){
+    public Hormiga(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto){
         this.numHormiga = numHormiga;
         this.ID = ID;
         this.TipoHormiga = TipoHormiga;
@@ -38,7 +38,7 @@ public class Hormiga {
         this.zonaComer = zonaComer;
         this.zonaDescanso = zonaDescanso;
         this.zonaInstruccion = zonaInstruccion;
-        this.contador = contador;
+        this.estadisticas = estadisticas;
         this.insecto = insecto;
     }
     
@@ -50,44 +50,44 @@ public class Hormiga {
         int tiempoGeneracionHormigas = rand.nextInt((tiempoMaximo - tiempoMinimo +1)+ tiempoMinimo);
         
         for (int i=0; i < 10000; i++){
-            contador.setNumHormigas(i+1);
+            estadisticas.setNumHormigas(i+1);
             
             if (i % 5 <= 2){
-                Runnable runnable = new HormigaObrera(i, ID, "Obrera", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
+                Runnable runnable = new HormigaObrera(i, ID, "Obrera", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
                 hilos[i] = new Thread(runnable);
                 hilos[i].start();
-                contador.setNumObreras(contador.getNumObreras()+1);
+                estadisticas.setNumObreras(estadisticas.getNumObreras()+1);
                 System.out.println("Obrera " + i);
             }
             else{
                 if (i % 5 == 3){
-                    Runnable runnable = new HormigaSoldado(i, ID, "Soldado", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
+                    Runnable runnable = new HormigaSoldado(i, ID, "Soldado", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
                     hilos[i] = new Thread(runnable);
                     hilos[i].start();
-                    contador.getListaSoldados()[contador.getNumSoldados()] = hilos[i];
-                    contador.setNumSoldados(contador.getNumSoldados()+1);
+                    estadisticas.getListaSoldados()[estadisticas.getNumSoldados()] = hilos[i];
+                    estadisticas.setNumSoldados(estadisticas.getNumSoldados()+1);
                     System.out.println("Soldado " + i);
                 }
                 else{
-                    Runnable runnable = new HormigaCria(i, ID, "Cría", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, contador, insecto);
+                    Runnable runnable = new HormigaCria(i, ID, "Cría", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
                     hilos[i] = new Thread(runnable);
                     hilos[i].start();
-                    contador.getListaCrias()[contador.getNumCrias()] = hilos[i];
-                    contador.setNumCrias(contador.getNumCrias()+1);
+                    estadisticas.getListaCrias()[estadisticas.getNumCrias()] = hilos[i];
+                    estadisticas.setNumCrias(estadisticas.getNumCrias()+1);
                     System.out.println("Cría " + i);
                 }
             }
-            contador.setListaHormigas(hilos);
+            estadisticas.setListaHormigas(hilos);
             try {
                 Thread.sleep(tiempoGeneracionHormigas);
             } catch (InterruptedException ex) {
-                Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
-            while(!contador.getPlay()){
+            while(!estadisticas.getPlay()){
                 try {
                     Thread.sleep(tiempoGeneracionHormigas);
                 } catch (InterruptedException ex) {
-                    Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -95,7 +95,7 @@ public class Hormiga {
             try {
                 hilos[i].join();
             } catch (InterruptedException ex) {
-                Logger.getLogger(NewMain.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

@@ -14,11 +14,11 @@ import java.util.logging.Logger;
 public class ZonaComer {
     private final Object bloqueo = new Object();
     private Refugio refugio;
-    private Contador contador;
+    private Estadisticas estadisticas;
 
-    public ZonaComer(Refugio refugio, Contador contador) {
+    public ZonaComer(Refugio refugio, Estadisticas estadisticas) {
         this.refugio = refugio;
-        this.contador = contador;
+        this.estadisticas = estadisticas;
     }
     
     public void Comer (HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
@@ -44,12 +44,12 @@ public class ZonaComer {
             tiempoFinal = hormigaCria.getTiempoComer();
         }
         
-        synchronized(contador.getBloqueoZonaComer()){
-            contador.getListaZonaComer().add(idChar);
-            contador.actualizarZonaComer();
+        synchronized(estadisticas.getBloqueoZonaComer()){
+            estadisticas.getListaZonaComer().add(idChar);
+            estadisticas.actualizarZonaComer();
         }
         
-        while (contador.getComidaZonaComer() == 0){
+        while (estadisticas.getComidaZonaComer() == 0){
             System.out.println("Hormiga " + id + " esperando comida");
             synchronized(bloqueo){
                 try {
@@ -57,30 +57,30 @@ public class ZonaComer {
                 } catch (InterruptedException ex) {
                     if (insecto.getInterrumpirInsecto()){
                         if (hormigaSoldado != null){
-                            synchronized(contador.getBloqueoZonaComer()){
-                                contador.getListaZonaComer().remove(idChar);
-                                contador.actualizarZonaComer();
+                            synchronized(estadisticas.getBloqueoZonaComer()){
+                                estadisticas.getListaZonaComer().remove(idChar);
+                                estadisticas.actualizarZonaComer();
                             }
         
                             insecto.DefenderInsecto(hormigaSoldado);
         
-                            synchronized(contador.getBloqueoZonaComer()){
-                                contador.getListaZonaComer().add(idChar);
-                                contador.actualizarZonaComer();
+                            synchronized(estadisticas.getBloqueoZonaComer()){
+                                estadisticas.getListaZonaComer().add(idChar);
+                                estadisticas.actualizarZonaComer();
                             }
                         }
                         else{
                             if (hormigaCria != null){
-                                synchronized(contador.getBloqueoZonaComer()){
-                                contador.getListaZonaComer().remove(idChar);
-                                contador.actualizarZonaComer();
+                                synchronized(estadisticas.getBloqueoZonaComer()){
+                                estadisticas.getListaZonaComer().remove(idChar);
+                                estadisticas.actualizarZonaComer();
         }
                                 refugio.Refugiarse(hormigaCria);
                                 Comer(null, null, hormigaCria, insecto, tunel);
         
-                                synchronized(contador.getBloqueoZonaComer()){
-                                    contador.getListaZonaComer().add(idChar);
-                                    contador.actualizarZonaComer();
+                                synchronized(estadisticas.getBloqueoZonaComer()){
+                                    estadisticas.getListaZonaComer().add(idChar);
+                                    estadisticas.actualizarZonaComer();
                                 }
                             }
                             else{
@@ -88,10 +88,10 @@ public class ZonaComer {
                             }
                         }
                     }
-                    if (!contador.getPlay()){
-                        synchronized(contador.getBloqueoPausa()){
+                    if (!estadisticas.getPlay()){
+                        synchronized(estadisticas.getBloqueoPausa()){
                             try {
-                                contador.getBloqueoPausa().wait();
+                                estadisticas.getBloqueoPausa().wait();
                             } catch (InterruptedException ex1) {
                                 Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                             }
@@ -101,10 +101,10 @@ public class ZonaComer {
             }
         }
         
-        synchronized(contador.getBloqueoComidaZonaComer()){
-            contador.setComidaZonaComer(contador.getComidaZonaComer() - 1);
-            contador.actualizarComidaZonaComer();
-            System.out.println("Comida restante en la zona de comer: " + contador.getComidaZonaComer());
+        synchronized(estadisticas.getBloqueoComidaZonaComer()){
+            estadisticas.setComidaZonaComer(estadisticas.getComidaZonaComer() - 1);
+            estadisticas.actualizarComidaZonaComer();
+            System.out.println("Comida restante en la zona de comer: " + estadisticas.getComidaZonaComer());
         }
         while(tiempoDormido < tiempoFinal){
             try {
@@ -120,16 +120,16 @@ public class ZonaComer {
                         tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                         System.out.println("Hormiga " + id + " se ha interrumpido después de comer " + tiempoDormido + "ms");
         
-                        synchronized(contador.getBloqueoZonaComer()){
-                            contador.getListaZonaComer().remove(idChar);
-                            contador.actualizarZonaComer();
+                        synchronized(estadisticas.getBloqueoZonaComer()){
+                            estadisticas.getListaZonaComer().remove(idChar);
+                            estadisticas.actualizarZonaComer();
                         }
         
                         insecto.DefenderInsecto(hormigaSoldado);
         
-                        synchronized(contador.getBloqueoZonaComer()){
-                            contador.getListaZonaComer().add(idChar);
-                            contador.actualizarZonaComer();
+                        synchronized(estadisticas.getBloqueoZonaComer()){
+                            estadisticas.getListaZonaComer().add(idChar);
+                            estadisticas.actualizarZonaComer();
                         }
                     }
                     else{
@@ -138,17 +138,17 @@ public class ZonaComer {
                             System.out.println("Hormiga " + id + " se ha interrumpido después de comer " + tiempoDormido + "ms");
                             tiempoDormido = tiempoFinal;
         
-                            synchronized(contador.getBloqueoZonaComer()){
-                                contador.getListaZonaComer().remove(idChar);
-                                contador.actualizarZonaComer();
+                            synchronized(estadisticas.getBloqueoZonaComer()){
+                                estadisticas.getListaZonaComer().remove(idChar);
+                                estadisticas.actualizarZonaComer();
                             }
                             
                             refugio.Refugiarse(hormigaCria);
                             Comer(null, null, hormigaCria, insecto, tunel);
         
-                            synchronized(contador.getBloqueoZonaComer()){
-                                contador.getListaZonaComer().add(idChar);
-                                contador.actualizarZonaComer();
+                            synchronized(estadisticas.getBloqueoZonaComer()){
+                                estadisticas.getListaZonaComer().add(idChar);
+                                estadisticas.actualizarZonaComer();
                             }
                         }
                         else{
@@ -156,10 +156,10 @@ public class ZonaComer {
                         }
                     }
                 }
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -168,25 +168,25 @@ public class ZonaComer {
             }
         }
         
-        synchronized(contador.getBloqueoZonaComer()){
-            contador.getListaZonaComer().remove(idChar);
-            contador.actualizarZonaComer();
+        synchronized(estadisticas.getBloqueoZonaComer()){
+            estadisticas.getListaZonaComer().remove(idChar);
+            estadisticas.actualizarZonaComer();
         }
     }
     
     public void DejarComida (HormigaObrera hormigaObrera){
-        synchronized(contador.getBloqueoZonaComer()){
-            contador.getListaZonaComer().add(hormigaObrera.getID());
-            contador.actualizarZonaComer();
+        synchronized(estadisticas.getBloqueoZonaComer()){
+            estadisticas.getListaZonaComer().add(hormigaObrera.getID());
+            estadisticas.actualizarZonaComer();
         }
         
         try {
             Thread.sleep(hormigaObrera.getTiempoDejarComidaZonaComer());
         } catch (InterruptedException ex) {
-            if (!contador.getPlay()){
-                synchronized(contador.getBloqueoPausa()){
+            if (!estadisticas.getPlay()){
+                synchronized(estadisticas.getBloqueoPausa()){
                     try {
-                        contador.getBloqueoPausa().wait();
+                        estadisticas.getBloqueoPausa().wait();
                     } catch (InterruptedException ex1) {
                         Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                     }
@@ -195,19 +195,19 @@ public class ZonaComer {
         }
         System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " dejando comida en la zona de comer");
         
-        synchronized(contador.getBloqueoComidaZonaComer()){
-            contador.setComidaZonaComer(contador.getComidaZonaComer() + 5);
-            contador.actualizarComidaZonaComer();
-            System.out.println("Comida restante en la zona de comer: " + contador.getComidaZonaComer());
+        synchronized(estadisticas.getBloqueoComidaZonaComer()){
+            estadisticas.setComidaZonaComer(estadisticas.getComidaZonaComer() + 5);
+            estadisticas.actualizarComidaZonaComer();
+            System.out.println("Comida restante en la zona de comer: " + estadisticas.getComidaZonaComer());
         }
         
         synchronized(bloqueo){
             bloqueo.notify();
         }
         
-        synchronized(contador.getBloqueoZonaComer()){
-            contador.getListaZonaComer().remove(hormigaObrera.getID());
-            contador.actualizarZonaComer();
+        synchronized(estadisticas.getBloqueoZonaComer()){
+            estadisticas.getListaZonaComer().remove(hormigaObrera.getID());
+            estadisticas.actualizarZonaComer();
         }
     }
 }

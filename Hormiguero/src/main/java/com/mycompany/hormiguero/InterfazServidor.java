@@ -4,37 +4,27 @@
  */
 package com.mycompany.hormiguero;
 
-import java.awt.Dimension;
-import java.awt.Toolkit;
 import javax.swing.JFrame;
 
 /**
  *
  * @author Ivanl
  */
-public class Interfaz extends javax.swing.JFrame {
+public class InterfazServidor extends javax.swing.JFrame {
     private Refugio refugio;
     private Insecto insecto;
-    private Contador contador;
+    private Estadisticas estadisticas;
     /**
      * Creates new form Interfaz
      */
-    public Interfaz(Refugio refugio, Insecto insecto, Contador contador) {
-        this.contador = contador;
+    public InterfazServidor(Refugio refugio, Insecto insecto, Estadisticas estadisticas) {
+        this.estadisticas = estadisticas;
         this.refugio = refugio;
         this.insecto = insecto;
         initComponents();
-        // Configuración del JFrame
-        setTitle("Mi JFrame en pantalla completa");
+        
+        setTitle("Hormiguero");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
-        // Obtener la resolución de pantalla
-        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        
-        // Establecer el tamaño del JFrame al tamaño de pantalla
-        //setSize(screenSize.width, screenSize.height);
-        
-        // Centrar el JFrame
         setLocationRelativeTo(null);
     }
 
@@ -359,11 +349,11 @@ public class Interfaz extends javax.swing.JFrame {
             System.out.println("Ya hay un insecto atacando el hormiguero");
         }
         else{
-            if (contador.getNumSoldados() == 0){
+            if (estadisticas.getNumSoldados() == 0){
                 System.out.println("Se necesita al menos una hormiga soldado para poder defender el hormiguero");
             }
             else{
-                if (!contador.getPlay()){
+                if (!estadisticas.getPlay()){
                     System.out.println("No se puede generar un insecto mientras el programa está pausado");
                 }
                 else{
@@ -375,10 +365,10 @@ public class Interfaz extends javax.swing.JFrame {
     }//GEN-LAST:event_generarInsectoActionPerformed
 
     private void pausaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaPlayActionPerformed
-        if (contador.getPlay()){
+        if (estadisticas.getPlay()){
             pausaPlay.setText("Play");
-            contador.setPlay(false);
-            for (Thread thread : contador.getListaHormigas()){
+            estadisticas.setPlay(false);
+            for (Thread thread : estadisticas.getListaHormigas()){
                 if (thread != null){
                     thread.interrupt();
                 }
@@ -386,9 +376,9 @@ public class Interfaz extends javax.swing.JFrame {
         }
         else{
             pausaPlay.setText("Pausa");
-            contador.setPlay(true);
-            synchronized(contador.getBloqueoPausa()){
-                contador.getBloqueoPausa().notifyAll();
+            estadisticas.setPlay(true);
+            synchronized(estadisticas.getBloqueoPausa()){
+                estadisticas.getBloqueoPausa().notifyAll();
             }
         }
     }//GEN-LAST:event_pausaPlayActionPerformed

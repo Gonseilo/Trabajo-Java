@@ -12,10 +12,10 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class ZonaInstruccion {
-    private Contador contador;
+    private Estadisticas estadisticas;
 
-    public ZonaInstruccion(Contador contador) {
-        this.contador = contador;
+    public ZonaInstruccion(Estadisticas estadisticas) {
+        this.estadisticas = estadisticas;
     }
     
     public void Instruir (HormigaSoldado hormigaSoldado, Insecto insecto, Tunel tunel){
@@ -23,9 +23,9 @@ public class ZonaInstruccion {
         long tiempoDormido = 0;
         int tiempoFinal = hormigaSoldado.getTiempoInstruir();
         
-        synchronized(contador.getBloqueoInstruyendo()){
-            contador.getListaInstruyendo().add(hormigaSoldado.getID());
-            contador.actualizarInstruyendo();
+        synchronized(estadisticas.getBloqueoInstruyendo()){
+            estadisticas.getListaInstruyendo().add(hormigaSoldado.getID());
+            estadisticas.actualizarInstruyendo();
         }
         while(tiempoDormido < tiempoFinal){
             try {
@@ -37,20 +37,20 @@ public class ZonaInstruccion {
                 System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " se ha interrumpido después de instruir " + tiempoDormido + "ms");
                 
                 if (insecto.getInterrumpirInsecto()){
-                    synchronized(contador.getBloqueoInstruyendo()){
-                        contador.getListaInstruyendo().remove(hormigaSoldado.getID());
-                        contador.actualizarInstruyendo();
+                    synchronized(estadisticas.getBloqueoInstruyendo()){
+                        estadisticas.getListaInstruyendo().remove(hormigaSoldado.getID());
+                        estadisticas.actualizarInstruyendo();
                     }
                     insecto.DefenderInsecto(hormigaSoldado);
-                    synchronized(contador.getBloqueoInstruyendo()){
-                        contador.getListaInstruyendo().add(hormigaSoldado.getID());
-                        contador.actualizarInstruyendo();
+                    synchronized(estadisticas.getBloqueoInstruyendo()){
+                        estadisticas.getListaInstruyendo().add(hormigaSoldado.getID());
+                        estadisticas.actualizarInstruyendo();
                     }
                 }
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -58,9 +58,9 @@ public class ZonaInstruccion {
                 }
             }
         }
-        synchronized(contador.getBloqueoInstruyendo()){
-            contador.getListaInstruyendo().remove(hormigaSoldado.getID());
-            contador.actualizarInstruyendo();
+        synchronized(estadisticas.getBloqueoInstruyendo()){
+            estadisticas.getListaInstruyendo().remove(hormigaSoldado.getID());
+            estadisticas.actualizarInstruyendo();
         }
     }
 }

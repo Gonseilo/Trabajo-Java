@@ -10,8 +10,8 @@ import java.util.ArrayList;
  *
  * @author Ivanl
  */
-public class Contador {
-    private Interfaz interfaz;
+public class Estadisticas {
+    private InterfazServidor interfazServidor;
     private Boolean play = true;
     private final Object bloqueoPausa = new Object();
     private int numHormigas;
@@ -41,6 +41,18 @@ public class Contador {
     private final Object bloqueoComidaZonaComer = new Object();
     private int comidaAlmacen;
     private int comidaZonaComer;
+    private int obrerasExterior;
+    private int obrerasInterior;
+    private int soldadosInstruccion;
+    private int soldadosDefendiendo;
+    private int criasZonaComer;
+    private int criasRefugio;
+    private final Object bloqueoObrerasExterior = new Object();
+    private final Object bloqueoObrerasInterior = new Object();
+    private final Object bloqueoSoldadosInstruccion = new Object();
+    private final Object bloqueoSoldadosDefendiendo = new Object();
+    private final Object bloqueoCriasZonaComer = new Object();
+    private final Object bloqueoCriasRefugio = new Object();
     
     public synchronized void actualizarBuscandoComida(){
         String texto = "";
@@ -54,7 +66,7 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoBuscandoComida(texto);
+        interfazServidor.setTextoBuscandoComida(texto);
     }
     
     public synchronized void actualizarDefendiendo(){
@@ -69,7 +81,7 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoDefendiendo(texto);
+        interfazServidor.setTextoDefendiendo(texto);
     }
     
     public synchronized void actualizarAlmacen(){
@@ -84,7 +96,7 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoAlmacen(texto);
+        interfazServidor.setTextoAlmacen(texto);
     }
     
     public synchronized void actualizarLlevandoComida(){
@@ -99,7 +111,7 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoLlevandoComida(texto);
+        interfazServidor.setTextoLlevandoComida(texto);
     }
     
     public synchronized void actualizarInstruyendo(){
@@ -114,7 +126,7 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoInstruyendo(texto);
+        interfazServidor.setTextoInstruyendo(texto);
     }
     
     public synchronized void actualizarDescansando(){
@@ -129,7 +141,7 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoDescansando(texto);
+        interfazServidor.setTextoDescansando(texto);
     }
     
     public synchronized void actualizarZonaComer(){
@@ -144,7 +156,7 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoZonaComer(texto);
+        interfazServidor.setTextoZonaComer(texto);
     }
     
     public synchronized void actualizarRefugio(){
@@ -159,15 +171,15 @@ public class Contador {
                 }
             }
         }
-        interfaz.setTextoRefugiadas(texto);
+        interfazServidor.setTextoRefugiadas(texto);
     }
     
     public synchronized void actualizarComidaAlmacen(){
-        interfaz.setTextoComidaAlmacen(String.valueOf(comidaAlmacen));
+        interfazServidor.setTextoComidaAlmacen(String.valueOf(comidaAlmacen));
     }
     
     public synchronized void actualizarComidaZonaComer(){
-        interfaz.setTextoComidaZonaComer(String.valueOf(comidaZonaComer));
+        interfazServidor.setTextoComidaZonaComer(String.valueOf(comidaZonaComer));
     }
     
     public int getNumHormigas() {
@@ -318,12 +330,12 @@ public class Contador {
         return comidaZonaComer;
     }
 
-    public void setInterfaz(Interfaz interfaz) {
-        this.interfaz = interfaz;
+    public void setInterfazServidor(InterfazServidor interfazServidor) {
+        this.interfazServidor = interfazServidor;
     }
 
-    public Interfaz getInterfaz() {
-        return interfaz;
+    public InterfazServidor getInterfazServidor() {
+        return interfazServidor;
     }
 
     public Object getBloqueoBuscandoComida() {
@@ -364,5 +376,77 @@ public class Contador {
 
     public Object getBloqueoComidaZonaComer() {
         return bloqueoComidaZonaComer;
+    }
+
+    public int getObrerasExterior() {
+        return obrerasExterior;
+    }
+
+    public int getObrerasInterior() {
+        return obrerasInterior;
+    }
+
+    public int getSoldadosInstruccion() {
+        return soldadosInstruccion;
+    }
+
+    public int getSoldadosDefendiendo() {
+        return soldadosDefendiendo;
+    }
+
+    public int getCriasZonaComer() {
+        return criasZonaComer;
+    }
+
+    public int getCriasRefugio() {
+        return criasRefugio;
+    }
+
+    public void setObrerasExterior(int obrerasExterior) {
+        this.obrerasExterior = obrerasExterior;
+    }
+
+    public void setObrerasInterior(int obrerasInterior) {
+        this.obrerasInterior = obrerasInterior;
+    }
+
+    public void setSoldadosInstruccion(int soldadosInstruccion) {
+        this.soldadosInstruccion = soldadosInstruccion;
+    }
+
+    public void setSoldadosDefendiendo(int soldadosDefendiendo) {
+        this.soldadosDefendiendo = soldadosDefendiendo;
+    }
+
+    public void setCriasZonaComer(int criasZonaComer) {
+        this.criasZonaComer = criasZonaComer;
+    }
+
+    public void setCriasRefugio(int criasRefugio) {
+        this.criasRefugio = criasRefugio;
+    }
+
+    public Object getBloqueoObrerasExterior() {
+        return bloqueoObrerasExterior;
+    }
+
+    public Object getBloqueoObrerasInterior() {
+        return bloqueoObrerasInterior;
+    }
+
+    public Object getBloqueoSoldadosInstruccion() {
+        return bloqueoSoldadosInstruccion;
+    }
+
+    public Object getBloqueoSoldadosDefendiendo() {
+        return bloqueoSoldadosDefendiendo;
+    }
+
+    public Object getBloqueoCriasZonaComer() {
+        return bloqueoCriasZonaComer;
+    }
+
+    public Object getBloqueoCriasRefugio() {
+        return bloqueoCriasRefugio;
     }
 }

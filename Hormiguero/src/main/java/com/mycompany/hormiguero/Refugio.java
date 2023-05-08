@@ -14,19 +14,19 @@ import java.util.logging.Logger;
 public class Refugio {
     private boolean ataque;
     private final Object bloqueo = new Object();
-    private Contador contador;
+    private Estadisticas estadisticas;
 
-    public Refugio(Contador contador) {
+    public Refugio(Estadisticas estadisticas) {
         this.ataque = false;
-        this.contador = contador;
+        this.estadisticas = estadisticas;
     }
     
     public void Refugiarse (HormigaCria hormigaCria){
         System.out.println("Hormiga " + new String(hormigaCria.getID()) + " entra al refugio");
         
-        synchronized(contador.getBloqueoRefugio()){
-            contador.getListaRefugio().add(hormigaCria.getID());
-            contador.actualizarRefugio();
+        synchronized(estadisticas.getBloqueoRefugio()){
+            estadisticas.getListaRefugio().add(hormigaCria.getID());
+            estadisticas.actualizarRefugio();
         }
         
         while(true){
@@ -36,10 +36,10 @@ public class Refugio {
                 }
                 break;
             } catch (InterruptedException ex) {
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -52,9 +52,9 @@ public class Refugio {
         }
         System.out.println("Hormiga " + new String(hormigaCria.getID()) + " sale del refugio");
         
-        synchronized(contador.getBloqueoRefugio()){
-            contador.getListaRefugio().remove(hormigaCria.getID());
-            contador.actualizarRefugio();
+        synchronized(estadisticas.getBloqueoRefugio()){
+            estadisticas.getListaRefugio().remove(hormigaCria.getID());
+            estadisticas.actualizarRefugio();
         }
     }
 

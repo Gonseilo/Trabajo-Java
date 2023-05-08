@@ -13,11 +13,11 @@ import java.util.logging.Logger;
  */
 public class ZonaDescanso {
     private Refugio refugio;
-    private Contador contador;
+    private Estadisticas estadisticas;
 
-    public ZonaDescanso(Refugio refugio, Contador contador) {
+    public ZonaDescanso(Refugio refugio, Estadisticas estadisticas) {
         this.refugio = refugio;
-        this.contador = contador;
+        this.estadisticas = estadisticas;
     }
     
     public void Descansar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto, Tunel tunel){
@@ -43,9 +43,9 @@ public class ZonaDescanso {
             tiempoFinal = hormigaCria.getTiempoDescansar();
         }
         
-        synchronized(contador.getBloqueoDescansando()){
-            contador.getListaDescansando().add(idChar);
-            contador.actualizarDescansando();
+        synchronized(estadisticas.getBloqueoDescansando()){
+            estadisticas.getListaDescansando().add(idChar);
+            estadisticas.actualizarDescansando();
         }
         
         while(tiempoDormido < tiempoFinal){
@@ -62,16 +62,16 @@ public class ZonaDescanso {
                         tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                         System.out.println("Hormiga " + id + " se ha interrumpido después de descansar " + tiempoDormido + "ms");
         
-                        synchronized(contador.getBloqueoDescansando()){
-                            contador.getListaDescansando().remove(idChar);
-                            contador.actualizarDescansando();
+                        synchronized(estadisticas.getBloqueoDescansando()){
+                            estadisticas.getListaDescansando().remove(idChar);
+                            estadisticas.actualizarDescansando();
                         }
         
                         insecto.DefenderInsecto(hormigaSoldado);
         
-                        synchronized(contador.getBloqueoDescansando()){
-                            contador.getListaDescansando().add(idChar);
-                            contador.actualizarDescansando();
+                        synchronized(estadisticas.getBloqueoDescansando()){
+                            estadisticas.getListaDescansando().add(idChar);
+                            estadisticas.actualizarDescansando();
                         }
                     }
                     else{
@@ -79,16 +79,16 @@ public class ZonaDescanso {
                             tiempoDormido = tiempoFinal;
                             System.out.println("Hormiga " + id + " se ha interrumpido después de descansar " + tiempoDormido + "ms");
         
-                            synchronized(contador.getBloqueoDescansando()){
-                                contador.getListaDescansando().remove(idChar);
-                                contador.actualizarDescansando();
+                            synchronized(estadisticas.getBloqueoDescansando()){
+                                estadisticas.getListaDescansando().remove(idChar);
+                                estadisticas.actualizarDescansando();
                             }
                             
                             refugio.Refugiarse(hormigaCria);
         
-                            synchronized(contador.getBloqueoDescansando()){
-                                contador.getListaDescansando().add(idChar);
-                                contador.actualizarDescansando();
+                            synchronized(estadisticas.getBloqueoDescansando()){
+                                estadisticas.getListaDescansando().add(idChar);
+                                estadisticas.actualizarDescansando();
                             }
                         }
                         else{
@@ -96,10 +96,10 @@ public class ZonaDescanso {
                         }
                     }
                 }
-                if (!contador.getPlay()){
-                    synchronized(contador.getBloqueoPausa()){
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
                         try {
-                            contador.getBloqueoPausa().wait();
+                            estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
@@ -108,9 +108,9 @@ public class ZonaDescanso {
             }
         }
         
-        synchronized(contador.getBloqueoDescansando()){
-            contador.getListaDescansando().remove(idChar);
-            contador.actualizarDescansando();
+        synchronized(estadisticas.getBloqueoDescansando()){
+            estadisticas.getListaDescansando().remove(idChar);
+            estadisticas.actualizarDescansando();
         }
     }
 }

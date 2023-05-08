@@ -15,13 +15,13 @@ import java.util.logging.Logger;
 public class Tunel {
     private Semaphore semaforoTunelEntrada;
     private Semaphore semaforoTunelSalida;
-    private Contador contador;
+    private Estadisticas estadisticas;
     private Refugio refugio;
 
-    public Tunel(Semaphore semaforoTunelEntrada, Semaphore semaforoTunelSalida, Contador contador, Refugio refugio) {
+    public Tunel(Semaphore semaforoTunelEntrada, Semaphore semaforoTunelSalida, Estadisticas estadisticas, Refugio refugio) {
         this.semaforoTunelEntrada = semaforoTunelEntrada;
         this.semaforoTunelSalida = semaforoTunelSalida;
-        this.contador = contador;
+        this.estadisticas = estadisticas;
         this.refugio = refugio;
     }
     
@@ -43,10 +43,10 @@ public class Tunel {
             System.out.println("Hormiga " + id + " entrando al hormiguero");
             Thread.sleep(100);
         } catch (InterruptedException ex) {
-            if (!contador.getPlay()){
-                synchronized(contador.getBloqueoPausa()){
+            if (!estadisticas.getPlay()){
+                synchronized(estadisticas.getBloqueoPausa()){
                     try {
-                        contador.getBloqueoPausa().wait();
+                        estadisticas.getBloqueoPausa().wait();
                     } catch (InterruptedException ex1) {
                         Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                     }
@@ -86,10 +86,10 @@ public class Tunel {
             System.out.println("Hormiga " + id + " saliendo del hormiguero");
             Thread.sleep(100);
         } catch (InterruptedException ex) {
-            if (!contador.getPlay()){
-                synchronized(contador.getBloqueoPausa()){
+            if (!estadisticas.getPlay()){
+                synchronized(estadisticas.getBloqueoPausa()){
                     try {
-                        contador.getBloqueoPausa().wait();
+                        estadisticas.getBloqueoPausa().wait();
                     } catch (InterruptedException ex1) {
                         Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                     }
