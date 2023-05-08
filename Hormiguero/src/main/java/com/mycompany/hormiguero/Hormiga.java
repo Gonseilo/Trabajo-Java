@@ -47,9 +47,10 @@ public class Hormiga {
         
         int tiempoMinimo = 800;
         int tiempoMaximo = 3500;
-        int tiempoGeneracionHormigas = rand.nextInt((tiempoMaximo - tiempoMinimo +1)+ tiempoMinimo);
+        
         
         for (int i=0; i < 10000; i++){
+            int tiempoGeneracionHormigas = rand.nextInt((tiempoMaximo - tiempoMinimo +1)+ tiempoMinimo);
             estadisticas.setNumHormigas(i+1);
             
             if (i % 5 <= 2){

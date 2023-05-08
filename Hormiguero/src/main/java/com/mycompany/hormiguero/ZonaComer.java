@@ -72,10 +72,26 @@ public class ZonaComer {
                         else{
                             if (hormigaCria != null){
                                 synchronized(estadisticas.getBloqueoZonaComer()){
-                                estadisticas.getListaZonaComer().remove(idChar);
-                                estadisticas.actualizarZonaComer();
-        }
+                                    estadisticas.getListaZonaComer().remove(idChar);
+                                    estadisticas.actualizarZonaComer();
+                                }
+                                synchronized(estadisticas.getBloqueoCriasZonaComer()){
+                                    estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() - 1);
+                                    System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
+                                }
+                                synchronized(estadisticas.getBloqueoCriasRefugio()){
+                                    estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
+                                    System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
+                                }
                                 refugio.Refugiarse(hormigaCria);
+                                synchronized(estadisticas.getBloqueoCriasRefugio()){
+                                    estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()- 1);
+                                    System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
+                                }
+                                synchronized(estadisticas.getBloqueoCriasZonaComer()){
+                                    estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() + 1);
+                                    System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
+                                }
                                 Comer(null, null, hormigaCria, insecto, tunel);
         
                                 synchronized(estadisticas.getBloqueoZonaComer()){
@@ -142,8 +158,23 @@ public class ZonaComer {
                                 estadisticas.getListaZonaComer().remove(idChar);
                                 estadisticas.actualizarZonaComer();
                             }
-                            
+                            synchronized(estadisticas.getBloqueoCriasZonaComer()){
+                                estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() - 1);
+                                System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
+                            }
+                            synchronized(estadisticas.getBloqueoCriasRefugio()){
+                                estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
+                                System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
+                            }
                             refugio.Refugiarse(hormigaCria);
+                            synchronized(estadisticas.getBloqueoCriasRefugio()){
+                                estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()- 1);
+                                System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
+                            }
+                            synchronized(estadisticas.getBloqueoCriasZonaComer()){
+                                estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() + 1);
+                                System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
+                            }
                             Comer(null, null, hormigaCria, insecto, tunel);
         
                             synchronized(estadisticas.getBloqueoZonaComer()){

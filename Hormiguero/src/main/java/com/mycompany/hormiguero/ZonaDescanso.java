@@ -83,8 +83,15 @@ public class ZonaDescanso {
                                 estadisticas.getListaDescansando().remove(idChar);
                                 estadisticas.actualizarDescansando();
                             }
-                            
+                            synchronized(estadisticas.getBloqueoCriasRefugio()){
+                                estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
+                                System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
+                            }
                             refugio.Refugiarse(hormigaCria);
+                            synchronized(estadisticas.getBloqueoCriasRefugio()){
+                                estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()- 1);
+                                System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
+                            }
         
                             synchronized(estadisticas.getBloqueoDescansando()){
                                 estadisticas.getListaDescansando().add(idChar);

@@ -27,20 +27,21 @@ public class Cliente {
         DataInputStream entrada;
         DataOutputStream salida;
         String mensaje, respuesta;
+        InterfazCliente interfazCliente = new InterfazCliente();
+        interfazCliente.setVisible(true);
         int n = 0;
         try {
             cliente = new Socket(InetAddress.getLocalHost(), 5000);
             entrada = new DataInputStream(cliente.getInputStream());
             salida = new DataOutputStream(cliente.getOutputStream());
+            salida.writeUTF("Hola soy el cliente");
             while(n<=1){
-                mensaje = "Iván";
-                salida.writeUTF(mensaje);
-                respuesta = entrada.readUTF();
-                System.out.println("Mi mensaje: " + mensaje);
-                System.out.println("Respuesta servidor: " + respuesta);
-                respuesta = entrada.readUTF();
-                System.out.println("Mi mensaje: " + mensaje);
-                System.out.println("Respuesta servidor: " + respuesta);
+                interfazCliente.setTextoObrerasExterior(entrada.readUTF());
+                interfazCliente.setTextoObrerasInterior(entrada.readUTF());
+                interfazCliente.setTextoSoldadosInstruccion(entrada.readUTF());
+                interfazCliente.setTextoSoldadosDefendiendo(entrada.readUTF());
+                interfazCliente.setTextoCriasZonaComer(entrada.readUTF());
+                interfazCliente.setTextoCriasRefugio(entrada.readUTF());
             }
             entrada.close();
             salida.close();

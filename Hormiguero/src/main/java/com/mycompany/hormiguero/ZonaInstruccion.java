@@ -27,6 +27,10 @@ public class ZonaInstruccion {
             estadisticas.getListaInstruyendo().add(hormigaSoldado.getID());
             estadisticas.actualizarInstruyendo();
         }
+        synchronized(estadisticas.getBloqueoSoldadosInstruccion()){
+            estadisticas.setSoldadosInstruccion(estadisticas.getSoldadosInstruccion() + 1);
+            System.out.println("Soldados instruyendo: " + estadisticas.getSoldadosInstruccion());
+        }
         while(tiempoDormido < tiempoFinal){
             try {
                 System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " va a instruir durante " + (tiempoFinal - tiempoDormido) + "ms");
@@ -41,12 +45,21 @@ public class ZonaInstruccion {
                         estadisticas.getListaInstruyendo().remove(hormigaSoldado.getID());
                         estadisticas.actualizarInstruyendo();
                     }
+                    synchronized(estadisticas.getBloqueoSoldadosInstruccion()){
+                        estadisticas.setSoldadosInstruccion(estadisticas.getSoldadosInstruccion() - 1);
+                        System.out.println("Soldados instruyendo: " + estadisticas.getSoldadosInstruccion());
+                    }
                     insecto.DefenderInsecto(hormigaSoldado);
                     synchronized(estadisticas.getBloqueoInstruyendo()){
                         estadisticas.getListaInstruyendo().add(hormigaSoldado.getID());
                         estadisticas.actualizarInstruyendo();
                     }
+                    synchronized(estadisticas.getBloqueoSoldadosInstruccion()){
+                        estadisticas.setSoldadosInstruccion(estadisticas.getSoldadosInstruccion() + 1);
+                        System.out.println("Soldados instruyendo: " + estadisticas.getSoldadosInstruccion());
+                    }
                 }
+                
                 if (!estadisticas.getPlay()){
                     synchronized(estadisticas.getBloqueoPausa()){
                         try {
@@ -61,6 +74,10 @@ public class ZonaInstruccion {
         synchronized(estadisticas.getBloqueoInstruyendo()){
             estadisticas.getListaInstruyendo().remove(hormigaSoldado.getID());
             estadisticas.actualizarInstruyendo();
+        }
+        synchronized(estadisticas.getBloqueoSoldadosInstruccion()){
+            estadisticas.setSoldadosInstruccion(estadisticas.getSoldadosInstruccion() - 1);
+            System.out.println("Soldados instruyendo: " + estadisticas.getSoldadosInstruccion());
         }
     }
 }

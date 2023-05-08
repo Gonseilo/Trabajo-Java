@@ -17,6 +17,25 @@ public class InterfazCliente extends javax.swing.JFrame {
     public InterfazCliente() {
         initComponents();
     }
+    
+    public void setTextoObrerasExterior (String texto){
+        obrerasExterior.setText(texto);
+    }
+    public void setTextoObrerasInterior (String texto){
+        obrerasInterior.setText(texto);
+    }
+    public void setTextoSoldadosInstruccion (String texto){
+        soldadosInstruccion.setText(texto);
+    }
+    public void setTextoSoldadosDefendiendo (String texto){
+        soldadosDefendiendo.setText(texto);
+    }
+    public void setTextoCriasZonaComer (String texto){
+        criasZonaComer.setText(texto);
+    }
+    public void setTextoCriasRefugio (String texto){
+        criasRefugio.setText(texto);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.

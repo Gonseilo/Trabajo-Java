@@ -46,6 +46,7 @@ public class Insecto {
     }
     
     public void DefenderInsecto(HormigaSoldado hormigaSoldado){
+        
         long tiempoInicio = System.currentTimeMillis();
         long tiempoDormido = 0;
         int tiempoFinal = hormigaSoldado.getTiempoInstruir();
@@ -55,6 +56,7 @@ public class Insecto {
         while(true){
             try {
                 this.barrera.await();
+                
                 break;
             } catch (InterruptedException ex) {
                 if (!estadisticas.getPlay()){
@@ -96,6 +98,10 @@ public class Insecto {
                 }
             }
         }
+        synchronized(estadisticas.getBloqueoSoldadosDefendiendo()){
+            estadisticas.setSoldadosDefendiendo(estadisticas.getSoldadosDefendiendo() + 1);
+            System.out.println("Soldados defendiendo: " + estadisticas.getSoldadosDefendiendo());
+        }
         interrumpirInsecto = false;
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
         synchronized(estadisticas.getBloqueoDefendiendo()){
@@ -120,6 +126,10 @@ public class Insecto {
                     Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
+        }
+        synchronized(estadisticas.getBloqueoSoldadosDefendiendo()){
+            estadisticas.setSoldadosDefendiendo(estadisticas.getSoldadosDefendiendo() - 1);
+            System.out.println("Soldados defendiendo: " + estadisticas.getSoldadosDefendiendo());
         }
         synchronized(estadisticas.getBloqueoDefendiendo()){
             estadisticas.getListaDefendiendo().remove(hormigaSoldado.getID());

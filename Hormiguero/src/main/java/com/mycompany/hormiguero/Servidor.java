@@ -16,12 +16,21 @@ import java.util.logging.Logger;
  *
  * @author Ivanl
  */
-public class Servidor {
+public class Servidor implements Runnable{
+    private static Estadisticas estadisticas;
+    
+    public Servidor(Estadisticas estadisticas){
+        this.estadisticas = estadisticas;
+    }
 
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    
+
+    @Override
+    public void run() {
+        
         ServerSocket servidor;
         Socket conexion;
         DataOutputStream salida;
@@ -40,8 +49,12 @@ public class Servidor {
                 String mensaje = entrada.readUTF();
                 System.out.println("Conexión n." + numConexion + "\nMensaje: " + mensaje);
                 while(n<1){
-                    salida.writeUTF("Buenos días " + mensaje);
-                    salida.writeUTF("algo");
+                                        salida.writeUTF(String.valueOf(estadisticas.getObrerasExterior()));
+                    salida.writeUTF(String.valueOf(estadisticas.getObrerasInterior()));
+                    salida.writeUTF(String.valueOf(estadisticas.getSoldadosInstruccion()));
+                    salida.writeUTF(String.valueOf(estadisticas.getSoldadosDefendiendo()));
+                    salida.writeUTF(String.valueOf(estadisticas.getCriasZonaComer()));
+                    salida.writeUTF(String.valueOf(estadisticas.getCriasRefugio()));
                 }
                 entrada.close();
                 salida.close();

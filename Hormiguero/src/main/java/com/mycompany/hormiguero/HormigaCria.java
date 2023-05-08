@@ -58,12 +58,30 @@ public class HormigaCria extends Hormiga implements Runnable {
     public void run() {
         SetID(GenerarIDCria());
         System.out.println(getID());
+        
         tunel.Entrar(null, null, this, insecto);
         if (refugio.isAtaque()){
+            synchronized(estadisticas.getBloqueoCriasRefugio()){
+                estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
+                System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
+            }
             refugio.Refugiarse(this);
+            synchronized(estadisticas.getBloqueoCriasRefugio()){
+                estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()- 1);
+                System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
+            }
         }
         while (true){
+            synchronized(estadisticas.getBloqueoCriasZonaComer()){
+                estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() + 1);
+                System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
+            }
+            
             zonaComer.Comer(null, null, this, insecto, tunel);
+            synchronized(estadisticas.getBloqueoCriasZonaComer()){
+                estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() - 1);
+                System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
+            }
             zonaDescanso.Descansar(null, null, this, insecto, tunel);
         }
     }

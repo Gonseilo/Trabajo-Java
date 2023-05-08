@@ -28,6 +28,7 @@ public class Main {
         Semaphore semaforoTunelEntrada = new Semaphore(1);
         Semaphore semaforoTunelSalida = new Semaphore(2);
         
+        
         Estadisticas estadisticas = new Estadisticas();
         AlmacenComida almacenComida = new AlmacenComida(semaforo, estadisticas);
         Refugio refugio = new Refugio(estadisticas);
@@ -38,9 +39,12 @@ public class Main {
         Insecto insecto = new Insecto(refugio, tunel, estadisticas);
         
         InterfazServidor interfazServidor = new InterfazServidor(refugio, insecto, estadisticas);
-        InterfazCliente interfazcliente = new InterfazCliente();
         estadisticas.setInterfazServidor(interfazServidor);
         interfazServidor.setVisible(true);
+        
+        Runnable runnable = new Servidor(estadisticas);
+        Thread thread = new Thread(runnable);
+        thread.start();
         
         char[] ID = new char[6];
         Hormiga hormiga = new Hormiga(0, ID, "", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
