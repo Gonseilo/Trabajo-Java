@@ -19,6 +19,7 @@ public class Insecto {
     private Tunel tunel;
     private Contador contador;
     private Boolean interrumpirInsecto = false;
+    private int soldadosBarrera;
 
     public Insecto(Refugio refugio, Tunel tunel, Contador contador) {
         this.contador = contador;
@@ -27,7 +28,8 @@ public class Insecto {
     }
     
     public void GenerarInsecto(){
-        this.barrera = new CyclicBarrier(contador.getNumSoldados());
+        soldadosBarrera = contador.getNumSoldados();
+        this.barrera = new CyclicBarrier(soldadosBarrera);
         interrumpirInsecto = true;
         
         for (Thread thread : contador.getListaSoldados()){
@@ -65,10 +67,33 @@ public class Insecto {
                     }
                 }
                 else{
-                    Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (BrokenBarrierException ex) {
-                Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
+                if (!contador.getPlay()){
+                    synchronized(contador.getBloqueoPausa()){
+                    this.barrera = new CyclicBarrier(soldadosBarrera);
+                        try {
+                            contador.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            if (!contador.getPlay()){
+                                synchronized(contador.getBloqueoPausa()){
+                                    try {
+                                        contador.getBloqueoPausa().wait();
+                                    } catch (InterruptedException ex2) {
+                                        Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex2);
+                                    }
+                                }
+                            }
+                            else{
+                                Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex1);
+                            }
+                        }
+                    }
+                }
+                else{
+                    Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
         }
         interrumpirInsecto = false;

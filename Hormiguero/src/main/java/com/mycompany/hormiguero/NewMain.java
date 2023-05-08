@@ -27,7 +27,7 @@ public class NewMain {
         ZonaComer zonaComer = new ZonaComer(refugio, contador);
         ZonaDescanso zonaDescanso = new ZonaDescanso(refugio, contador);
         ZonaInstruccion zonaInstruccion = new ZonaInstruccion(contador);
-        Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida, contador);
+        Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida, contador, refugio);
         Insecto insecto = new Insecto(refugio, tunel, contador);
         
         Interfaz interfaz = new Interfaz(refugio, insecto, contador);

@@ -16,11 +16,13 @@ public class Tunel {
     private Semaphore semaforoTunelEntrada;
     private Semaphore semaforoTunelSalida;
     private Contador contador;
+    private Refugio refugio;
 
-    public Tunel(Semaphore semaforoTunelEntrada, Semaphore semaforoTunelSalida, Contador contador) {
+    public Tunel(Semaphore semaforoTunelEntrada, Semaphore semaforoTunelSalida, Contador contador, Refugio refugio) {
         this.semaforoTunelEntrada = semaforoTunelEntrada;
         this.semaforoTunelSalida = semaforoTunelSalida;
         this.contador = contador;
+        this.refugio = refugio;
     }
     
     public void Entrar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto){
@@ -52,7 +54,14 @@ public class Tunel {
             }
             else{
                 if (insecto.getInterrumpirInsecto()){
-                    insecto.DefenderInsecto(hormigaSoldado);
+                    if (hormigaSoldado != null){
+                        insecto.DefenderInsecto(hormigaSoldado);
+                    }
+                    else{
+                        if (hormigaCria != null){
+                            refugio.Refugiarse(hormigaCria);
+                        }
+                    }
                 }
                 else{
                     Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);

@@ -37,11 +37,15 @@ public class ZonaInstruccion {
                 System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " se ha interrumpido después de instruir " + tiempoDormido + "ms");
                 
                 if (insecto.getInterrumpirInsecto()){
-                    contador.getListaInstruyendo().remove(hormigaSoldado.getID());
-                    contador.actualizarInstruyendo();
+                    synchronized(contador.getBloqueoInstruyendo()){
+                        contador.getListaInstruyendo().remove(hormigaSoldado.getID());
+                        contador.actualizarInstruyendo();
+                    }
                     insecto.DefenderInsecto(hormigaSoldado);
-                    contador.getListaInstruyendo().add(hormigaSoldado.getID());
-                    contador.actualizarInstruyendo();
+                    synchronized(contador.getBloqueoInstruyendo()){
+                        contador.getListaInstruyendo().add(hormigaSoldado.getID());
+                        contador.actualizarInstruyendo();
+                    }
                 }
                 if (!contador.getPlay()){
                     synchronized(contador.getBloqueoPausa()){
