@@ -4,7 +4,7 @@
  */
 package com.mycompany.hormiguero;
 
-import java.net.Socket;
+import javax.swing.JButton;
 
 /**
  *
@@ -14,6 +14,8 @@ public class InterfazCliente extends javax.swing.JFrame {
     /**
      * Creates new form InterfazCliente
      */
+    private int insecto;
+    
     public InterfazCliente() {
         initComponents();
     }
@@ -35,6 +37,18 @@ public class InterfazCliente extends javax.swing.JFrame {
     }
     public void setTextoCriasRefugio (String texto){
         criasRefugio.setText(texto);
+    }
+
+    public void setInsecto(int insecto) {
+        this.insecto = insecto;
+    }
+
+    public int getInsecto() {
+        return insecto;
+    }
+
+    public JButton getGenerarInsecto() {
+        return generarInsecto;
     }
 
     /**
@@ -60,7 +74,7 @@ public class InterfazCliente extends javax.swing.JFrame {
         soldadosDefendiendo = new javax.swing.JTextField();
         criasZonaComer = new javax.swing.JTextField();
         criasRefugio = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        generarInsecto = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -94,10 +108,10 @@ public class InterfazCliente extends javax.swing.JFrame {
         criasRefugio.setEditable(false);
         criasRefugio.setText("0");
 
-        jButton1.setText("Generar amenaza insecto invasor");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        generarInsecto.setText("Generar amenaza insecto invasor");
+        generarInsecto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                generarInsectoActionPerformed(evt);
             }
         });
 
@@ -135,7 +149,7 @@ public class InterfazCliente extends javax.swing.JFrame {
                 .addContainerGap(107, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(generarInsecto)
                 .addGap(169, 169, 169))
         );
         jPanel2Layout.setVerticalGroup(
@@ -166,7 +180,7 @@ public class InterfazCliente extends javax.swing.JFrame {
                     .addComponent(jLabel6)
                     .addComponent(criasRefugio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 58, Short.MAX_VALUE)
-                .addComponent(jButton1)
+                .addComponent(generarInsecto)
                 .addGap(59, 59, 59))
         );
 
@@ -195,14 +209,15 @@ public class InterfazCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButton1ActionPerformed
+    private void generarInsectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarInsectoActionPerformed
+        generarInsecto.setEnabled(false);
+        insecto = 1;
+    }//GEN-LAST:event_generarInsectoActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField criasRefugio;
     private javax.swing.JTextField criasZonaComer;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton generarInsecto;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

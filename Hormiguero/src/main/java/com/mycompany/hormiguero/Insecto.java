@@ -18,7 +18,6 @@ public class Insecto {
     private Refugio refugio;
     private Tunel tunel;
     private Estadisticas estadisticas;
-    private Boolean interrumpirInsecto = false;
     private int soldadosBarrera;
 
     public Insecto(Refugio refugio, Tunel tunel, Estadisticas estadisticas) {
@@ -28,9 +27,9 @@ public class Insecto {
     }
     
     public void GenerarInsecto(){
+        estadisticas.setInterrumpirInsecto(true);
         soldadosBarrera = estadisticas.getNumSoldados();
         this.barrera = new CyclicBarrier(soldadosBarrera);
-        interrumpirInsecto = true;
         
         for (Thread thread : estadisticas.getListaSoldados()){
             if (thread != null){
@@ -102,7 +101,6 @@ public class Insecto {
             estadisticas.setSoldadosDefendiendo(estadisticas.getSoldadosDefendiendo() + 1);
             System.out.println("Soldados defendiendo: " + estadisticas.getSoldadosDefendiendo());
         }
-        interrumpirInsecto = false;
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
         synchronized(estadisticas.getBloqueoDefendiendo()){
             estadisticas.getListaDefendiendo().add(hormigaSoldado.getID());
@@ -135,15 +133,12 @@ public class Insecto {
             estadisticas.getListaDefendiendo().remove(hormigaSoldado.getID());
             estadisticas.actualizarDefendiendo();
         }
-        refugio.setAtaque(false);
+        estadisticas.setInterrumpirInsecto(false);
+        estadisticas.activarBotonInsecto();
         synchronized(refugio.getBloqueo()){
             refugio.getBloqueo().notifyAll();
         }
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " volviendo de defender la colonia");
         tunel.Entrar(null, hormigaSoldado, null, this);
-    }
-
-    public Boolean getInterrumpirInsecto() {
-        return interrumpirInsecto;
     }
 }

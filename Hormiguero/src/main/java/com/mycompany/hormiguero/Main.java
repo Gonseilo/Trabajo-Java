@@ -42,7 +42,7 @@ public class Main {
         estadisticas.setInterfazServidor(interfazServidor);
         interfazServidor.setVisible(true);
         
-        Runnable runnable = new Servidor(estadisticas);
+        Runnable runnable = new Servidor(estadisticas, insecto);
         Thread thread = new Thread(runnable);
         thread.start();
         

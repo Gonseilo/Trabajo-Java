@@ -42,6 +42,10 @@ public class Cliente {
                 interfazCliente.setTextoSoldadosDefendiendo(entrada.readUTF());
                 interfazCliente.setTextoCriasZonaComer(entrada.readUTF());
                 interfazCliente.setTextoCriasRefugio(entrada.readUTF());
+                salida = new DataOutputStream(cliente.getOutputStream());
+                salida.writeUTF(String.valueOf(interfazCliente.getInsecto()));
+                interfazCliente.setInsecto(0);
+                interfazCliente.getGenerarInsecto().setEnabled(!Boolean.parseBoolean(entrada.readUTF()));
             }
             entrada.close();
             salida.close();

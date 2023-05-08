@@ -18,9 +18,11 @@ import java.util.logging.Logger;
  */
 public class Servidor implements Runnable{
     private static Estadisticas estadisticas;
+    private Insecto insecto;
     
-    public Servidor(Estadisticas estadisticas){
+    public Servidor(Estadisticas estadisticas, Insecto insecto){
         this.estadisticas = estadisticas;
+        this.insecto = insecto;
     }
 
     /**
@@ -35,6 +37,7 @@ public class Servidor implements Runnable{
         Socket conexion;
         DataOutputStream salida;
         DataInputStream entrada;
+        String generarInsecto;
         int numConexion = 0;
         int n = 0;
         try {
@@ -49,12 +52,20 @@ public class Servidor implements Runnable{
                 String mensaje = entrada.readUTF();
                 System.out.println("Conexión n." + numConexion + "\nMensaje: " + mensaje);
                 while(n<1){
-                                        salida.writeUTF(String.valueOf(estadisticas.getObrerasExterior()));
+                    salida.writeUTF(String.valueOf(estadisticas.getObrerasExterior()));
                     salida.writeUTF(String.valueOf(estadisticas.getObrerasInterior()));
                     salida.writeUTF(String.valueOf(estadisticas.getSoldadosInstruccion()));
                     salida.writeUTF(String.valueOf(estadisticas.getSoldadosDefendiendo()));
                     salida.writeUTF(String.valueOf(estadisticas.getCriasZonaComer()));
                     salida.writeUTF(String.valueOf(estadisticas.getCriasRefugio()));
+                    entrada = new DataInputStream(conexion.getInputStream());
+                    generarInsecto = entrada.readUTF();
+                    if(!estadisticas.getInterrumpirInsecto() && Integer.parseInt(generarInsecto) == 1){
+                        insecto.GenerarInsecto();
+                        estadisticas.setInterrumpirInsecto(true);
+                        estadisticas.desactivarBotonInsecto();
+                    }
+                    salida.writeUTF(Boolean.toString(estadisticas.getInterrumpirInsecto()));
                 }
                 entrada.close();
                 salida.close();

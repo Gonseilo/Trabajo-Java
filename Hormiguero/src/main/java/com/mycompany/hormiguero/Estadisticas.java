@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class Estadisticas {
     private InterfazServidor interfazServidor;
+    private Boolean interrumpirInsecto = false;
     private Boolean play = true;
     private final Object bloqueoPausa = new Object();
     private int numHormigas;
@@ -174,12 +175,28 @@ public class Estadisticas {
         interfazServidor.setTextoRefugiadas(texto);
     }
     
+    public void activarBotonInsecto(){
+        interfazServidor.getGenerarInsecto().setEnabled(true);
+    }
+    
+    public void desactivarBotonInsecto(){
+        interfazServidor.getGenerarInsecto().setEnabled(false);
+    }
+    
     public synchronized void actualizarComidaAlmacen(){
         interfazServidor.setTextoComidaAlmacen(String.valueOf(comidaAlmacen));
     }
     
     public synchronized void actualizarComidaZonaComer(){
         interfazServidor.setTextoComidaZonaComer(String.valueOf(comidaZonaComer));
+    }
+
+    public void setInterrumpirInsecto(Boolean interrumpirInsecto) {
+        this.interrumpirInsecto = interrumpirInsecto;
+    }
+
+    public Boolean getInterrumpirInsecto() {
+        return interrumpirInsecto;
     }
     
     public int getNumHormigas() {

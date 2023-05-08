@@ -40,7 +40,7 @@ public class ZonaInstruccion {
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                 System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " se ha interrumpido después de instruir " + tiempoDormido + "ms");
                 
-                if (insecto.getInterrumpirInsecto()){
+                if (estadisticas.getInterrumpirInsecto()){
                     synchronized(estadisticas.getBloqueoInstruyendo()){
                         estadisticas.getListaInstruyendo().remove(hormigaSoldado.getID());
                         estadisticas.actualizarInstruyendo();

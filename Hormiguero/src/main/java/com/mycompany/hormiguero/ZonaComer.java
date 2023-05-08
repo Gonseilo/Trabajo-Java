@@ -55,7 +55,7 @@ public class ZonaComer {
                 try {
                     bloqueo.wait();
                 } catch (InterruptedException ex) {
-                    if (insecto.getInterrumpirInsecto()){
+                    if (estadisticas.getInterrumpirInsecto()){
                         if (hormigaSoldado != null){
                             synchronized(estadisticas.getBloqueoZonaComer()){
                                 estadisticas.getListaZonaComer().remove(idChar);
@@ -124,14 +124,14 @@ public class ZonaComer {
         }
         while(tiempoDormido < tiempoFinal){
             try {
-                if (insecto.getInterrumpirInsecto() && hormigaCria != null){
+                if (estadisticas.getInterrumpirInsecto() && hormigaCria != null){
                     hormigaCria.detenerHilo(hormigaCria.getNumHormiga());
                 }
                 System.out.println("Hormiga " + id + " va a comer durante " + (tiempoFinal - tiempoDormido) + "ms");
                 Thread.sleep(tiempoFinal - tiempoDormido);
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
-                if (insecto.getInterrumpirInsecto()){
+                if (estadisticas.getInterrumpirInsecto()){
                     if (hormigaSoldado != null){
                         tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                         System.out.println("Hormiga " + id + " se ha interrumpido después de comer " + tiempoDormido + "ms");

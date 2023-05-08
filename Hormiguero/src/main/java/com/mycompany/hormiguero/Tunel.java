@@ -53,7 +53,7 @@ public class Tunel {
                 }
             }
             else{
-                if (insecto.getInterrumpirInsecto()){
+                if (estadisticas.getInterrumpirInsecto()){
                     if (hormigaSoldado != null){
                         insecto.DefenderInsecto(hormigaSoldado);
                     }
@@ -96,7 +96,7 @@ public class Tunel {
                 }
             }
             else{
-                if (insecto.getInterrumpirInsecto()){
+                if (estadisticas.getInterrumpirInsecto()){
                     insecto.DefenderInsecto(hormigaSoldado);
                 }
                 else{
