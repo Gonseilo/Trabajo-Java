@@ -72,14 +72,21 @@ public class Estadisticas {
     
     public synchronized void actualizarDefendiendo(){
         String texto = "";
+        int numHormigasDefendiendo = 0;
         if (!listaBuscandoComida.isEmpty()){
             for(char[] arreglo : listaDefendiendo){
                 if (texto == ""){
                     texto = new String(arreglo);
                 }
                 else{
-                    texto = texto + ", " + new String(arreglo);
+                    if (numHormigasDefendiendo%6 == 0){
+                        texto = texto + ",\n" + new String(arreglo);
+                    }
+                    else{
+                        texto = texto + ", " + new String(arreglo);
+                    }
                 }
+                numHormigasDefendiendo++;
             }
         }
         interfazServidor.setTextoDefendiendo(texto);
