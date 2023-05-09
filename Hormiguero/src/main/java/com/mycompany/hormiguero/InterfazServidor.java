@@ -114,12 +114,12 @@ public class InterfazServidor extends javax.swing.JFrame {
         refugiadas = new javax.swing.JTextArea();
         comidaZonaComer = new javax.swing.JTextField();
         comidaAlmacen = new javax.swing.JTextField();
-        jLabel13 = new javax.swing.JLabel();
+        jLabel26 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        getContentPane().setLayout(null);
 
         jPanel1.setToolTipText("");
+        jPanel1.setOpaque(false);
 
         generarInsecto.setText("Generar insecto");
         generarInsecto.addActionListener(new java.awt.event.ActionListener() {
@@ -277,7 +277,7 @@ public class InterfazServidor extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(666, 666, 666)
+                .addContainerGap()
                 .addComponent(jLabel1)
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -339,10 +339,18 @@ public class InterfazServidor extends javax.swing.JFrame {
                 .addGap(66, 66, 66))
         );
 
-        getContentPane().add(jPanel1);
-        jPanel1.setBounds(0, 0, 650, 1314);
-        getContentPane().add(jLabel13);
-        jLabel13.setBounds(0, 0, 0, 0);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 640, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 660, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -402,8 +410,8 @@ public class InterfazServidor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
-    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
