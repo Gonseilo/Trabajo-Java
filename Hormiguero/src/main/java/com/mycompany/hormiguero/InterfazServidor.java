@@ -339,6 +339,8 @@ public class InterfazServidor extends javax.swing.JFrame {
                 .addGap(66, 66, 66))
         );
 
+        jLabel26.setIcon(new javax.swing.ImageIcon("src/main/java/Imagenes/Hormiguero_1.jpg"));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
