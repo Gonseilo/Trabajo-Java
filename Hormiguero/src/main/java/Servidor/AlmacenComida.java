@@ -27,6 +27,9 @@ public class AlmacenComida {
     }
     
     public void DejarComida(HormigaObrera hormigaObrera){
+        long tiempoInicio = System.currentTimeMillis();
+        long tiempoDormido = 0;
+        int tiempoFinal = rand.nextInt(hormigaObrera.getTiempoDejarComidaAlmacénMax()-hormigaObrera.getTiempoDejarComidaAlmacénMin()+1)+hormigaObrera.getTiempoDejarComidaAlmacénMin();
         System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén.");
         while(true){
             try {
@@ -54,11 +57,12 @@ public class AlmacenComida {
             estadisticas.getListaAlmacen().add(hormigaObrera.getID());
             estadisticas.actualizarAlmacen();
         }
-        while(true){
+        while(tiempoDormido < tiempoFinal){
             try {
-                Thread.sleep(rand.nextInt(hormigaObrera.getTiempoDejarComidaAlmacénMax()-hormigaObrera.getTiempoDejarComidaAlmacénMin()+1)+hormigaObrera.getTiempoDejarComidaAlmacénMin());
-                break;
+                Thread.sleep(tiempoFinal - tiempoDormido);
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                 if (!estadisticas.getPlay()){
                     synchronized(estadisticas.getBloqueoPausa()){
                         try {
@@ -91,6 +95,9 @@ public class AlmacenComida {
     }
     
     public void SacarComida(HormigaObrera hormigaObrera){
+        long tiempoInicio = System.currentTimeMillis();
+        long tiempoDormido = 0;
+        int tiempoFinal = rand.nextInt(hormigaObrera.getTiempoCogerComidaAlmacénMax()-hormigaObrera.getTiempoCogerComidaAlmacénMin()+1)+hormigaObrera.getTiempoCogerComidaAlmacénMin();
         System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida del almacén.");
         while(true){
             try {
@@ -160,11 +167,12 @@ public class AlmacenComida {
             estadisticas.setComidaAlmacen(estadisticas.getComidaAlmacen() - 5);
             estadisticas.actualizarComidaAlmacen();
         }
-        while(true){
+        while(tiempoDormido < tiempoFinal){
             try {
-                Thread.sleep(rand.nextInt(hormigaObrera.getTiempoCogerComidaAlmacénMax()-hormigaObrera.getTiempoCogerComidaAlmacénMin()+1)+hormigaObrera.getTiempoCogerComidaAlmacénMin());
-                break;
+                Thread.sleep(tiempoFinal - tiempoDormido);
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                 if (!estadisticas.getPlay()){
                     synchronized(estadisticas.getBloqueoPausa()){
                         try {

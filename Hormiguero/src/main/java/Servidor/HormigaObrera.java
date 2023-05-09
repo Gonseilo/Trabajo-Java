@@ -164,16 +164,20 @@ public class HormigaObrera extends Hormiga implements Runnable {
         while (true){
             if (super.getNumHormiga()%2 == 0){
                 for (int i = 0; i < 10; i++){
+                    long tiempoInicioIrZonaComer = System.currentTimeMillis();
+                    long tiempoDormidoIrZonaComer = 0;
+                    int tiempoFinalIrZonaComer = rand.nextInt(tiempoIrZonaComerMax-tiempoIrZonaComerMin+1)+tiempoIrZonaComerMin;
                     almacenComida.SacarComida(this);
                     synchronized(estadisticas.getBloqueoLlevandoComida()){
                         estadisticas.getListaLlevandoComida().add(getID());
                         estadisticas.actualizarLlevandoComida();
                     }
-                    while(true){
+                    while(tiempoDormidoIrZonaComer < tiempoFinalIrZonaComer){
                         try {
-                            Thread.sleep(rand.nextInt(tiempoIrZonaComerMax-tiempoIrZonaComerMin+1)+tiempoIrZonaComerMin);
-                            break;
+                            Thread.sleep(tiempoFinalIrZonaComer - tiempoDormidoIrZonaComer);
+                            tiempoDormidoIrZonaComer = System.currentTimeMillis() - tiempoInicioIrZonaComer;
                         } catch (InterruptedException ex) {
+                            tiempoDormidoIrZonaComer = System.currentTimeMillis() - tiempoInicioIrZonaComer;
                             if (!estadisticas.getPlay()){
                                 synchronized(estadisticas.getBloqueoPausa()){
                                     try {
@@ -197,6 +201,9 @@ public class HormigaObrera extends Hormiga implements Runnable {
             }
             else{
                 for (int i = 0; i < 10; i++){
+                    long tiempoInicioRecolectarComida = System.currentTimeMillis();
+                    long tiempoDormidoRecolectarComida = 0;
+                    int tiempoFinalRecolectarComida = tiempoRecolectarComida;
                     tunel.Salir(this, null, insecto);
                     System.out.println(estadisticas.calcularFecha() + "La hormiga " + super.getTipoHormiga() + " " + new String(super.getID()) + " está buscando comida en el exterior del hormiguero.");
                     synchronized(estadisticas.getBloqueoBuscandoComida()){
@@ -210,11 +217,12 @@ public class HormigaObrera extends Hormiga implements Runnable {
                         estadisticas.setObrerasExterior(estadisticas.getObrerasExterior() + 1);
                     }
                     
-                    while(true){
+                    while(tiempoDormidoRecolectarComida < tiempoFinalRecolectarComida){
                         try {
-                            Thread.sleep(tiempoRecolectarComida);
-                            break;
+                            Thread.sleep(tiempoFinalRecolectarComida - tiempoDormidoRecolectarComida);
+                            tiempoDormidoRecolectarComida = System.currentTimeMillis() - tiempoInicioRecolectarComida;
                         } catch (InterruptedException ex) {
+                            tiempoDormidoRecolectarComida = System.currentTimeMillis() - tiempoInicioRecolectarComida;
                             if (!estadisticas.getPlay()){
                                 synchronized(estadisticas.getBloqueoPausa()){
                                     try {

@@ -361,15 +361,14 @@ public class InterfazServidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pausaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaPlayActionPerformed
-        
         long ahora = System.currentTimeMillis();
         
-        if(ahora - ultimaVez >= 250){
+        if(ahora - ultimaVez >= 500){
             if (estadisticas.getPlay()){
+                estadisticas.setPlay(false);
                 generarInsecto.setEnabled(false);
                 estadisticas.setInsectoCliente(false);
                 pausaPlay.setText("Play");
-                estadisticas.setPlay(false);
                 for (Thread thread : estadisticas.getListaHormigas()){
                     if (thread != null){
                         thread.interrupt();
@@ -378,8 +377,8 @@ public class InterfazServidor extends javax.swing.JFrame {
                 System.out.println(estadisticas.calcularFecha() + "SE HA PAUSADO LA SIMULACIÓN");
             }
             else{
-                pausaPlay.setText("Pausa");
                 estadisticas.setPlay(true);
+                pausaPlay.setText("Pausa");
                 System.out.println(estadisticas.calcularFecha() + "SE HA REANUDADO LA SIMULACIÓN");
                 synchronized(estadisticas.getBloqueoPausa()){
                     estadisticas.getBloqueoPausa().notifyAll();
