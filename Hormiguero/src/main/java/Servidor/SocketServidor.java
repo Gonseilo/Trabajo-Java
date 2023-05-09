@@ -63,7 +63,7 @@ public class SocketServidor implements Runnable{
                         estadisticas.setInterrumpirInsecto(true);
                         estadisticas.desactivarBotonInsecto();
                     }
-                    salida.writeUTF(Boolean.toString(estadisticas.getInterrumpirInsecto()));
+                    salida.writeUTF(Boolean.toString(estadisticas.getInsectoCliente()));
                 }
                 entrada.close();
                 salida.close();

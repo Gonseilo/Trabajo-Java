@@ -16,6 +16,7 @@ public class Estadisticas {
     private InterfazServidor interfazServidor;
     private Boolean interrumpirInsecto = false;
     private Boolean play = true;
+    private Boolean insectoCliente = false;
     private final Object bloqueoPausa = new Object();
     private int numHormigas;
     private int numCrias;
@@ -191,10 +192,12 @@ public class Estadisticas {
     }
     
     public void activarBotonInsecto(){
+        insectoCliente = true;
         interfazServidor.getGenerarInsecto().setEnabled(true);
     }
     
     public void desactivarBotonInsecto(){
+        insectoCliente = false;
         interfazServidor.getGenerarInsecto().setEnabled(false);
     }
     
@@ -480,5 +483,13 @@ public class Estadisticas {
 
     public Object getBloqueoCriasRefugio() {
         return bloqueoCriasRefugio;
+    }
+
+    public Boolean getInsectoCliente() {
+        return insectoCliente;
+    }
+
+    public void setInsectoCliente(Boolean insectoCliente) {
+        this.insectoCliente = insectoCliente;
     }
 }

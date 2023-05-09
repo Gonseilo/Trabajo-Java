@@ -17,9 +17,10 @@ public class InterfazCliente extends javax.swing.JFrame {
      */
     private int insecto;
     
+    
     public InterfazCliente() {
         initComponents();
-        
+        generarInsecto.setEnabled(false);
         setTitle("Cliente");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

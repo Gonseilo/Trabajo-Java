@@ -17,6 +17,8 @@ public class InterfazServidor extends javax.swing.JFrame {
     private Refugio refugio;
     private Insecto insecto;
     private Estadisticas estadisticas;
+    private long ultimaVez = 0;
+    
     /**
      * Creates new form Interfaz
      */
@@ -359,34 +361,44 @@ public class InterfazServidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pausaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaPlayActionPerformed
-        pausaPlay.setEnabled(false);
-        if (estadisticas.getPlay()){
-            generarInsecto.setEnabled(false);
-            pausaPlay.setText("Play");
-            estadisticas.setPlay(false);
-            for (Thread thread : estadisticas.getListaHormigas()){
-                if (thread != null){
-                    thread.interrupt();
+        
+        long ahora = System.currentTimeMillis();
+        
+        if(ahora - ultimaVez >= 250){
+            if (estadisticas.getPlay()){
+                generarInsecto.setEnabled(false);
+                estadisticas.setInsectoCliente(false);
+                pausaPlay.setText("Play");
+                estadisticas.setPlay(false);
+                for (Thread thread : estadisticas.getListaHormigas()){
+                    if (thread != null){
+                        thread.interrupt();
+                    }
+                }
+                System.out.println(estadisticas.calcularFecha() + "SE HA PAUSADO LA SIMULACIÓN");
+            }
+            else{
+                pausaPlay.setText("Pausa");
+                estadisticas.setPlay(true);
+                System.out.println(estadisticas.calcularFecha() + "SE HA REANUDADO LA SIMULACIÓN");
+                synchronized(estadisticas.getBloqueoPausa()){
+                    estadisticas.getBloqueoPausa().notifyAll();
+                }
+                if(!estadisticas.getInterrumpirInsecto() && estadisticas.getListaSoldados()[0] != null){
+                    generarInsecto.setEnabled(true);
+                    estadisticas.setInsectoCliente(true);
                 }
             }
-            System.out.println(estadisticas.calcularFecha() + "SE HA PAUSADO LA SIMULACIÓN");
+            ultimaVez = ahora;
+            
         }
-        else{
-            pausaPlay.setText("Pausa");
-            estadisticas.setPlay(true);
-            System.out.println(estadisticas.calcularFecha() + "SE HA REANUDADO LA SIMULACIÓN");
-            synchronized(estadisticas.getBloqueoPausa()){
-                estadisticas.getBloqueoPausa().notifyAll();
-            }
-            if(!estadisticas.getInterrumpirInsecto() && estadisticas.getListaSoldados().length == 0){
-                generarInsecto.setEnabled(true);
-            }
-        }
-        pausaPlay.setEnabled(true);
+        
+        
     }//GEN-LAST:event_pausaPlayActionPerformed
 
     private void generarInsectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarInsectoActionPerformed
         generarInsecto.setEnabled(false);
+        estadisticas.setInsectoCliente(false);
         System.out.println(estadisticas.calcularFecha() + "SE HA GENERADO UN INSECTO");
         insecto.GenerarInsecto();
     }//GEN-LAST:event_generarInsectoActionPerformed
