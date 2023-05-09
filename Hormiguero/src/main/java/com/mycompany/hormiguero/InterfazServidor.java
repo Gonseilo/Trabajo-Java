@@ -114,8 +114,12 @@ public class InterfazServidor extends javax.swing.JFrame {
         refugiadas = new javax.swing.JTextArea();
         comidaZonaComer = new javax.swing.JTextField();
         comidaAlmacen = new javax.swing.JTextField();
+        jLabel13 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        getContentPane().setLayout(null);
+
+        jPanel1.setToolTipText("");
 
         generarInsecto.setText("Generar insecto");
         generarInsecto.addActionListener(new java.awt.event.ActionListener() {
@@ -267,13 +271,13 @@ public class InterfazServidor extends javax.swing.JFrame {
                                         .addComponent(jLabel10)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addComponent(comidaZonaComer, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addGap(0, 15, Short.MAX_VALUE)))))
+                                .addGap(0, 0, Short.MAX_VALUE)))))
                 .addGap(62, 62, 62))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(666, 666, 666)
                 .addComponent(jLabel1)
                 .addGap(21, 21, 21)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
@@ -335,19 +339,32 @@ public class InterfazServidor extends javax.swing.JFrame {
                 .addGap(66, 66, 66))
         );
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
+        getContentPane().add(jPanel1);
+        jPanel1.setBounds(0, 0, 650, 1314);
+        getContentPane().add(jLabel13);
+        jLabel13.setBounds(0, 0, 0, 0);
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pausaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaPlayActionPerformed
+        if (estadisticas.getPlay()){
+            pausaPlay.setText("Play");
+            estadisticas.setPlay(false);
+            for (Thread thread : estadisticas.getListaHormigas()){
+                if (thread != null){
+                    thread.interrupt();
+                }
+            }
+        }
+        else{
+            pausaPlay.setText("Pausa");
+            estadisticas.setPlay(true);
+            synchronized(estadisticas.getBloqueoPausa()){
+                estadisticas.getBloqueoPausa().notifyAll();
+            }
+        }
+    }//GEN-LAST:event_pausaPlayActionPerformed
 
     private void generarInsectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarInsectoActionPerformed
         generarInsecto.setEnabled(false);
@@ -369,29 +386,9 @@ public class InterfazServidor extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_generarInsectoActionPerformed
 
-    private void pausaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaPlayActionPerformed
-        if (estadisticas.getPlay()){
-            pausaPlay.setText("Play");
-            estadisticas.setPlay(false);
-            for (Thread thread : estadisticas.getListaHormigas()){
-                if (thread != null){
-                    thread.interrupt();
-                }
-            }
-        }
-        else{
-            pausaPlay.setText("Pausa");
-            estadisticas.setPlay(true);
-            synchronized(estadisticas.getBloqueoPausa()){
-                estadisticas.getBloqueoPausa().notifyAll();
-            }
-        }
-    }//GEN-LAST:event_pausaPlayActionPerformed
-
     /**
      * @param args the command line arguments
      */
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea almacen;
     private javax.swing.JTextArea buscandoComida;
@@ -405,6 +402,7 @@ public class InterfazServidor extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -428,3 +426,5 @@ public class InterfazServidor extends javax.swing.JFrame {
     private javax.swing.JTextArea zonaComer;
     // End of variables declaration//GEN-END:variables
 }
+
+

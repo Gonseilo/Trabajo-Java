@@ -38,6 +38,7 @@ public class Main {
         Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida, estadisticas, refugio);
         Insecto insecto = new Insecto(refugio, tunel, estadisticas);
         
+       
         InterfazServidor interfazServidor = new InterfazServidor(refugio, insecto, estadisticas);
         estadisticas.setInterfazServidor(interfazServidor);
         interfazServidor.setVisible(true);
