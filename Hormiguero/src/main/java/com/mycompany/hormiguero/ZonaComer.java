@@ -4,6 +4,7 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,6 +16,7 @@ public class ZonaComer {
     private final Object bloqueo = new Object();
     private Refugio refugio;
     private Estadisticas estadisticas;
+    Random rand = new Random();
 
     public ZonaComer(Refugio refugio, Estadisticas estadisticas) {
         this.refugio = refugio;
@@ -41,7 +43,7 @@ public class ZonaComer {
         if (hormigaCria != null){
             id = new String(hormigaCria.getID());
             idChar = hormigaCria.getID();
-            tiempoFinal = hormigaCria.getTiempoComer();
+            tiempoFinal = rand.nextInt(hormigaCria.getTiempoComerMax()-hormigaCria.getTiempoComerMin()+1)+hormigaCria.getTiempoComerMin();
         }
         
         synchronized(estadisticas.getBloqueoZonaComer()){
@@ -212,7 +214,7 @@ public class ZonaComer {
         }
         
         try {
-            Thread.sleep(hormigaObrera.getTiempoDejarComidaZonaComer());
+            Thread.sleep(rand.nextInt(hormigaObrera.getTiempoDejarComidaZonaComerMax()-hormigaObrera.getTiempoDejarComidaZonaComerMin()+1)+hormigaObrera.getTiempoDejarComidaZonaComerMin());
         } catch (InterruptedException ex) {
             if (!estadisticas.getPlay()){
                 synchronized(estadisticas.getBloqueoPausa()){

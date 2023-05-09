@@ -4,6 +4,7 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,7 +19,7 @@ public class AlmacenComida {
     private final Object bloqueoSemaforoAcquire = new Object();
     private final Object bloqueoSemaforoRelease = new Object();
     private Estadisticas estadisticas;
-    
+    private Random rand = new Random();
 
     public AlmacenComida(Semaphore semaforo, Estadisticas estadisticas) {
         this.semaforo = semaforo;
@@ -55,7 +56,7 @@ public class AlmacenComida {
         }
         while(true){
             try {
-                Thread.sleep(hormigaObrera.getTiempoDejarComidaAlmacén());
+                Thread.sleep(rand.nextInt(hormigaObrera.getTiempoDejarComidaAlmacénMax()-hormigaObrera.getTiempoDejarComidaAlmacénMin()+1)+hormigaObrera.getTiempoDejarComidaAlmacénMin());
                 break;
             } catch (InterruptedException ex) {
                 if (!estadisticas.getPlay()){
@@ -78,15 +79,12 @@ public class AlmacenComida {
             estadisticas.actualizarComidaAlmacen();
             System.out.println("Comida en el almacén: " + estadisticas.getComidaAlmacen());
         }
-        
         synchronized(bloqueoAvisoComida){
             bloqueoAvisoComida.notify();
         }
-       
         synchronized(bloqueoSemaforoRelease){
             semaforo.release();
         }
-        
         synchronized(estadisticas.getBloqueoAlmacen()){
             estadisticas.getListaAlmacen().remove(hormigaObrera.getID());
             estadisticas.actualizarAlmacen();
@@ -166,7 +164,7 @@ public class AlmacenComida {
         }
         while(true){
             try {
-                Thread.sleep(hormigaObrera.getTiempoCogerComidaAlmacén());
+                Thread.sleep(rand.nextInt(hormigaObrera.getTiempoCogerComidaAlmacénMax()-hormigaObrera.getTiempoCogerComidaAlmacénMin()+1)+hormigaObrera.getTiempoCogerComidaAlmacénMin());
                 break;
             } catch (InterruptedException ex) {
                 if (!estadisticas.getPlay()){
@@ -190,6 +188,5 @@ public class AlmacenComida {
             estadisticas.getListaAlmacen().remove(hormigaObrera.getID());
             estadisticas.actualizarAlmacen();
         }
-        
     }
 }

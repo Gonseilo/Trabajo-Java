@@ -5,14 +5,7 @@
  */
 package com.mycompany.hormiguero;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.concurrent.Semaphore;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -27,7 +20,6 @@ public class Main {
         Semaphore semaforo = new Semaphore(10);
         Semaphore semaforoTunelEntrada = new Semaphore(1);
         Semaphore semaforoTunelSalida = new Semaphore(2);
-        
         
         Estadisticas estadisticas = new Estadisticas();
         AlmacenComida almacenComida = new AlmacenComida(semaforo, estadisticas);
@@ -51,5 +43,4 @@ public class Main {
         
         hormiga.GenerarHormigas(almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
     }
-    
 }
