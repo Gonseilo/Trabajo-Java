@@ -14,21 +14,29 @@ import java.util.logging.Logger;
  */
 public class HormigaObrera extends Hormiga implements Runnable {
     Random rand = new Random();
-    private int tiempoRecolectarComida = 0;
-    private int tiempoDejarComidaAlmacén = 0;
-    private int tiempoCogerComidaAlmacén = 0;
-    private int tiempoIrZonaComer = 0;
-    private int tiempoDejarComidaZonaComer = 0;
-    private int tiempoComer = 0;
-    private int tiempoDescansar = 0;
+    private int tiempoRecolectarComida;
+    private int tiempoDejarComidaAlmacénMin;
+    private int tiempoDejarComidaAlmacénMax;
+    private int tiempoCogerComidaAlmacénMin;
+    private int tiempoCogerComidaAlmacénMax;
+    private int tiempoIrZonaComerMin;
+    private int tiempoIrZonaComerMax;
+    private int tiempoDejarComidaZonaComerMin;
+    private int tiempoDejarComidaZonaComerMax;
+    private int tiempoComer;
+    private int tiempoDescansar;
     
     public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto) {
         super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
         this.tiempoRecolectarComida = 4000;
-        this.tiempoDejarComidaAlmacén = rand.nextInt(2001)+2000;
-        this.tiempoCogerComidaAlmacén = rand.nextInt(1001)+1000;
-        this.tiempoIrZonaComer = rand.nextInt(2001)+1000;
-        this.tiempoDejarComidaZonaComer = rand.nextInt(1001)+1000;
+        this.tiempoDejarComidaAlmacénMin = 2000;
+        this.tiempoDejarComidaAlmacénMax = 4000;
+        this.tiempoCogerComidaAlmacénMin = 1000;
+        this.tiempoCogerComidaAlmacénMax = 2000;
+        this.tiempoIrZonaComerMin = 1000;
+        this.tiempoIrZonaComerMax = 3000;
+        this.tiempoDejarComidaZonaComerMin = 1000;
+        this.tiempoDejarComidaZonaComerMax = 2000;
         this.tiempoComer = 3000;
         this.tiempoDescansar = 1000;
     }
@@ -55,22 +63,6 @@ public class HormigaObrera extends Hormiga implements Runnable {
         return tiempoRecolectarComida;
     }
 
-    public int getTiempoDejarComidaAlmacén() {
-        return tiempoDejarComidaAlmacén;
-    }
-
-    public int getTiempoCogerComidaAlmacén() {
-        return tiempoCogerComidaAlmacén;
-    }
-
-    public int getTiempoIrZonaComer() {
-        return tiempoIrZonaComer;
-    }
-
-    public int getTiempoDejarComidaZonaComer() {
-        return tiempoDejarComidaZonaComer;
-    }
-
     public int getTiempoComer() {
         return tiempoComer;
     }
@@ -83,28 +75,76 @@ public class HormigaObrera extends Hormiga implements Runnable {
         this.tiempoRecolectarComida = tiempoRecolectarComida;
     }
 
-    public void setTiempoDejarComidaAlmacén(int tiempoDejarComidaAlmacén) {
-        this.tiempoDejarComidaAlmacén = tiempoDejarComidaAlmacén;
-    }
-
-    public void setTiempoCogerComidaAlmacén(int tiempoCogerComidaAlmacén) {
-        this.tiempoCogerComidaAlmacén = tiempoCogerComidaAlmacén;
-    }
-
-    public void setTiempoIrZonaComer(int tiempoIrZonaComer) {
-        this.tiempoIrZonaComer = tiempoIrZonaComer;
-    }
-
-    public void setTiempoDejarComidaZonaComer(int tiempoDejarComidaZonaComer) {
-        this.tiempoDejarComidaZonaComer = tiempoDejarComidaZonaComer;
-    }
-
     public void setTiempoComer(int tiempoComer) {
         this.tiempoComer = tiempoComer;
     }
 
     public void setTiempoDescansar(int tiempoDescansar) {
         this.tiempoDescansar = tiempoDescansar;
+    }
+
+    public void setTiempoDejarComidaAlmacénMin(int tiempoDejarComidaAlmacénMin) {
+        this.tiempoDejarComidaAlmacénMin = tiempoDejarComidaAlmacénMin;
+    }
+
+    public void setTiempoDejarComidaAlmacénMax(int tiempoDejarComidaAlmacénMax) {
+        this.tiempoDejarComidaAlmacénMax = tiempoDejarComidaAlmacénMax;
+    }
+
+    public void setTiempoCogerComidaAlmacénMin(int tiempoCogerComidaAlmacénMin) {
+        this.tiempoCogerComidaAlmacénMin = tiempoCogerComidaAlmacénMin;
+    }
+
+    public void setTiempoCogerComidaAlmacénMax(int tiempoCogerComidaAlmacénMax) {
+        this.tiempoCogerComidaAlmacénMax = tiempoCogerComidaAlmacénMax;
+    }
+
+    public void setTiempoIrZonaComerMin(int tiempoIrZonaComerMin) {
+        this.tiempoIrZonaComerMin = tiempoIrZonaComerMin;
+    }
+
+    public void setTiempoIrZonaComerMax(int tiempoIrZonaComerMax) {
+        this.tiempoIrZonaComerMax = tiempoIrZonaComerMax;
+    }
+
+    public void setTiempoDejarComidaZonaComerMin(int tiempoDejarComidaZonaComerMin) {
+        this.tiempoDejarComidaZonaComerMin = tiempoDejarComidaZonaComerMin;
+    }
+
+    public void setTiempoDejarComidaZonaComerMax(int tiempoDejarComidaZonaComerMax) {
+        this.tiempoDejarComidaZonaComerMax = tiempoDejarComidaZonaComerMax;
+    }
+
+    public int getTiempoDejarComidaAlmacénMin() {
+        return tiempoDejarComidaAlmacénMin;
+    }
+
+    public int getTiempoDejarComidaAlmacénMax() {
+        return tiempoDejarComidaAlmacénMax;
+    }
+
+    public int getTiempoCogerComidaAlmacénMin() {
+        return tiempoCogerComidaAlmacénMin;
+    }
+
+    public int getTiempoCogerComidaAlmacénMax() {
+        return tiempoCogerComidaAlmacénMax;
+    }
+
+    public int getTiempoIrZonaComerMin() {
+        return tiempoIrZonaComerMin;
+    }
+
+    public int getTiempoIrZonaComerMax() {
+        return tiempoIrZonaComerMax;
+    }
+
+    public int getTiempoDejarComidaZonaComerMin() {
+        return tiempoDejarComidaZonaComerMin;
+    }
+
+    public int getTiempoDejarComidaZonaComerMax() {
+        return tiempoDejarComidaZonaComerMax;
     }
     
     public void run() {
@@ -134,7 +174,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
                     }
                     while(true){
                         try {
-                            Thread.sleep(tiempoIrZonaComer);
+                            Thread.sleep(rand.nextInt(tiempoIrZonaComerMax-tiempoIrZonaComerMin+1)+tiempoIrZonaComerMin);
                             break;
                         } catch (InterruptedException ex) {
                             if (!estadisticas.getPlay()){

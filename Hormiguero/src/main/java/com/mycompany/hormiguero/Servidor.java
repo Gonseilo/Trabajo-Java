@@ -49,8 +49,6 @@ public class Servidor implements Runnable{
                 System.out.println("Conexión n." + numConexion + " desde: " + conexion.getInetAddress().getHostName());
                 entrada = new DataInputStream(conexion.getInputStream());
                 salida = new DataOutputStream(conexion.getOutputStream());
-                String mensaje = entrada.readUTF();
-                System.out.println("Conexión n." + numConexion + "\nMensaje: " + mensaje);
                 while(n<1){
                     salida.writeUTF(String.valueOf(estadisticas.getObrerasExterior()));
                     salida.writeUTF(String.valueOf(estadisticas.getObrerasInterior()));
@@ -71,7 +69,6 @@ public class Servidor implements Runnable{
                 salida.close();
                 conexion.close();
             }
-            //servidor.close();
         } catch (IOException ex) {
             Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
         }

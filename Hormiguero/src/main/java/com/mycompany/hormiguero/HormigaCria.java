@@ -12,12 +12,14 @@ import java.util.Random;
  */
 public class HormigaCria extends Hormiga implements Runnable {
     Random rand = new Random();
-    private int TiempoComer;
+    private int TiempoComerMin;
+    private int TiempoComerMax;
     private int TiempoDescansar;
 
     public HormigaCria(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto) {
         super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
-        this.TiempoComer = rand.nextInt(2001)+3000;
+        this.TiempoComerMin = 3000;
+        this.TiempoComerMax = 5000;
         this.TiempoDescansar = 4000;
     }
     
@@ -39,16 +41,24 @@ public class HormigaCria extends Hormiga implements Runnable {
         super.setID(ID);
     }
 
-    public int getTiempoComer() {
-        return TiempoComer;
+    public int getTiempoComerMin() {
+        return TiempoComerMin;
+    }
+
+    public int getTiempoComerMax() {
+        return TiempoComerMax;
     }
 
     public int getTiempoDescansar() {
         return TiempoDescansar;
     }
 
-    public void setTiempoComer(int TiempoComer) {
-        this.TiempoComer = TiempoComer;
+    public void setTiempoComerMin(int TiempoComerMin) {
+        this.TiempoComerMin = TiempoComerMin;
+    }
+
+    public void setTiempoComerMax(int TiempoComerMax) {
+        this.TiempoComerMax = TiempoComerMax;
     }
 
     public void setTiempoDescansar(int TiempoDescansar) {

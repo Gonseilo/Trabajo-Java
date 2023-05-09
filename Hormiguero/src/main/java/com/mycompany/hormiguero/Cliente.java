@@ -9,7 +9,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,7 +25,6 @@ public class Cliente {
         Socket cliente;
         DataInputStream entrada;
         DataOutputStream salida;
-        String mensaje, respuesta;
         InterfazCliente interfazCliente = new InterfazCliente();
         interfazCliente.setVisible(true);
         int n = 0;
@@ -34,7 +32,6 @@ public class Cliente {
             cliente = new Socket(InetAddress.getLocalHost(), 5000);
             entrada = new DataInputStream(cliente.getInputStream());
             salida = new DataOutputStream(cliente.getOutputStream());
-            salida.writeUTF("Hola soy el cliente");
             while(n<=1){
                 interfazCliente.setTextoObrerasExterior(entrada.readUTF());
                 interfazCliente.setTextoObrerasInterior(entrada.readUTF());

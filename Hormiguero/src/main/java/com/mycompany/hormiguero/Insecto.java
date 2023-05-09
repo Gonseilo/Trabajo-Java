@@ -4,6 +4,7 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.Random;
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
@@ -45,10 +46,11 @@ public class Insecto {
     }
     
     public void DefenderInsecto(HormigaSoldado hormigaSoldado){
+        Random rand = new Random();
         
         long tiempoInicio = System.currentTimeMillis();
         long tiempoDormido = 0;
-        int tiempoFinal = hormigaSoldado.getTiempoInstruir();
+        int tiempoFinal = hormigaSoldado.getTiempoDefender();
         
         System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " saliendo a defender la colonia");
         tunel.Salir(null, hormigaSoldado, this);
@@ -108,9 +110,10 @@ public class Insecto {
         }
         while(tiempoDormido < tiempoFinal){    
             try{
-                Thread.sleep(20000);
+                Thread.sleep(tiempoFinal-tiempoDormido);
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                 if (!estadisticas.getPlay()){
                     synchronized(estadisticas.getBloqueoPausa()){
                         try {

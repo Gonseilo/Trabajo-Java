@@ -12,14 +12,16 @@ import java.util.Random;
  */
 public class HormigaSoldado extends Hormiga implements Runnable {
     Random rand = new Random();
-    private int tiempoInstruir = 0;
-    private int tiempoDescansar = 0;
-    private int tiempoComer = 0;
-    private int tiempoDefender = 0;
+    private int tiempoInstruirMin;
+    private int tiempoInstruirMax;
+    private int tiempoDescansar;
+    private int tiempoComer;
+    private int tiempoDefender;
 
     public HormigaSoldado(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto) {
         super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
-        this.tiempoInstruir = rand.nextInt(6001)+2000;
+        this.tiempoInstruirMin = 2000;
+        this.tiempoInstruirMax = 4000;
         this.tiempoDescansar = 2000;
         this.tiempoComer = 3000;
         this.tiempoDefender = 20000;
@@ -43,10 +45,6 @@ public class HormigaSoldado extends Hormiga implements Runnable {
         super.setID(ID);
     }
 
-    public int getTiempoInstruir() {
-        return tiempoInstruir;
-    }
-
     public int getTiempoDescansar() {
         return tiempoDescansar;
     }
@@ -59,8 +57,20 @@ public class HormigaSoldado extends Hormiga implements Runnable {
         return tiempoDefender;
     }
 
-    public void setTiempoInstruir(int tiempoInstruir) {
-        this.tiempoInstruir = tiempoInstruir;
+    public void setTiempoInstruirMin(int tiempoInstruirMin) {
+        this.tiempoInstruirMin = tiempoInstruirMin;
+    }
+
+    public void setTiempoInstruirMax(int tiempoInstruirMax) {
+        this.tiempoInstruirMax = tiempoInstruirMax;
+    }
+
+    public int getTiempoInstruirMin() {
+        return tiempoInstruirMin;
+    }
+
+    public int getTiempoInstruirMax() {
+        return tiempoInstruirMax;
     }
 
     public void setTiempoDescansar(int tiempoDescansar) {

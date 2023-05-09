@@ -4,6 +4,7 @@
  */
 package com.mycompany.hormiguero;
 
+import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,9 +20,10 @@ public class ZonaInstruccion {
     }
     
     public void Instruir (HormigaSoldado hormigaSoldado, Insecto insecto, Tunel tunel){
+        Random rand = new Random();
         long tiempoInicio = System.currentTimeMillis();
         long tiempoDormido = 0;
-        int tiempoFinal = hormigaSoldado.getTiempoInstruir();
+        int tiempoFinal = rand.nextInt(hormigaSoldado.getTiempoInstruirMax()-hormigaSoldado.getTiempoInstruirMin()+1)+hormigaSoldado.getTiempoInstruirMin();
         
         synchronized(estadisticas.getBloqueoInstruyendo()){
             estadisticas.getListaInstruyendo().add(hormigaSoldado.getID());
