@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.hormiguero;
+package Servidor;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,7 +24,7 @@ public class InterfazServidor extends javax.swing.JFrame {
         this.insecto = insecto;
         initComponents();
         
-        setTitle("Hormiguero");
+        setTitle("Servidor");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
     }
@@ -336,7 +336,7 @@ public class InterfazServidor extends javax.swing.JFrame {
         );
 
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel26.setIcon(new javax.swing.ImageIcon("src/main/java/Imagenes/Hormiguero2.jpg")
+        jLabel26.setIcon(new javax.swing.ImageIcon("src/main/java/Imagenes/Hormiguero.jpg")
 
         );
 

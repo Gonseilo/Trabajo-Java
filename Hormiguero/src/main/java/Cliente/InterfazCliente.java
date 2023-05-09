@@ -2,9 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package com.mycompany.hormiguero;
+package Cliente;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 
 /**
  *
@@ -18,6 +19,10 @@ public class InterfazCliente extends javax.swing.JFrame {
     
     public InterfazCliente() {
         initComponents();
+        
+        setTitle("Cliente");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
     }
     
     public void setTextoObrerasExterior (String texto){

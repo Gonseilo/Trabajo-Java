@@ -448,7 +448,7 @@
       <Properties>
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="new javax.swing.ImageIcon(&quot;src/main/java/Imagenes/Hormiguero2.jpg&quot;)&#xd;&#xa;&#xd;&#xa;" type="code"/>
+          <Connection code="new javax.swing.ImageIcon(&quot;src/main/java/Imagenes/Hormiguero.jpg&quot;)&#xd;&#xa;&#xd;&#xa;" type="code"/>
         </Property>
       </Properties>
     </Component>
