@@ -60,7 +60,7 @@ public class HormigaCria extends Hormiga implements Runnable {
         System.out.println(getID());
         
         tunel.Entrar(null, null, this, insecto);
-        if (refugio.isAtaque()){
+        if (estadisticas.getInterrumpirInsecto()){
             synchronized(estadisticas.getBloqueoCriasRefugio()){
                 estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
                 System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());

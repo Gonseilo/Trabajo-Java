@@ -4,6 +4,7 @@
  */
 package com.mycompany.hormiguero;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 
 /**
@@ -66,6 +67,10 @@ public class InterfazServidor extends javax.swing.JFrame {
 
     public void setTextoRefugiadas (String texto){
         refugiadas.setText(texto);
+    }
+
+    public JButton getGenerarInsecto() {
+        return generarInsecto;
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -345,7 +350,8 @@ public class InterfazServidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void generarInsectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarInsectoActionPerformed
-        if (refugio.isAtaque()){
+        generarInsecto.setEnabled(false);
+        if (estadisticas.getInterrumpirInsecto()){
             System.out.println("Ya hay un insecto atacando el hormiguero");
         }
         else{
@@ -357,7 +363,6 @@ public class InterfazServidor extends javax.swing.JFrame {
                     System.out.println("No se puede generar un insecto mientras el programa está pausado");
                 }
                 else{
-                    refugio.setAtaque(true);
                     insecto.GenerarInsecto();
                 }
             }

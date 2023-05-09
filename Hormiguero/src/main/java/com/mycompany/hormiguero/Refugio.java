@@ -12,12 +12,10 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class Refugio {
-    private boolean ataque;
     private final Object bloqueo = new Object();
     private Estadisticas estadisticas;
 
     public Refugio(Estadisticas estadisticas) {
-        this.ataque = false;
         this.estadisticas = estadisticas;
     }
     
@@ -56,14 +54,6 @@ public class Refugio {
             estadisticas.getListaRefugio().remove(hormigaCria.getID());
             estadisticas.actualizarRefugio();
         }
-    }
-
-    public void setAtaque(boolean ataque) {
-        this.ataque = ataque;
-    }
-
-    public boolean isAtaque() {
-        return ataque;
     }
 
     public Object getBloqueo() {
