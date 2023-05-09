@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Ivanl
  */
-public class Cliente {
+public class SocketCliente {
 
     /**
      * @param args the command line arguments
@@ -48,7 +48,7 @@ public class Cliente {
             salida.close();
             cliente.close();
         } catch (IOException ex) {
-            Logger.getLogger(Cliente.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SocketCliente.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

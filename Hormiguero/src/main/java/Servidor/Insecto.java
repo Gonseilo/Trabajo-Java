@@ -52,14 +52,14 @@ public class Insecto {
         long tiempoDormido = 0;
         int tiempoFinal = hormigaSoldado.getTiempoDefender();
         
-        System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " saliendo a defender la colonia");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.getTipoHormiga() + " " + new String(hormigaSoldado.getID()) + " está preparada para salir a defender el hormiguero.");
         tunel.Salir(null, hormigaSoldado, this);
         while(true){
             try {
                 this.barrera.await();
-                
                 break;
             } catch (InterruptedException ex) {
+                this.barrera = new CyclicBarrier(soldadosBarrera);
                 if (!estadisticas.getPlay()){
                     synchronized(estadisticas.getBloqueoPausa()){
                         try {
@@ -73,9 +73,9 @@ public class Insecto {
                     Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (BrokenBarrierException ex) {
+                this.barrera = new CyclicBarrier(soldadosBarrera);
                 if (!estadisticas.getPlay()){
                     synchronized(estadisticas.getBloqueoPausa()){
-                    this.barrera = new CyclicBarrier(soldadosBarrera);
                         try {
                             estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
@@ -101,9 +101,8 @@ public class Insecto {
         }
         synchronized(estadisticas.getBloqueoSoldadosDefendiendo()){
             estadisticas.setSoldadosDefendiendo(estadisticas.getSoldadosDefendiendo() + 1);
-            System.out.println("Soldados defendiendo: " + estadisticas.getSoldadosDefendiendo());
         }
-        System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " comienza a defender la colonia");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.getTipoHormiga() + " " + new String(hormigaSoldado.getID()) + " está defendiendo el hormiguero.");
         synchronized(estadisticas.getBloqueoDefendiendo()){
             estadisticas.getListaDefendiendo().add(hormigaSoldado.getID());
             estadisticas.actualizarDefendiendo();
@@ -130,7 +129,6 @@ public class Insecto {
         }
         synchronized(estadisticas.getBloqueoSoldadosDefendiendo()){
             estadisticas.setSoldadosDefendiendo(estadisticas.getSoldadosDefendiendo() - 1);
-            System.out.println("Soldados defendiendo: " + estadisticas.getSoldadosDefendiendo());
         }
         synchronized(estadisticas.getBloqueoDefendiendo()){
             estadisticas.getListaDefendiendo().remove(hormigaSoldado.getID());
@@ -141,7 +139,7 @@ public class Insecto {
         synchronized(refugio.getBloqueo()){
             refugio.getBloqueo().notifyAll();
         }
-        System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " volviendo de defender la colonia");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.getTipoHormiga() + " " + new String(hormigaSoldado.getID()) + " ha defendido con éxito el hormiguero.");
         tunel.Entrar(null, hormigaSoldado, null, this);
     }
 }

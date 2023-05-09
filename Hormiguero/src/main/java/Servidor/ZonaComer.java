@@ -29,21 +29,25 @@ public class ZonaComer {
         long tiempoInicio = System.currentTimeMillis();
         long tiempoDormido = 0;
         int tiempoFinal = 0;
+        String tipoHormiga = null;
         
         if (hormigaObrera != null){
             id = new String(hormigaObrera.getID());
             idChar = hormigaObrera.getID();
             tiempoFinal = hormigaObrera.getTiempoComer();
+            tipoHormiga = hormigaObrera.getTipoHormiga();
         }
         if (hormigaSoldado != null){
             id = new String(hormigaSoldado.getID());
             idChar = hormigaSoldado.getID();
             tiempoFinal = hormigaSoldado.getTiempoComer();
+            tipoHormiga = hormigaSoldado.getTipoHormiga();
         }
         if (hormigaCria != null){
             id = new String(hormigaCria.getID());
             idChar = hormigaCria.getID();
             tiempoFinal = rand.nextInt(hormigaCria.getTiempoComerMax()-hormigaCria.getTiempoComerMin()+1)+hormigaCria.getTiempoComerMin();
+            tipoHormiga = hormigaCria.getTipoHormiga();
         }
         
         synchronized(estadisticas.getBloqueoZonaComer()){
@@ -52,7 +56,7 @@ public class ZonaComer {
         }
         
         while (estadisticas.getComidaZonaComer() == 0){
-            System.out.println("Hormiga " + id + " esperando comida");
+            System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " está esperando a que haya comida en la zona de comer.");
             synchronized(bloqueo){
                 try {
                     bloqueo.wait();
@@ -79,20 +83,16 @@ public class ZonaComer {
                                 }
                                 synchronized(estadisticas.getBloqueoCriasZonaComer()){
                                     estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() - 1);
-                                    System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
                                 }
                                 synchronized(estadisticas.getBloqueoCriasRefugio()){
                                     estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
-                                    System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
                                 }
                                 refugio.Refugiarse(hormigaCria);
                                 synchronized(estadisticas.getBloqueoCriasRefugio()){
                                     estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()- 1);
-                                    System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
                                 }
                                 synchronized(estadisticas.getBloqueoCriasZonaComer()){
                                     estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() + 1);
-                                    System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
                                 }
                                 Comer(null, null, hormigaCria, insecto, tunel);
         
@@ -122,21 +122,19 @@ public class ZonaComer {
         synchronized(estadisticas.getBloqueoComidaZonaComer()){
             estadisticas.setComidaZonaComer(estadisticas.getComidaZonaComer() - 1);
             estadisticas.actualizarComidaZonaComer();
-            System.out.println("Comida restante en la zona de comer: " + estadisticas.getComidaZonaComer());
         }
         while(tiempoDormido < tiempoFinal){
             try {
                 if (estadisticas.getInterrumpirInsecto() && hormigaCria != null){
                     hormigaCria.detenerHilo(hormigaCria.getNumHormiga());
                 }
-                System.out.println("Hormiga " + id + " va a comer durante " + (tiempoFinal - tiempoDormido) + "ms");
+                System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " empieza a comer.");
                 Thread.sleep(tiempoFinal - tiempoDormido);
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
                 if (estadisticas.getInterrumpirInsecto()){
                     if (hormigaSoldado != null){
                         tiempoDormido = System.currentTimeMillis() - tiempoInicio;
-                        System.out.println("Hormiga " + id + " se ha interrumpido después de comer " + tiempoDormido + "ms");
         
                         synchronized(estadisticas.getBloqueoZonaComer()){
                             estadisticas.getListaZonaComer().remove(idChar);
@@ -153,7 +151,6 @@ public class ZonaComer {
                     else{
                         if (hormigaCria != null){
                             tiempoDormido = tiempoFinal;
-                            System.out.println("Hormiga " + id + " se ha interrumpido después de comer " + tiempoDormido + "ms");
                             tiempoDormido = tiempoFinal;
         
                             synchronized(estadisticas.getBloqueoZonaComer()){
@@ -162,20 +159,16 @@ public class ZonaComer {
                             }
                             synchronized(estadisticas.getBloqueoCriasZonaComer()){
                                 estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() - 1);
-                                System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
                             }
                             synchronized(estadisticas.getBloqueoCriasRefugio()){
                                 estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
-                                System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
                             }
                             refugio.Refugiarse(hormigaCria);
                             synchronized(estadisticas.getBloqueoCriasRefugio()){
                                 estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()- 1);
-                                System.out.println("Crias en el refugio: " + estadisticas.getCriasRefugio());
                             }
                             synchronized(estadisticas.getBloqueoCriasZonaComer()){
                                 estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() + 1);
-                                System.out.println("Crias en la zona de comer: " + estadisticas.getCriasZonaComer());
                             }
                             Comer(null, null, hormigaCria, insecto, tunel);
         
@@ -226,12 +219,11 @@ public class ZonaComer {
                 }
             }
         }
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " dejando comida en la zona de comer");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " ha dejado comida en la zona de comer.");
         
         synchronized(estadisticas.getBloqueoComidaZonaComer()){
             estadisticas.setComidaZonaComer(estadisticas.getComidaZonaComer() + 5);
             estadisticas.actualizarComidaZonaComer();
-            System.out.println("Comida restante en la zona de comer: " + estadisticas.getComidaZonaComer());
         }
         
         synchronized(bloqueo){

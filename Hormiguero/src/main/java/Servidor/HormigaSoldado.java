@@ -87,7 +87,7 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     
     public void run() {
         SetID(GenerarIDSoldado());
-        System.out.println(getID());
+        System.out.println(estadisticas.calcularFecha() + "Se ha generado una hormiga soldado con id " + new String(super.getID()) + ".");
         tunel.Entrar(null, this, null, insecto);
         while (true){
             for (int i = 0; i < 6; i++){

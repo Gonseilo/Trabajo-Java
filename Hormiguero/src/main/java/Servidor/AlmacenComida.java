@@ -27,7 +27,7 @@ public class AlmacenComida {
     }
     
     public void DejarComida(HormigaObrera hormigaObrera){
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén.");
         while(true){
             try {
                 synchronized(bloqueoSemaforoAcquire){
@@ -49,7 +49,7 @@ public class AlmacenComida {
                 }
             }
         }
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén.");
         synchronized(estadisticas.getBloqueoAlmacen()){
             estadisticas.getListaAlmacen().add(hormigaObrera.getID());
             estadisticas.actualizarAlmacen();
@@ -77,7 +77,6 @@ public class AlmacenComida {
         synchronized(estadisticas.getBloqueoComidaAlmacen()){
             estadisticas.setComidaAlmacen(estadisticas.getComidaAlmacen() + 5);
             estadisticas.actualizarComidaAlmacen();
-            System.out.println("Comida en el almacén: " + estadisticas.getComidaAlmacen());
         }
         synchronized(bloqueoAvisoComida){
             bloqueoAvisoComida.notify();
@@ -92,7 +91,7 @@ public class AlmacenComida {
     }
     
     public void SacarComida(HormigaObrera hormigaObrera){
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida al almacén");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida del almacén.");
         while(true){
             try {
                 synchronized(bloqueoSemaforoAcquire){
@@ -156,11 +155,10 @@ public class AlmacenComida {
                 estadisticas.actualizarAlmacen();
             }
         }
-        System.out.println("Hormiga " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén.");
         synchronized(estadisticas.getBloqueoComidaAlmacen()){
             estadisticas.setComidaAlmacen(estadisticas.getComidaAlmacen() - 5);
             estadisticas.actualizarComidaAlmacen();
-            System.out.println("Comida en el almacén: " + estadisticas.getComidaAlmacen());
         }
         while(true){
             try {

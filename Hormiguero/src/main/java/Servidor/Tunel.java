@@ -27,20 +27,24 @@ public class Tunel {
     
     public void Entrar(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, HormigaCria hormigaCria, Insecto insecto){
         String id = null;
+        String tipoHormiga = null;
         
         if (hormigaObrera != null){
             id = new String(hormigaObrera.getID());
+            tipoHormiga = hormigaObrera.getTipoHormiga();
         }
         if (hormigaSoldado != null){
             id = new String(hormigaSoldado.getID());
+            tipoHormiga = hormigaSoldado.getTipoHormiga();
         }
         if (hormigaCria != null){
             id = new String(hormigaCria.getID());
+            tipoHormiga = hormigaCria.getTipoHormiga();
         }
         
         try {
             semaforoTunelEntrada.acquire();
-            System.out.println("Hormiga " + id + " entrando al hormiguero");
+            System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " está entrando al hormiguero.");
             Thread.sleep(100);
         } catch (InterruptedException ex) {
             if (!estadisticas.getPlay()){
@@ -73,17 +77,20 @@ public class Tunel {
     
     public void Salir(HormigaObrera hormigaObrera, HormigaSoldado hormigaSoldado, Insecto insecto){
         String id = null;
+        String tipoHormiga = null;
         
         if (hormigaObrera != null){
             id = new String(hormigaObrera.getID());
+            tipoHormiga = hormigaObrera.getTipoHormiga();
         }
         if (hormigaSoldado != null){
             id = new String(hormigaSoldado.getID());
+            tipoHormiga = hormigaSoldado.getTipoHormiga();
         }
         
         try {
             semaforoTunelSalida.acquire();
-            System.out.println("Hormiga " + id + " saliendo del hormiguero");
+            System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " está saliendo del hormiguero.");
             Thread.sleep(100);
         } catch (InterruptedException ex) {
             if (!estadisticas.getPlay()){

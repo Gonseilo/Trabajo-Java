@@ -16,11 +16,11 @@ import java.util.logging.Logger;
  *
  * @author Ivanl
  */
-public class Servidor implements Runnable{
+public class SocketServidor implements Runnable{
     private static Estadisticas estadisticas;
     private Insecto insecto;
     
-    public Servidor(Estadisticas estadisticas, Insecto insecto){
+    public SocketServidor(Estadisticas estadisticas, Insecto insecto){
         this.estadisticas = estadisticas;
         this.insecto = insecto;
     }
@@ -42,11 +42,11 @@ public class Servidor implements Runnable{
         int n = 0;
         try {
             servidor = new ServerSocket(5000);
-            System.out.println("Servidor arrancando...");
+            System.out.println(estadisticas.calcularFecha() + "Servidor arrancando...");
             while(true){
                 conexion = servidor.accept();
                 numConexion++;
-                System.out.println("Conexión n." + numConexion + " desde: " + conexion.getInetAddress().getHostName());
+                System.out.println(estadisticas.calcularFecha() + "Conexión n." + numConexion + " desde: " + conexion.getInetAddress().getHostName());
                 entrada = new DataInputStream(conexion.getInputStream());
                 salida = new DataOutputStream(conexion.getOutputStream());
                 while(n<1){
@@ -70,7 +70,7 @@ public class Servidor implements Runnable{
                 conexion.close();
             }
         } catch (IOException ex) {
-            Logger.getLogger(Servidor.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SocketServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

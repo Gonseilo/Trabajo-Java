@@ -20,7 +20,7 @@ public class Refugio {
     }
     
     public void Refugiarse (HormigaCria hormigaCria){
-        System.out.println("Hormiga " + new String(hormigaCria.getID()) + " entra al refugio");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaCria.getTipoHormiga() + " " + new String(hormigaCria.getID()) + " ha entrado al refugio.");
         
         synchronized(estadisticas.getBloqueoRefugio()){
             estadisticas.getListaRefugio().add(hormigaCria.getID());
@@ -48,7 +48,7 @@ public class Refugio {
                 }
             }
         }
-        System.out.println("Hormiga " + new String(hormigaCria.getID()) + " sale del refugio");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaCria.getTipoHormiga() + " " + new String(hormigaCria.getID()) + " ha salido del refugio.");
         
         synchronized(estadisticas.getBloqueoRefugio()){
             estadisticas.getListaRefugio().remove(hormigaCria.getID());

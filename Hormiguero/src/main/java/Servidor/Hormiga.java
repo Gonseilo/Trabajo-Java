@@ -57,7 +57,6 @@ public class Hormiga {
                 hilos[i] = new Thread(runnable);
                 hilos[i].start();
                 estadisticas.setNumObreras(estadisticas.getNumObreras()+1);
-                System.out.println("Obrera " + i);
             }
             else{
                 if (i % 5 == 3){
@@ -66,7 +65,6 @@ public class Hormiga {
                     hilos[i].start();
                     estadisticas.getListaSoldados()[estadisticas.getNumSoldados()] = hilos[i];
                     estadisticas.setNumSoldados(estadisticas.getNumSoldados()+1);
-                    System.out.println("Soldado " + i);
                 }
                 else{
                     Runnable runnable = new HormigaCria(i, ID, "Cría", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
@@ -74,9 +72,13 @@ public class Hormiga {
                     hilos[i].start();
                     estadisticas.getListaCrias()[estadisticas.getNumCrias()] = hilos[i];
                     estadisticas.setNumCrias(estadisticas.getNumCrias()+1);
-                    System.out.println("Cría " + i);
                 }
             }
+            
+            if(i==3){
+                estadisticas.activarBotonInsecto();
+            }
+            
             estadisticas.setListaHormigas(hilos);
             try {
                 Thread.sleep(tiempoGeneracionHormigas);

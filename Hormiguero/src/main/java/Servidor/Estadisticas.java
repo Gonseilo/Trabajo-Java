@@ -4,7 +4,9 @@
  */
 package Servidor;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  *
@@ -54,6 +56,12 @@ public class Estadisticas {
     private final Object bloqueoSoldadosDefendiendo = new Object();
     private final Object bloqueoCriasZonaComer = new Object();
     private final Object bloqueoCriasRefugio = new Object();
+    
+    public String calcularFecha(){
+        Date fechaActual = new Date();
+        SimpleDateFormat formatoFecha = new SimpleDateFormat ("[dd/MM/yyyy HH:mm:ss]: ");
+        return formatoFecha.format(fechaActual);
+    }
     
     public synchronized void actualizarBuscandoComida(){
         String texto = "";

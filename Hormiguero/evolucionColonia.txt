@@ -1,0 +1,28 @@
+[09/05/2023 18:48:28]: Servidor arrancando...
+[09/05/2023 18:48:28]: Se ha generado una hormiga Obrera con id HO0000.
+[09/05/2023 18:48:28]: La hormiga Obrera HO0000 está entrando al hormiguero.
+[09/05/2023 18:48:28]: La hormiga Obrera HO0000 quiere entrar a coger comida del almacén.
+[09/05/2023 18:48:29]: Se ha generado una hormiga Obrera con id HO0001.
+[09/05/2023 18:48:29]: La hormiga Obrera HO0001 está entrando al hormiguero.
+[09/05/2023 18:48:29]: La hormiga Obrera HO0001 está saliendo del hormiguero.
+[09/05/2023 18:48:29]: La hormiga Obrera HO0001 está buscando comida en el exterior del hormiguero.
+[09/05/2023 18:48:31]: Conexión n.1 desde: LAPTOP-I1QQ8O5Q
+[09/05/2023 18:48:32]: Se ha generado una hormiga Obrera con id HO0002.
+[09/05/2023 18:48:32]: La hormiga Obrera HO0002 está entrando al hormiguero.
+[09/05/2023 18:48:32]: La hormiga Obrera HO0002 quiere entrar a coger comida del almacén.
+[09/05/2023 18:48:33]: La hormiga Obrera HO0001 está entrando al hormiguero.
+[09/05/2023 18:48:33]: La hormiga Obrera HO0001 quiere entrar a dejar comida al almacén.
+[09/05/2023 18:48:33]: La hormiga Obrera HO0001 está dejando comida en el almacén.
+[09/05/2023 18:48:35]: Se ha generado una hormiga soldado con id HS0000.
+[09/05/2023 18:48:35]: La hormiga Soldado HS0000 está entrando al hormiguero.
+[09/05/2023 18:48:35]: La hormiga Soldado HS0000 comienza a hacer instrucción.
+[09/05/2023 18:48:36]: Se ha generado una hormiga cría con id HC0000.
+[09/05/2023 18:48:36]: La hormiga Cría HC0000 está entrando al hormiguero.
+[09/05/2023 18:48:36]: La hormiga Cría HC0000 está esperando a que haya comida en la zona de comer.
+[09/05/2023 18:48:37]: SE HA PAUSADO LA SIMULACIÓN
+[09/05/2023 18:48:39]: La hormiga Soldado HS0000 comienza a hacer instrucción.
+[09/05/2023 18:48:39]: La hormiga Cría HC0000 está esperando a que haya comida en la zona de comer.
+[09/05/2023 18:48:40]: La hormiga Soldado HS0000 se pone a descansar.
+[09/05/2023 18:48:42]: La hormiga Soldado HS0000 comienza a hacer instrucción.
+[09/05/2023 18:48:44]: La hormiga Soldado HS0000 se pone a descansar.
+[09/05/2023 18:48:46]: La hormiga Soldado HS0000 comienza a hacer instrucción.

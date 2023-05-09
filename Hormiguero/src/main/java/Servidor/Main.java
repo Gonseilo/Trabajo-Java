@@ -5,7 +5,12 @@
  */
 package Servidor;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.util.concurrent.Semaphore;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -17,6 +22,15 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream("evolucionColonia.txt");
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        PrintStream ps = new PrintStream(fos);
+        System.setOut(ps);
+        
         Semaphore semaforo = new Semaphore(10);
         Semaphore semaforoTunelEntrada = new Semaphore(1);
         Semaphore semaforoTunelSalida = new Semaphore(2);
@@ -33,9 +47,10 @@ public class Main {
        
         InterfazServidor interfazServidor = new InterfazServidor(refugio, insecto, estadisticas);
         estadisticas.setInterfazServidor(interfazServidor);
+        estadisticas.desactivarBotonInsecto();
         interfazServidor.setVisible(true);
         
-        Runnable runnable = new Servidor(estadisticas, insecto);
+        Runnable runnable = new SocketServidor(estadisticas, insecto);
         Thread thread = new Thread(runnable);
         thread.start();
         

@@ -4,6 +4,8 @@
  */
 package Servidor;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -357,7 +359,9 @@ public class InterfazServidor extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void pausaPlayActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_pausaPlayActionPerformed
+        pausaPlay.setEnabled(false);
         if (estadisticas.getPlay()){
+            generarInsecto.setEnabled(false);
             pausaPlay.setText("Play");
             estadisticas.setPlay(false);
             for (Thread thread : estadisticas.getListaHormigas()){
@@ -365,34 +369,26 @@ public class InterfazServidor extends javax.swing.JFrame {
                     thread.interrupt();
                 }
             }
+            System.out.println(estadisticas.calcularFecha() + "SE HA PAUSADO LA SIMULACIÓN");
         }
         else{
             pausaPlay.setText("Pausa");
             estadisticas.setPlay(true);
+            System.out.println(estadisticas.calcularFecha() + "SE HA REANUDADO LA SIMULACIÓN");
             synchronized(estadisticas.getBloqueoPausa()){
                 estadisticas.getBloqueoPausa().notifyAll();
             }
+            if(!estadisticas.getInterrumpirInsecto() && estadisticas.getListaSoldados().length == 0){
+                generarInsecto.setEnabled(true);
+            }
         }
+        pausaPlay.setEnabled(true);
     }//GEN-LAST:event_pausaPlayActionPerformed
 
     private void generarInsectoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_generarInsectoActionPerformed
         generarInsecto.setEnabled(false);
-        if (estadisticas.getInterrumpirInsecto()){
-            System.out.println("Ya hay un insecto atacando el hormiguero");
-        }
-        else{
-            if (estadisticas.getNumSoldados() == 0){
-                System.out.println("Se necesita al menos una hormiga soldado para poder defender el hormiguero");
-            }
-            else{
-                if (!estadisticas.getPlay()){
-                    System.out.println("No se puede generar un insecto mientras el programa está pausado");
-                }
-                else{
-                    insecto.GenerarInsecto();
-                }
-            }
-        }
+        System.out.println(estadisticas.calcularFecha() + "SE HA GENERADO UN INSECTO");
+        insecto.GenerarInsecto();
     }//GEN-LAST:event_generarInsectoActionPerformed
 
     /**

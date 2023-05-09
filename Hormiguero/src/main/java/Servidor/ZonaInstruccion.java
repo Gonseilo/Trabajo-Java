@@ -31,16 +31,14 @@ public class ZonaInstruccion {
         }
         synchronized(estadisticas.getBloqueoSoldadosInstruccion()){
             estadisticas.setSoldadosInstruccion(estadisticas.getSoldadosInstruccion() + 1);
-            System.out.println("Soldados instruyendo: " + estadisticas.getSoldadosInstruccion());
         }
         while(tiempoDormido < tiempoFinal){
             try {
-                System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " va a instruir durante " + (tiempoFinal - tiempoDormido) + "ms");
+                System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.getTipoHormiga() + " " + new String(hormigaSoldado.getID()) + " comienza a hacer instrucción.");
                 Thread.sleep(tiempoFinal - tiempoDormido);
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
-                System.out.println("Hormiga " + new String(hormigaSoldado.getID()) + " se ha interrumpido después de instruir " + tiempoDormido + "ms");
                 
                 if (estadisticas.getInterrumpirInsecto()){
                     synchronized(estadisticas.getBloqueoInstruyendo()){
@@ -49,7 +47,6 @@ public class ZonaInstruccion {
                     }
                     synchronized(estadisticas.getBloqueoSoldadosInstruccion()){
                         estadisticas.setSoldadosInstruccion(estadisticas.getSoldadosInstruccion() - 1);
-                        System.out.println("Soldados instruyendo: " + estadisticas.getSoldadosInstruccion());
                     }
                     insecto.DefenderInsecto(hormigaSoldado);
                     synchronized(estadisticas.getBloqueoInstruyendo()){
@@ -58,7 +55,6 @@ public class ZonaInstruccion {
                     }
                     synchronized(estadisticas.getBloqueoSoldadosInstruccion()){
                         estadisticas.setSoldadosInstruccion(estadisticas.getSoldadosInstruccion() + 1);
-                        System.out.println("Soldados instruyendo: " + estadisticas.getSoldadosInstruccion());
                     }
                 }
                 
@@ -79,7 +75,6 @@ public class ZonaInstruccion {
         }
         synchronized(estadisticas.getBloqueoSoldadosInstruccion()){
             estadisticas.setSoldadosInstruccion(estadisticas.getSoldadosInstruccion() - 1);
-            System.out.println("Soldados instruyendo: " + estadisticas.getSoldadosInstruccion());
         }
     }
 }
