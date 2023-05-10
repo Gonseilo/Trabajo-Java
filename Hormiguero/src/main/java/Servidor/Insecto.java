@@ -70,7 +70,6 @@ public class Insecto {
                     }
                 }
                 else{
-                    System.out.println("1*****************************************");
                     Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
                 }
             } catch (BrokenBarrierException ex) {
@@ -85,20 +84,17 @@ public class Insecto {
                                     try {
                                         estadisticas.getBloqueoPausa().wait();
                                     } catch (InterruptedException ex2) {
-                                        System.out.println("2*****************************************");
                                         Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex2);
                                     }
                                 }
                             }
                             else{
-                                System.out.println("3*****************************************");
                                 Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex1);
                             }
                         }
                     }
                 }
                 else{
-                    System.out.println("4*****************************************");
                     Logger.getLogger(Insecto.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
@@ -122,13 +118,11 @@ public class Insecto {
                         try {
                             estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
-                            System.out.println("5*****************************************");
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
                     }
                 }
                 else{
-                    System.out.println("6*****************************************");
                     Logger.getLogger(Tunel.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }

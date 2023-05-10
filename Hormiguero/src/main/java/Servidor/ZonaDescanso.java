@@ -61,6 +61,7 @@ public class ZonaDescanso {
                 Thread.sleep(tiempoFinal - tiempoDormido);
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                 if (!estadisticas.getPlay()){
                     synchronized(estadisticas.getBloqueoPausa()){
                         try {

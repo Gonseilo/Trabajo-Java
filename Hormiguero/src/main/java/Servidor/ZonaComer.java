@@ -55,57 +55,32 @@ public class ZonaComer {
             estadisticas.actualizarZonaComer();
         }
         
-        while (estadisticas.getComidaZonaComer() == 0){
-            System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " está esperando a que haya comida en la zona de comer.");
-            synchronized(bloqueo){
-                try {
-                    bloqueo.wait();
-                } catch (InterruptedException ex) {
-                    if (!estadisticas.getPlay()){
-                        synchronized(estadisticas.getBloqueoPausa()){
-                            try {
-                                estadisticas.getBloqueoPausa().wait();
-                            } catch (InterruptedException ex1) {
-                                System.out.println("10******************************************");
-                                Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+        while(true){
+            while (estadisticas.getComidaZonaComer() <= 0){
+                System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " está esperando a que haya comida en la zona de comer.");
+                    try {
+                        synchronized(bloqueo){
+                            bloqueo.wait();
+                        }
+                    } catch (InterruptedException ex) {
+                        if (!estadisticas.getPlay()){
+                            synchronized(estadisticas.getBloqueoPausa()){
+                                try {
+                                    estadisticas.getBloqueoPausa().wait();
+                                } catch (InterruptedException ex1) {
+                                    Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                                }
                             }
                         }
-                    }
-                    else{
-                        if (estadisticas.getInterrumpirInsecto()){
-                            if (hormigaSoldado != null){
-                                synchronized(estadisticas.getBloqueoZonaComer()){
-                                    estadisticas.getListaZonaComer().remove(idChar);
-                                    estadisticas.actualizarZonaComer();
-                                }
-
-                                insecto.DefenderInsecto(hormigaSoldado);
-
-                                synchronized(estadisticas.getBloqueoZonaComer()){
-                                    estadisticas.getListaZonaComer().add(idChar);
-                                    estadisticas.actualizarZonaComer();
-                                }
-                            }
-                            else{
-                                if (hormigaCria != null){
+                        else{
+                            if (estadisticas.getInterrumpirInsecto()){
+                                if (hormigaSoldado != null){
                                     synchronized(estadisticas.getBloqueoZonaComer()){
                                         estadisticas.getListaZonaComer().remove(idChar);
                                         estadisticas.actualizarZonaComer();
                                     }
-                                    synchronized(estadisticas.getBloqueoCriasZonaComer()){
-                                        estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() - 1);
-                                    }
-                                    synchronized(estadisticas.getBloqueoCriasRefugio()){
-                                        estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
-                                    }
-                                    refugio.Refugiarse(hormigaCria);
-                                    synchronized(estadisticas.getBloqueoCriasRefugio()){
-                                        estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()- 1);
-                                    }
-                                    synchronized(estadisticas.getBloqueoCriasZonaComer()){
-                                        estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() + 1);
-                                    }
-                                    Comer(null, null, hormigaCria, insecto, tunel);
+
+                                    insecto.DefenderInsecto(hormigaSoldado);
 
                                     synchronized(estadisticas.getBloqueoZonaComer()){
                                         estadisticas.getListaZonaComer().add(idChar);
@@ -113,23 +88,50 @@ public class ZonaComer {
                                     }
                                 }
                                 else{
-                                    System.out.println("11******************************************");
-                                    Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                                    if (hormigaCria != null){
+                                        synchronized(estadisticas.getBloqueoZonaComer()){
+                                            estadisticas.getListaZonaComer().remove(idChar);
+                                            estadisticas.actualizarZonaComer();
+                                        }
+                                        synchronized(estadisticas.getBloqueoCriasZonaComer()){
+                                            estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() - 1);
+                                        }
+                                        synchronized(estadisticas.getBloqueoCriasRefugio()){
+                                            estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()+ 1);
+                                        }
+                                        refugio.Refugiarse(hormigaCria);
+                                        synchronized(estadisticas.getBloqueoCriasRefugio()){
+                                            estadisticas.setCriasRefugio(estadisticas.getCriasRefugio()- 1);
+                                        }
+                                        synchronized(estadisticas.getBloqueoCriasZonaComer()){
+                                            estadisticas.setCriasZonaComer(estadisticas.getCriasZonaComer() + 1);
+                                        }
+                                        Comer(null, null, hormigaCria, insecto, tunel);
+
+                                        synchronized(estadisticas.getBloqueoZonaComer()){
+                                            estadisticas.getListaZonaComer().add(idChar);
+                                            estadisticas.actualizarZonaComer();
+                                        }
+                                    }
+                                    else{
+                                        Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
                                 }
                             }
-                        }
-                        else{
-                            System.out.println("12******************************************" + id);
-                            Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                            else{
+                                Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
+                            }
                         }
                     }
+            }
+            
+            synchronized(estadisticas.getBloqueoComidaZonaComer()){
+                if(estadisticas.getComidaZonaComer() > 0){
+                    estadisticas.setComidaZonaComer(estadisticas.getComidaZonaComer() - 1);
+                    estadisticas.actualizarComidaZonaComer();
+                    break;
                 }
             }
-        }
-        
-        synchronized(estadisticas.getBloqueoComidaZonaComer()){
-            estadisticas.setComidaZonaComer(estadisticas.getComidaZonaComer() - 1);
-            estadisticas.actualizarComidaZonaComer();
         }
         while(tiempoDormido < tiempoFinal){
             try {
@@ -140,12 +142,12 @@ public class ZonaComer {
                 Thread.sleep(tiempoFinal - tiempoDormido);
                 tiempoDormido = System.currentTimeMillis() - tiempoInicio;
             } catch (InterruptedException ex) {
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
                 if (!estadisticas.getPlay()){
                     synchronized(estadisticas.getBloqueoPausa()){
                         try {
                             estadisticas.getBloqueoPausa().wait();
                         } catch (InterruptedException ex1) {
-                            System.out.println("13******************************************");
                             Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
                         }
                     }
@@ -169,7 +171,6 @@ public class ZonaComer {
                         }
                         else{
                             if (hormigaCria != null){
-                                tiempoDormido = tiempoFinal;
                                 tiempoDormido = tiempoFinal;
 
                                 synchronized(estadisticas.getBloqueoZonaComer()){
@@ -197,13 +198,11 @@ public class ZonaComer {
                                 }
                             }
                             else{
-                                System.out.println("14******************************************");
                                 Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
                             }
                         }
                     }
                     else{
-                        System.out.println("15******************************************");
                         Logger.getLogger(ZonaDescanso.class.getName()).log(Level.SEVERE, null, ex);
                     }
                 }
@@ -217,20 +216,27 @@ public class ZonaComer {
     }
     
     public void DejarComida (HormigaObrera hormigaObrera){
+        long tiempoInicio = System.currentTimeMillis();
+        long tiempoDormido = 0;
+        int tiempoFinal = rand.nextInt(hormigaObrera.getTiempoDejarComidaZonaComerMax()-hormigaObrera.getTiempoDejarComidaZonaComerMin()+1)+hormigaObrera.getTiempoDejarComidaZonaComerMin();
         synchronized(estadisticas.getBloqueoZonaComer()){
             estadisticas.getListaZonaComer().add(hormigaObrera.getID());
             estadisticas.actualizarZonaComer();
         }
         
-        try {
-            Thread.sleep(rand.nextInt(hormigaObrera.getTiempoDejarComidaZonaComerMax()-hormigaObrera.getTiempoDejarComidaZonaComerMin()+1)+hormigaObrera.getTiempoDejarComidaZonaComerMin());
-        } catch (InterruptedException ex) {
-            if (!estadisticas.getPlay()){
-                synchronized(estadisticas.getBloqueoPausa()){
-                    try {
-                        estadisticas.getBloqueoPausa().wait();
-                    } catch (InterruptedException ex1) {
-                        Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+        while(tiempoDormido < tiempoFinal){
+            try {
+                Thread.sleep(tiempoFinal - tiempoDormido);
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
+            } catch (InterruptedException ex) {
+                tiempoDormido = System.currentTimeMillis() - tiempoInicio;
+                if (!estadisticas.getPlay()){
+                    synchronized(estadisticas.getBloqueoPausa()){
+                        try {
+                            estadisticas.getBloqueoPausa().wait();
+                        } catch (InterruptedException ex1) {
+                            Logger.getLogger(ZonaInstruccion.class.getName()).log(Level.SEVERE, null, ex1);
+                        }
                     }
                 }
             }
@@ -243,7 +249,11 @@ public class ZonaComer {
         }
         
         synchronized(bloqueo){
-            bloqueo.notifyAll();
+            bloqueo.notify();
+            bloqueo.notify();
+            bloqueo.notify();
+            bloqueo.notify();
+            bloqueo.notify();
         }
         
         synchronized(estadisticas.getBloqueoZonaComer()){
