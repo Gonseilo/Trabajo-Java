@@ -30,7 +30,7 @@ public class AlmacenComida {
         long tiempoInicio = System.currentTimeMillis();
         long tiempoDormido = 0;
         int tiempoFinal = rand.nextInt(hormigaObrera.getTiempoDejarComidaAlmacénMax()-hormigaObrera.getTiempoDejarComidaAlmacénMin()+1)+hormigaObrera.getTiempoDejarComidaAlmacénMin();
-        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " quiere entrar a dejar comida al almacén.");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.gettipoHormiga() + " " + new String(hormigaObrera.getId()) + " quiere entrar a dejar comida al almacén.");
         while(true){
             try {
                 synchronized(bloqueoSemaforoAcquire){
@@ -52,9 +52,9 @@ public class AlmacenComida {
                 }
             }
         }
-        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " está dejando comida en el almacén.");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.gettipoHormiga() + " " + new String(hormigaObrera.getId()) + " está dejando comida en el almacén.");
         synchronized(estadisticas.getBloqueoAlmacen()){
-            estadisticas.getListaAlmacen().add(hormigaObrera.getID());
+            estadisticas.getListaAlmacen().add(hormigaObrera.getId());
             estadisticas.actualizarAlmacen();
         }
         while(tiempoDormido < tiempoFinal){
@@ -89,7 +89,7 @@ public class AlmacenComida {
             semaforo.release();
         }
         synchronized(estadisticas.getBloqueoAlmacen()){
-            estadisticas.getListaAlmacen().remove(hormigaObrera.getID());
+            estadisticas.getListaAlmacen().remove(hormigaObrera.getId());
             estadisticas.actualizarAlmacen();
         }
     }
@@ -98,7 +98,7 @@ public class AlmacenComida {
         long tiempoInicio = System.currentTimeMillis();
         long tiempoDormido = 0;
         int tiempoFinal = rand.nextInt(hormigaObrera.getTiempoCogerComidaAlmacénMax()-hormigaObrera.getTiempoCogerComidaAlmacénMin()+1)+hormigaObrera.getTiempoCogerComidaAlmacénMin();
-        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " quiere entrar a coger comida del almacén.");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.gettipoHormiga() + " " + new String(hormigaObrera.getId()) + " quiere entrar a coger comida del almacén.");
         while(true){
             try {
                 synchronized(bloqueoSemaforoAcquire){
@@ -121,7 +121,7 @@ public class AlmacenComida {
             }
         }
         synchronized(estadisticas.getBloqueoAlmacen()){
-            estadisticas.getListaAlmacen().add(hormigaObrera.getID());
+            estadisticas.getListaAlmacen().add(hormigaObrera.getId());
             estadisticas.actualizarAlmacen();
         }
         while (estadisticas.getComidaAlmacen() < 5) {
@@ -129,7 +129,7 @@ public class AlmacenComida {
                 semaforo.release();
             }
             synchronized(estadisticas.getBloqueoAlmacen()){
-                estadisticas.getListaAlmacen().remove(hormigaObrera.getID());
+                estadisticas.getListaAlmacen().remove(hormigaObrera.getId());
                 estadisticas.actualizarAlmacen();
             }
             
@@ -158,11 +158,11 @@ public class AlmacenComida {
                 }
             }
             synchronized(estadisticas.getBloqueoAlmacen()){
-                estadisticas.getListaAlmacen().add(hormigaObrera.getID());
+                estadisticas.getListaAlmacen().add(hormigaObrera.getId());
                 estadisticas.actualizarAlmacen();
             }
         }
-        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " está cogiendo comida del almacén.");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.gettipoHormiga() + " " + new String(hormigaObrera.getId()) + " está cogiendo comida del almacén.");
         synchronized(estadisticas.getBloqueoComidaAlmacen()){
             estadisticas.setComidaAlmacen(estadisticas.getComidaAlmacen() - 5);
             estadisticas.actualizarComidaAlmacen();
@@ -191,7 +191,7 @@ public class AlmacenComida {
             semaforo.release();
         }
         synchronized(estadisticas.getBloqueoAlmacen()){
-            estadisticas.getListaAlmacen().remove(hormigaObrera.getID());
+            estadisticas.getListaAlmacen().remove(hormigaObrera.getId());
             estadisticas.actualizarAlmacen();
         }
     }

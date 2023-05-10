@@ -30,16 +30,16 @@ public class Tunel {
         String tipoHormiga = null;
         
         if (hormigaObrera != null){
-            id = new String(hormigaObrera.getID());
-            tipoHormiga = hormigaObrera.getTipoHormiga();
+            id = new String(hormigaObrera.getId());
+            tipoHormiga = hormigaObrera.gettipoHormiga();
         }
         if (hormigaSoldado != null){
-            id = new String(hormigaSoldado.getID());
-            tipoHormiga = hormigaSoldado.getTipoHormiga();
+            id = new String(hormigaSoldado.getId());
+            tipoHormiga = hormigaSoldado.gettipoHormiga();
         }
         if (hormigaCria != null){
-            id = new String(hormigaCria.getID());
-            tipoHormiga = hormigaCria.getTipoHormiga();
+            id = new String(hormigaCria.getId());
+            tipoHormiga = hormigaCria.gettipoHormiga();
         }
         
         try {
@@ -80,12 +80,12 @@ public class Tunel {
         String tipoHormiga = null;
         
         if (hormigaObrera != null){
-            id = new String(hormigaObrera.getID());
-            tipoHormiga = hormigaObrera.getTipoHormiga();
+            id = new String(hormigaObrera.getId());
+            tipoHormiga = hormigaObrera.gettipoHormiga();
         }
         if (hormigaSoldado != null){
-            id = new String(hormigaSoldado.getID());
-            tipoHormiga = hormigaSoldado.getTipoHormiga();
+            id = new String(hormigaSoldado.getId());
+            tipoHormiga = hormigaSoldado.gettipoHormiga();
         }
         
         try {

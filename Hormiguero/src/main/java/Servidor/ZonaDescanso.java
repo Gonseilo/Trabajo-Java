@@ -29,22 +29,22 @@ public class ZonaDescanso {
         String tipoHormiga = null;
         
         if (hormigaObrera != null){
-            id = new String(hormigaObrera.getID());
-            idChar = hormigaObrera.getID();
+            id = new String(hormigaObrera.getId());
+            idChar = hormigaObrera.getId();
             tiempoFinal = hormigaObrera.getTiempoDescansar();
-            tipoHormiga = hormigaObrera.getTipoHormiga();
+            tipoHormiga = hormigaObrera.gettipoHormiga();
         }
         if (hormigaSoldado != null){
-            id = new String(hormigaSoldado.getID());
-            idChar = hormigaSoldado.getID();
+            id = new String(hormigaSoldado.getId());
+            idChar = hormigaSoldado.getId();
             tiempoFinal = hormigaSoldado.getTiempoDescansar();
-            tipoHormiga = hormigaSoldado.getTipoHormiga();
+            tipoHormiga = hormigaSoldado.gettipoHormiga();
         }
         if (hormigaCria != null){
-            id = new String(hormigaCria.getID());
-            idChar = hormigaCria.getID();
+            id = new String(hormigaCria.getId());
+            idChar = hormigaCria.getId();
             tiempoFinal = hormigaCria.getTiempoDescansar();
-            tipoHormiga = hormigaCria.getTipoHormiga();
+            tipoHormiga = hormigaCria.gettipoHormiga();
         }
         
         synchronized(estadisticas.getBloqueoDescansando()){
@@ -55,7 +55,7 @@ public class ZonaDescanso {
         while(tiempoDormido < tiempoFinal){
             try {
                 if (estadisticas.getInterrumpirInsecto() && hormigaCria != null){
-                    hormigaCria.detenerHilo(hormigaCria.getNumHormiga());
+                    hormigaCria.interrumpirHilo(hormigaCria.getNumHormiga());
                 }
                 System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " se pone a descansar.");
                 Thread.sleep(tiempoFinal - tiempoDormido);

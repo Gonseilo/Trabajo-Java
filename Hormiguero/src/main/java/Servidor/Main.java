@@ -22,41 +22,46 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        FileOutputStream fos = null;
+        //Creación del fichero log
+        FileOutputStream salida = null;
         try {
-            fos = new FileOutputStream("evolucionColonia.txt");
+            salida = new FileOutputStream("evolucionColonia.txt");
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
         }
-        PrintStream ps = new PrintStream(fos);
+        PrintStream ps = new PrintStream(salida);
         System.setOut(ps);
         
-        Semaphore semaforo = new Semaphore(10);
-        Semaphore semaforoTunelEntrada = new Semaphore(1);
-        Semaphore semaforoTunelSalida = new Semaphore(2);
+        //Declaración de los semáforos
+        Semaphore semaforoAlmacen = new Semaphore(10);//Capacidad del almacén
+        Semaphore semaforoTunelEntrada = new Semaphore(1);//Capacidad del túnel de entrada
+        Semaphore semaforoTunelSalida = new Semaphore(2);//Capacidad del túnel de salida
         
+        //Declaración de los objetos de las clases
         Estadisticas estadisticas = new Estadisticas();
-        AlmacenComida almacenComida = new AlmacenComida(semaforo, estadisticas);
+        AlmacenComida almacenComida = new AlmacenComida(semaforoAlmacen, estadisticas);
         Refugio refugio = new Refugio(estadisticas);
         ZonaComer zonaComer = new ZonaComer(refugio, estadisticas);
         ZonaDescanso zonaDescanso = new ZonaDescanso(refugio, estadisticas);
         ZonaInstruccion zonaInstruccion = new ZonaInstruccion(estadisticas);
         Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida, estadisticas, refugio);
         Insecto insecto = new Insecto(refugio, tunel, estadisticas);
-        
-       
         InterfazServidor interfazServidor = new InterfazServidor(refugio, insecto, estadisticas);
-        estadisticas.setInterfazServidor(interfazServidor);
-        estadisticas.desactivarBotonInsecto();
-        interfazServidor.setVisible(true);
         
+        estadisticas.setInterfazServidor(interfazServidor);//Objeto interfazServidor paasado como parámetro a la clase estadísticas
+        estadisticas.desactivarBotonInsecto();//Desactiva el botón de generar insecto
+        interfazServidor.setVisible(true);//Hacer visible la interfaz
+        
+        //Lanzamiento del hilo del socket del servidor
         Runnable runnable = new SocketServidor(estadisticas, insecto);
         Thread thread = new Thread(runnable);
         thread.start();
         
-        char[] ID = new char[6];
-        Hormiga hormiga = new Hormiga(0, ID, "", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
+        //Declara el objeto hormiga
+        char[] id = new char[6];
+        Hormiga hormiga = new Hormiga(0, id, "", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
         
-        hormiga.GenerarHormigas(almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
+        //Comienza la generación de hormigas
+        hormiga.generarHormigas(almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion);
     }
 }

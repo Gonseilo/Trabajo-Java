@@ -26,8 +26,8 @@ public class HormigaObrera extends Hormiga implements Runnable {
     private int tiempoComer;
     private int tiempoDescansar;
     
-    public HormigaObrera(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto) {
-        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
+    public HormigaObrera(int numHormiga, char[] ID, String tipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto) {
+        super(numHormiga, ID, tipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
         this.tiempoRecolectarComida = 4000;
         this.tiempoDejarComidaAlmacénMin = 2000;
         this.tiempoDejarComidaAlmacénMax = 4000;
@@ -56,7 +56,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
     }
     
     public void SetID(char[] ID){
-        super.setID(ID);
+        super.setId(ID);
     }
 
     public int getTiempoRecolectarComida() {
@@ -149,7 +149,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
     
     public void run() {
         SetID(GenerarIDObrera());
-        System.out.println(estadisticas.calcularFecha() + "Se ha generado una hormiga " + super.getTipoHormiga() + " con id " + new String(super.getID()) + ".");
+        System.out.println(estadisticas.calcularFecha() + "Se ha generado una hormiga " + super.gettipoHormiga() + " con id " + new String(super.getId()) + ".");
         synchronized(estadisticas.getBloqueoObrerasExterior()){
             estadisticas.setObrerasExterior(estadisticas.getObrerasExterior() + 1);
         }
@@ -169,7 +169,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
                     int tiempoFinalIrZonaComer = rand.nextInt(tiempoIrZonaComerMax-tiempoIrZonaComerMin+1)+tiempoIrZonaComerMin;
                     almacenComida.SacarComida(this);
                     synchronized(estadisticas.getBloqueoLlevandoComida()){
-                        estadisticas.getListaLlevandoComida().add(getID());
+                        estadisticas.getListaLlevandoComida().add(getId());
                         estadisticas.actualizarLlevandoComida();
                     }
                     while(tiempoDormidoIrZonaComer < tiempoFinalIrZonaComer){
@@ -193,7 +193,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
                         }
                     }
                     synchronized(estadisticas.getBloqueoLlevandoComida()){
-                        estadisticas.getListaLlevandoComida().remove(getID());
+                        estadisticas.getListaLlevandoComida().remove(getId());
                         estadisticas.actualizarLlevandoComida();
                     }
                     zonaComer.DejarComida(this);
@@ -205,9 +205,9 @@ public class HormigaObrera extends Hormiga implements Runnable {
                     long tiempoDormidoRecolectarComida = 0;
                     int tiempoFinalRecolectarComida = tiempoRecolectarComida;
                     tunel.Salir(this, null, insecto);
-                    System.out.println(estadisticas.calcularFecha() + "La hormiga " + super.getTipoHormiga() + " " + new String(super.getID()) + " está buscando comida en el exterior del hormiguero.");
+                    System.out.println(estadisticas.calcularFecha() + "La hormiga " + super.gettipoHormiga() + " " + new String(super.getId()) + " está buscando comida en el exterior del hormiguero.");
                     synchronized(estadisticas.getBloqueoBuscandoComida()){
-                        estadisticas.getListaBuscandoComida().add(getID());
+                        estadisticas.getListaBuscandoComida().add(getId());
                         estadisticas.actualizarBuscandoComida();
                     }
                     synchronized (estadisticas.getBloqueoObrerasInterior()) {
@@ -240,7 +240,7 @@ public class HormigaObrera extends Hormiga implements Runnable {
                     }
                     
                     synchronized(estadisticas.getBloqueoBuscandoComida()){
-                        estadisticas.getListaBuscandoComida().remove(getID());
+                        estadisticas.getListaBuscandoComida().remove(getId());
                         estadisticas.actualizarBuscandoComida();
                     }
                     tunel.Entrar(this, null, null, insecto);

@@ -18,8 +18,8 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     private int tiempoComer;
     private int tiempoDefender;
 
-    public HormigaSoldado(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto) {
-        super(numHormiga, ID, TipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
+    public HormigaSoldado(int numHormiga, char[] ID, String tipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto) {
+        super(numHormiga, ID, tipoHormiga, almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
         this.tiempoInstruirMin = 2000;
         this.tiempoInstruirMax = 4000;
         this.tiempoDescansar = 2000;
@@ -42,7 +42,7 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     }
     
     public void SetID(char[] ID){
-        super.setID(ID);
+        super.setId(ID);
     }
 
     public int getTiempoDescansar() {
@@ -87,7 +87,7 @@ public class HormigaSoldado extends Hormiga implements Runnable {
     
     public void run() {
         SetID(GenerarIDSoldado());
-        System.out.println(estadisticas.calcularFecha() + "Se ha generado una hormiga soldado con id " + new String(super.getID()) + ".");
+        System.out.println(estadisticas.calcularFecha() + "Se ha generado una hormiga soldado con id " + new String(super.getId()) + ".");
         tunel.Entrar(null, this, null, insecto);
         while (true){
             for (int i = 0; i < 6; i++){

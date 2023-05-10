@@ -14,9 +14,9 @@ import java.util.logging.Logger;
  */
 public class Hormiga {
     private int numHormiga;
-    private char[] ID;
-    private String TipoHormiga;
-    
+    private char[] id;
+    private String tipoHormiga;
+    private Thread[] hilos = new Thread[10000];//Lista de todos los hilos de hormigas
     protected AlmacenComida almacenComida;
     protected Refugio refugio;
     protected Tunel tunel;
@@ -26,12 +26,10 @@ public class Hormiga {
     protected Estadisticas estadisticas;
     protected Insecto insecto;
     
-    Thread[] hilos = new Thread[10000];
-    
-    public Hormiga(int numHormiga, char[] ID, String TipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto){
+    public Hormiga(int numHormiga, char[] id, String tipoHormiga, AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion, Estadisticas estadisticas, Insecto insecto){
         this.numHormiga = numHormiga;
-        this.ID = ID;
-        this.TipoHormiga = TipoHormiga;
+        this.id = id;
+        this.tipoHormiga = tipoHormiga;
         this.almacenComida = almacenComida;
         this.refugio = refugio;
         this.tunel = tunel;
@@ -42,32 +40,36 @@ public class Hormiga {
         this.insecto = insecto;
     }
     
-    public void GenerarHormigas(AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion){  Thread[] hilos = new Thread[10000];
+    //Método utilizado para generar las 10.000 hormigas
+    public void generarHormigas(AlmacenComida almacenComida, Refugio refugio, Tunel tunel, ZonaComer zonaComer, ZonaDescanso zonaDescanso, ZonaInstruccion zonaInstruccion){  Thread[] hilos = new Thread[10000];
         Random rand = new Random();
-        
         int tiempoMinimo = 800;
         int tiempoMaximo = 3500;
         
+        //Bucle que por cada iteración crea una hormiga
         for (int i=0; i < 10000; i++){
             int tiempoGeneracionHormigas = rand.nextInt((tiempoMaximo - tiempoMinimo +1)+ tiempoMinimo);
             estadisticas.setNumHormigas(i+1);
             
+            //Cada 5 hormigas asigna las 3 primeras como obreras
             if (i % 5 <= 2){
-                Runnable runnable = new HormigaObrera(i, ID, "Obrera", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
+                Runnable runnable = new HormigaObrera(i, id, "Obrera", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
                 hilos[i] = new Thread(runnable);
                 hilos[i].start();
                 estadisticas.setNumObreras(estadisticas.getNumObreras()+1);
             }
             else{
+                //Cada 5 hormigas asigna la penúltima como soldado
                 if (i % 5 == 3){
-                    Runnable runnable = new HormigaSoldado(i, ID, "Soldado", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
+                    Runnable runnable = new HormigaSoldado(i, id, "Soldado", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
                     hilos[i] = new Thread(runnable);
                     hilos[i].start();
                     estadisticas.getListaSoldados()[estadisticas.getNumSoldados()] = hilos[i];
                     estadisticas.setNumSoldados(estadisticas.getNumSoldados()+1);
                 }
+                //Cada 5 hormigas asigna la última como cría
                 else{
-                    Runnable runnable = new HormigaCria(i, ID, "Cría", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
+                    Runnable runnable = new HormigaCria(i, id, "Cría", almacenComida, refugio, tunel, zonaComer, zonaDescanso, zonaInstruccion, estadisticas, insecto);
                     hilos[i] = new Thread(runnable);
                     hilos[i].start();
                     estadisticas.getListaCrias()[estadisticas.getNumCrias()] = hilos[i];
@@ -75,16 +77,20 @@ public class Hormiga {
                 }
             }
             
+            //Cuando se crea la primera soldado activa el botón de generar insecto
             if(i==3){
                 estadisticas.activarBotonInsecto();
             }
             
-            estadisticas.setListaHormigas(hilos);
+            estadisticas.setListaHormigas(hilos);//Guarda la lista de hormigas en estadísticas
+            
+            //Espera el tiempo de generación de hormigas
             try {
                 Thread.sleep(tiempoGeneracionHormigas);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
             }
+            //Si el programa está pausado sigue esperando hastq que se reanude
             while(!estadisticas.getPlay()){
                 try {
                     Thread.sleep(tiempoGeneracionHormigas);
@@ -93,16 +99,10 @@ public class Hormiga {
                 }
             }
         }
-        for (int i=0; i < 10000; i++){
-            try {
-                hilos[i].join();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(Main.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
     }
     
-    public void detenerHilo (int numHormiga){
+    //Método usado para interrumpir cualquier hormiga generada
+    public void interrumpirHilo (int numHormiga){
         hilos[numHormiga].interrupt();
     }
 
@@ -110,23 +110,23 @@ public class Hormiga {
         return numHormiga;
     }
 
-    public void setID(char[] ID) {
-        this.ID = ID;
+    public void setId(char[] id) {
+        this.id = id;
     }
 
-    public char[] getID() {
-        return ID;
+    public char[] getId() {
+        return id;
     }
 
     public void setNumHormiga(int numHormiga) {
         this.numHormiga = numHormiga;
     }
 
-    public void setTipoHormiga(String TipoHormiga) {
-        this.TipoHormiga = TipoHormiga;
+    public void settipoHormiga(String tipoHormiga) {
+        this.tipoHormiga = tipoHormiga;
     }
 
-    public String getTipoHormiga() {
-        return TipoHormiga;
+    public String gettipoHormiga() {
+        return tipoHormiga;
     }
 }

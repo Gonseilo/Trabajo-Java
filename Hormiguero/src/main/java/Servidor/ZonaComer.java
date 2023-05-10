@@ -32,22 +32,22 @@ public class ZonaComer {
         String tipoHormiga = null;
         
         if (hormigaObrera != null){
-            id = new String(hormigaObrera.getID());
-            idChar = hormigaObrera.getID();
+            id = new String(hormigaObrera.getId());
+            idChar = hormigaObrera.getId();
             tiempoFinal = hormigaObrera.getTiempoComer();
-            tipoHormiga = hormigaObrera.getTipoHormiga();
+            tipoHormiga = hormigaObrera.gettipoHormiga();
         }
         if (hormigaSoldado != null){
-            id = new String(hormigaSoldado.getID());
-            idChar = hormigaSoldado.getID();
+            id = new String(hormigaSoldado.getId());
+            idChar = hormigaSoldado.getId();
             tiempoFinal = hormigaSoldado.getTiempoComer();
-            tipoHormiga = hormigaSoldado.getTipoHormiga();
+            tipoHormiga = hormigaSoldado.gettipoHormiga();
         }
         if (hormigaCria != null){
-            id = new String(hormigaCria.getID());
-            idChar = hormigaCria.getID();
+            id = new String(hormigaCria.getId());
+            idChar = hormigaCria.getId();
             tiempoFinal = rand.nextInt(hormigaCria.getTiempoComerMax()-hormigaCria.getTiempoComerMin()+1)+hormigaCria.getTiempoComerMin();
-            tipoHormiga = hormigaCria.getTipoHormiga();
+            tipoHormiga = hormigaCria.gettipoHormiga();
         }
         
         synchronized(estadisticas.getBloqueoZonaComer()){
@@ -136,7 +136,7 @@ public class ZonaComer {
         while(tiempoDormido < tiempoFinal){
             try {
                 if (estadisticas.getInterrumpirInsecto() && hormigaCria != null){
-                    hormigaCria.detenerHilo(hormigaCria.getNumHormiga());
+                    hormigaCria.interrumpirHilo(hormigaCria.getNumHormiga());
                 }
                 System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " empieza a comer.");
                 Thread.sleep(tiempoFinal - tiempoDormido);
@@ -220,7 +220,7 @@ public class ZonaComer {
         long tiempoDormido = 0;
         int tiempoFinal = rand.nextInt(hormigaObrera.getTiempoDejarComidaZonaComerMax()-hormigaObrera.getTiempoDejarComidaZonaComerMin()+1)+hormigaObrera.getTiempoDejarComidaZonaComerMin();
         synchronized(estadisticas.getBloqueoZonaComer()){
-            estadisticas.getListaZonaComer().add(hormigaObrera.getID());
+            estadisticas.getListaZonaComer().add(hormigaObrera.getId());
             estadisticas.actualizarZonaComer();
         }
         
@@ -241,7 +241,7 @@ public class ZonaComer {
                 }
             }
         }
-        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.getTipoHormiga() + " " + new String(hormigaObrera.getID()) + " ha dejado comida en la zona de comer.");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaObrera.gettipoHormiga() + " " + new String(hormigaObrera.getId()) + " ha dejado comida en la zona de comer.");
         
         synchronized(estadisticas.getBloqueoComidaZonaComer()){
             estadisticas.setComidaZonaComer(estadisticas.getComidaZonaComer() + 5);
@@ -257,7 +257,7 @@ public class ZonaComer {
         }
         
         synchronized(estadisticas.getBloqueoZonaComer()){
-            estadisticas.getListaZonaComer().remove(hormigaObrera.getID());
+            estadisticas.getListaZonaComer().remove(hormigaObrera.getId());
             estadisticas.actualizarZonaComer();
         }
     }

@@ -52,7 +52,7 @@ public class Insecto {
         long tiempoDormido = 0;
         int tiempoFinal = hormigaSoldado.getTiempoDefender();
         
-        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.getTipoHormiga() + " " + new String(hormigaSoldado.getID()) + " está preparada para salir a defender el hormiguero.");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.gettipoHormiga() + " " + new String(hormigaSoldado.getId()) + " está preparada para salir a defender el hormiguero.");
         tunel.Salir(null, hormigaSoldado, this);
         while(true){
             try {
@@ -102,9 +102,9 @@ public class Insecto {
         synchronized(estadisticas.getBloqueoSoldadosDefendiendo()){
             estadisticas.setSoldadosDefendiendo(estadisticas.getSoldadosDefendiendo() + 1);
         }
-        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.getTipoHormiga() + " " + new String(hormigaSoldado.getID()) + " está defendiendo el hormiguero.");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.gettipoHormiga() + " " + new String(hormigaSoldado.getId()) + " está defendiendo el hormiguero.");
         synchronized(estadisticas.getBloqueoDefendiendo()){
-            estadisticas.getListaDefendiendo().add(hormigaSoldado.getID());
+            estadisticas.getListaDefendiendo().add(hormigaSoldado.getId());
             estadisticas.actualizarDefendiendo();
         }
         while(tiempoDormido < tiempoFinal){    
@@ -131,7 +131,7 @@ public class Insecto {
             estadisticas.setSoldadosDefendiendo(estadisticas.getSoldadosDefendiendo() - 1);
         }
         synchronized(estadisticas.getBloqueoDefendiendo()){
-            estadisticas.getListaDefendiendo().remove(hormigaSoldado.getID());
+            estadisticas.getListaDefendiendo().remove(hormigaSoldado.getId());
             estadisticas.actualizarDefendiendo();
         }
         estadisticas.setInterrumpirInsecto(false);
@@ -139,7 +139,7 @@ public class Insecto {
         synchronized(refugio.getBloqueo()){
             refugio.getBloqueo().notifyAll();
         }
-        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.getTipoHormiga() + " " + new String(hormigaSoldado.getID()) + " ha defendido con éxito el hormiguero.");
+        System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.gettipoHormiga() + " " + new String(hormigaSoldado.getId()) + " ha defendido con éxito el hormiguero.");
         tunel.Entrar(null, hormigaSoldado, null, this);
     }
 }
