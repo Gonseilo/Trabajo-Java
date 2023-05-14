@@ -14,12 +14,12 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class AlmacenComida {
+    private Random rand = new Random();
+    private Estadisticas estadisticas;
     private Semaphore semaforo;
     private final Object bloqueoAvisoComida = new Object();
     private final Object bloqueoSemaforoAcquire = new Object();
     private final Object bloqueoSemaforoRelease = new Object();
-    private Estadisticas estadisticas;
-    private Random rand = new Random();
 
     public AlmacenComida(Semaphore semaforo, Estadisticas estadisticas) {
         this.semaforo = semaforo;

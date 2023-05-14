@@ -46,7 +46,7 @@ public class Main {
         ZonaInstruccion zonaInstruccion = new ZonaInstruccion(estadisticas);
         Tunel tunel = new Tunel(semaforoTunelEntrada, semaforoTunelSalida, estadisticas, refugio);
         Insecto insecto = new Insecto(refugio, tunel, estadisticas);
-        InterfazServidor interfazServidor = new InterfazServidor(refugio, insecto, estadisticas);
+        InterfazServidor interfazServidor = new InterfazServidor(insecto, estadisticas);
         
         estadisticas.setInterfazServidor(interfazServidor);//Objeto interfazServidor paasado como parámetro a la clase estadísticas
         estadisticas.desactivarBotonInsecto();//Desactiva el botón de generar insecto

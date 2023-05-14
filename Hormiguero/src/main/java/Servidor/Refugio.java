@@ -12,7 +12,7 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class Refugio {
-    private final Object bloqueo = new Object();
+    private final Object bloqueoRefugio = new Object();
     private Estadisticas estadisticas;
 
     public Refugio(Estadisticas estadisticas) {
@@ -29,8 +29,8 @@ public class Refugio {
         
         while(true){
             try {
-                synchronized(bloqueo){
-                    bloqueo.wait();
+                synchronized(bloqueoRefugio){
+                    bloqueoRefugio.wait();
                 }
                 break;
             } catch (InterruptedException ex) {
@@ -56,7 +56,7 @@ public class Refugio {
         }
     }
 
-    public Object getBloqueo() {
-        return bloqueo;
+    public Object getBloqueoRefugio() {
+        return bloqueoRefugio;
     }
 }

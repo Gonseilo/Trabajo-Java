@@ -4,8 +4,6 @@
  */
 package Servidor;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
@@ -14,7 +12,6 @@ import javax.swing.JFrame;
  * @author Ivanl
  */
 public class InterfazServidor extends javax.swing.JFrame {
-    private Refugio refugio;
     private Insecto insecto;
     private Estadisticas estadisticas;
     private long ultimaVez = 0;
@@ -22,9 +19,8 @@ public class InterfazServidor extends javax.swing.JFrame {
     /**
      * Creates new form Interfaz
      */
-    public InterfazServidor(Refugio refugio, Insecto insecto, Estadisticas estadisticas) {
+    public InterfazServidor(Insecto insecto, Estadisticas estadisticas) {
         this.estadisticas = estadisticas;
-        this.refugio = refugio;
         this.insecto = insecto;
         initComponents();
         

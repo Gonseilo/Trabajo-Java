@@ -11,7 +11,7 @@ import java.util.Random;
  * @author Ivanl
  */
 public class HormigaCria extends Hormiga implements Runnable {
-    Random rand = new Random();
+    private Random rand = new Random();
     private int TiempoComerMin;
     private int TiempoComerMax;
     private int TiempoDescansar;

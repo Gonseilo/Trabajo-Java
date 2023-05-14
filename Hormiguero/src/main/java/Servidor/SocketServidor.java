@@ -28,11 +28,9 @@ public class SocketServidor implements Runnable{
     /**
      * @param args the command line arguments
      */
-    
 
     @Override
     public void run() {
-        
         ServerSocket servidor;
         Socket conexion;
         DataOutputStream salida;

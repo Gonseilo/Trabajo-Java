@@ -17,11 +17,17 @@ public class Estadisticas {
     private Boolean interrumpirInsecto = false;
     private Boolean play = true;
     private Boolean insectoCliente = false;
-    private final Object bloqueoPausa = new Object();
-    private int numHormigas;
     private int numCrias;
     private int numSoldados;
     private int numObreras;
+    private int comidaAlmacen;
+    private int comidaZonaComer;
+    private int obrerasExterior;
+    private int obrerasInterior;
+    private int soldadosInstruccion;
+    private int soldadosDefendiendo;
+    private int criasZonaComer;
+    private int criasRefugio;
     private Thread[] listaHormigas = new Thread[10000];
     private Thread[] listaCrias = new Thread[2000];
     private Thread[] listaSoldados = new Thread[2000];
@@ -33,6 +39,7 @@ public class Estadisticas {
     private ArrayList<char[]> listaDescansando = new ArrayList<>();
     private ArrayList<char[]> listaZonaComer = new ArrayList<>();
     private ArrayList<char[]> listaRefugio = new ArrayList<>();
+    private final Object bloqueoPausa = new Object();
     private final Object bloqueoBuscandoComida = new Object();
     private final Object bloqueoDefendiendo = new Object();
     private final Object bloqueoAlmacen = new Object();
@@ -43,14 +50,6 @@ public class Estadisticas {
     private final Object bloqueoRefugio = new Object();
     private final Object bloqueoComidaAlmacen = new Object();
     private final Object bloqueoComidaZonaComer = new Object();
-    private int comidaAlmacen;
-    private int comidaZonaComer;
-    private int obrerasExterior;
-    private int obrerasInterior;
-    private int soldadosInstruccion;
-    private int soldadosDefendiendo;
-    private int criasZonaComer;
-    private int criasRefugio;
     private final Object bloqueoObrerasExterior = new Object();
     private final Object bloqueoObrerasInterior = new Object();
     private final Object bloqueoSoldadosInstruccion = new Object();
@@ -58,12 +57,14 @@ public class Estadisticas {
     private final Object bloqueoCriasZonaComer = new Object();
     private final Object bloqueoCriasRefugio = new Object();
     
+    //Método usado para poner la fecha en el log
     public String calcularFecha(){
         Date fechaActual = new Date();
         SimpleDateFormat formatoFecha = new SimpleDateFormat ("[dd/MM/yyyy HH:mm:ss]: ");
         return formatoFecha.format(fechaActual);
     }
     
+    //Métodos que actualizan la interfaz del servidor
     public synchronized void actualizarBuscandoComida(){
         String texto = "";
         if (!listaBuscandoComida.isEmpty()){
@@ -191,6 +192,14 @@ public class Estadisticas {
         interfazServidor.setTextoRefugiadas(texto);
     }
     
+    public synchronized void actualizarComidaAlmacen(){
+        interfazServidor.setTextoComidaAlmacen(String.valueOf(comidaAlmacen));
+    }
+    
+    public synchronized void actualizarComidaZonaComer(){
+        interfazServidor.setTextoComidaZonaComer(String.valueOf(comidaZonaComer));
+    }
+    
     public void activarBotonInsecto(){
         insectoCliente = true;
         interfazServidor.getGenerarInsecto().setEnabled(true);
@@ -200,14 +209,6 @@ public class Estadisticas {
         insectoCliente = false;
         interfazServidor.getGenerarInsecto().setEnabled(false);
     }
-    
-    public synchronized void actualizarComidaAlmacen(){
-        interfazServidor.setTextoComidaAlmacen(String.valueOf(comidaAlmacen));
-    }
-    
-    public synchronized void actualizarComidaZonaComer(){
-        interfazServidor.setTextoComidaZonaComer(String.valueOf(comidaZonaComer));
-    }
 
     public void setInterrumpirInsecto(Boolean interrumpirInsecto) {
         this.interrumpirInsecto = interrumpirInsecto;
@@ -215,10 +216,6 @@ public class Estadisticas {
 
     public Boolean getInterrumpirInsecto() {
         return interrumpirInsecto;
-    }
-    
-    public int getNumHormigas() {
-        return numHormigas;
     }
 
     public int getNumCrias() {
@@ -231,10 +228,6 @@ public class Estadisticas {
 
     public int getNumObreras() {
         return numObreras;
-    }
-
-    public void setNumHormigas(int numHormigas) {
-        this.numHormigas = numHormigas;
     }
 
     public void setNumCrias(int numCrias) {

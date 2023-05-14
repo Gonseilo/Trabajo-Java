@@ -13,10 +13,10 @@ import java.util.logging.Logger;
  * @author Ivanl
  */
 public class ZonaComer {
-    private final Object bloqueo = new Object();
+    Random rand = new Random();
+    private final Object bloqueoComer = new Object();
     private Refugio refugio;
     private Estadisticas estadisticas;
-    Random rand = new Random();
 
     public ZonaComer(Refugio refugio, Estadisticas estadisticas) {
         this.refugio = refugio;
@@ -59,8 +59,8 @@ public class ZonaComer {
             while (estadisticas.getComidaZonaComer() <= 0){
                 System.out.println(estadisticas.calcularFecha() + "La hormiga " + tipoHormiga + " " + id + " está esperando a que haya comida en la zona de comer.");
                     try {
-                        synchronized(bloqueo){
-                            bloqueo.wait();
+                        synchronized(bloqueoComer){
+                            bloqueoComer.wait();
                         }
                     } catch (InterruptedException ex) {
                         if (!estadisticas.getPlay()){
@@ -248,12 +248,12 @@ public class ZonaComer {
             estadisticas.actualizarComidaZonaComer();
         }
         
-        synchronized(bloqueo){
-            bloqueo.notify();
-            bloqueo.notify();
-            bloqueo.notify();
-            bloqueo.notify();
-            bloqueo.notify();
+        synchronized(bloqueoComer){
+            bloqueoComer.notify();
+            bloqueoComer.notify();
+            bloqueoComer.notify();
+            bloqueoComer.notify();
+            bloqueoComer.notify();
         }
         
         synchronized(estadisticas.getBloqueoZonaComer()){

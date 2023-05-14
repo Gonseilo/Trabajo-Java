@@ -136,8 +136,8 @@ public class Insecto {
         }
         estadisticas.setInterrumpirInsecto(false);
         estadisticas.activarBotonInsecto();
-        synchronized(refugio.getBloqueo()){
-            refugio.getBloqueo().notifyAll();
+        synchronized(refugio.getBloqueoRefugio()){
+            refugio.getBloqueoRefugio().notifyAll();
         }
         System.out.println(estadisticas.calcularFecha() + "La hormiga " + hormigaSoldado.gettipoHormiga() + " " + new String(hormigaSoldado.getId()) + " ha defendido con éxito el hormiguero.");
         tunel.Entrar(null, hormigaSoldado, null, this);
